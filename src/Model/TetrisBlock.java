@@ -125,7 +125,17 @@ public class TetrisBlock  {
                 }
             }
         }
-        return tempBlock;
+        if(getX() + getShape().length  <= 10){
+            return tempBlock;
+        }
+        else {
+            int decrementTimes = getX() + getShape().length - 10;
+            for (int i = 0; i < decrementTimes; i++){
+                decrementX();
+            }
+            return tempBlock;
+        }
+
     }
     public int[][] rotate2(){
         int[][] tempBlock = new int[shape[0].length][shape.length];
@@ -145,7 +155,16 @@ public class TetrisBlock  {
                 tempBlock[row][tempBlock[0].length-1] = temp;
             }
         }
-        return tempBlock;
+        if(getX() + getShape().length  <= 10){
+            return tempBlock;
+        }
+        else{
+            int decrementTimes = getX() + getShape().length - 10;
+            for (int i = 0; i < decrementTimes; i++){
+                decrementX();
+            }
+            return tempBlock;
+        }
     }
 
     public int getRotateNum(){
