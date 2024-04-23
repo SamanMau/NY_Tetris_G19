@@ -103,7 +103,7 @@ public class TopPanel extends JPanel {
         playMusic.setFocusPainted(false);
         playMusic.setFocusable(false);
         playMusic.setActionCommand("gameMusic");
-        music = "src/Ljud/theme1.wav";
+        music = "src/Ljud/audio1.wav";
         musicOff ="on";
         se.setFile(music);
         se.playTheSong();

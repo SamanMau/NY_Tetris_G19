@@ -31,9 +31,9 @@ public class AudioPanel extends JPanel {
         JLabel chooseSong = new JLabel("Choose song!");
         chooseSong.setBounds(200, 10, 80, 40);
 
-        JRadioButton theme1 = new JRadioButton("Theme 1");
-        JRadioButton theme2 = new JRadioButton("Theme 2");
-        JRadioButton theme3 = new JRadioButton("Theme 3");
+        JRadioButton theme1 = new JRadioButton("Audio 1");
+        JRadioButton theme2 = new JRadioButton("Audio 2");
+        JRadioButton theme3 = new JRadioButton("Audio 3");
         JRadioButton defaultSong = new JRadioButton("Default");
 
         theme1.setBounds(200, 50, 80, 35);
@@ -68,14 +68,14 @@ public class AudioPanel extends JPanel {
         theme2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                topPanel.setNewMusic("src/Ljud/theme2.wav");
+                topPanel.setNewMusic("src/Ljud/audio2.wav");
             }
         });
 
         theme3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                topPanel.setNewMusic("src/Ljud/theme3.wav");
+                topPanel.setNewMusic("src/Ljud/audio3.wav");
             }
         });
 
@@ -89,7 +89,7 @@ public class AudioPanel extends JPanel {
         defaultSong.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                topPanel.setNewMusic("src/Ljud/theme1.wav");
+                topPanel.setNewMusic("src/Ljud/audio1.wav");
             }
         });
 
