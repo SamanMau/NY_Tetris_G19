@@ -198,11 +198,11 @@ public class Controller {
                     //Den kontrollerar att blocken inte går utanför spelplanen
                     //Om platsen vi ska gå till innehåller redan block (dvs den är inte null) så fortsätter loopen uppåt
                     board[boardRow][boardCol] = block.getColor();
-
                 }
             }
         }
         collision = true;
+        clearFullRows();
     }
 
 
@@ -246,12 +246,15 @@ public class Controller {
         } else if (action.equals("down") || action.equals("space")) {
 
             do {
-                block.goDown();
+                if(!isCollidingWithBlock()) {
+                    block.goDown();
+                }
             } while (action.equals("space") && !isAtBottom() && !isCollidingWithBlock());
 
             if (isAtBottom() || isCollidingWithBlock()) {
                 block.incrementY(-1);
                 addColorToBoard();
+                clearFullRows();
                 generateBlock();
                 restartGameLogic();
             }
@@ -269,6 +272,37 @@ public class Controller {
         if (!gameState) {
             startTimer(true);
         }
+    }
+
+    public void clearFullRows() {
+        int width = board[0].length;
+        int height = board.length;
+
+        for (int row = height - 1; row >= 0; row--) {
+            boolean fullRow = true;
+
+            for (int col = 0; col < width; col++) {
+                if (board[row][col] == null) {
+                    fullRow = false;
+                    break;
+                }
+            }
+
+            if (fullRow) {
+                for (int r = row; r > 0; r--) {
+                    for (int c = 0; c < width; c++) {
+                        board[r][c] = board[r- 1][c];
+                    }
+                }
+
+                for (int c = 0; c < width; c++) {
+                    board[0][c] = null;
+                }
+
+                row++;
+            }
+        }
+        playfield.repaint();
     }
 
 }
