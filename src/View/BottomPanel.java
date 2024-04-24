@@ -7,15 +7,19 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BottomPanel extends JPanel {
+    private Color color2;
+    private Color color1;
 
     public BottomPanel(){
         this.setPreferredSize(new Dimension(600, 103));
-        this.setBackground(Color.gray);
         createImage();
 
-        this.setVisible(true);
+        setColor(Color.gray, Color.gray);
 
+        this.setVisible(true);
     }
+
+
 
     public void createImage(){
 
@@ -32,5 +36,25 @@ public class BottomPanel extends JPanel {
         } catch (NullPointerException e){
             System.out.println("error");
         }
+    }
+
+    public void setColor(Color color1, Color color2){
+        this.color1 = color1;
+        this.color2 = color2;
+
+        repaint();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g){
+        super.paintComponent(g);
+
+        Graphics2D graphics = (Graphics2D) g;
+
+        GradientPaint gradientPaint = new GradientPaint(0, 0,
+                color2, getWidth(), getHeight(), color1);
+
+        graphics.setPaint(gradientPaint);
+        graphics.fillRect(0, 0, getWidth(), getHeight());
     }
 }

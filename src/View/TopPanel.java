@@ -1,5 +1,6 @@
 /**
  * A panel in the GUI which represents the top panel. It has 3 buttons.
+ * Flowcontrol is used to manage the volume of audio.
  */
 package View;
 
@@ -15,36 +16,101 @@ import java.io.File;
 import java.io.IOException;
 
 public class TopPanel extends JPanel {
-    private JButton startGame = new JButton("Start game");
-    private JButton showHighscore = new JButton("Show highscore");
-    private JButton playMusic = new JButton("Music on");
-    private JButton endGame = new JButton("End game");
-    private Playfield playfield;
-    private JButton settings = new JButton("Settings");
-
+    private JButton startGame;
+    private JButton showHighscore;
+    private JButton playMusic;
+    private JButton endGame;
+    private JButton settings;
+    private LPanel lPanel;
+    private View.RPanel rPanel;
     private boolean gameStarted;
     private Clip clip;
-    private MainFrame mainFrame;
     private Controller controller;
-    private soundEffect se= new soundEffect();
+    private sound se= new sound();
     private String music, musicOff;
+    private FloatControl controlVolume;
+
+    private Playfield playfield;
+    private MainFrame mainFrame;
+    private BottomPanel bottomPanel;
+    private Color color1;
+    private Color color2;
+
+    private float previousAudioVolume = 0;
+    private float currentAudioVolume = 0;
 
     /**
      * Constructor that sets a dimension for the panel and a color.
      * @param playfield used to call the timer method
      * @param mainFrame used to call a method that linkes keys (right, left, up, down, space) to a specific action.
      */
-    public TopPanel(Playfield playfield, MainFrame mainFrame, Controller controller){
+    public TopPanel(View.Playfield playfield, View.LPanel lPanel, RPanel rPanel, BottomPanel bottomPanel, MainFrame mainFrame, Controller controller){
         this.setPreferredSize(new Dimension(600, 100));
         this.setBackground(Color.gray);
+
+        this.bottomPanel = bottomPanel;
+        this.lPanel = lPanel;
+        this.rPanel = rPanel;
 
         this.controller = controller;
         this.mainFrame = mainFrame;
         this.playfield = playfield;
+        setColor(Color.gray, Color.gray);
         CreateBtn();
-        this.setLayout(null);
-        this.setVisible(true);
+        addActionListeners();
 
+        this.setLayout(null);
+
+        this.add(startGame);
+        this.add(showHighscore);
+        this.add(endGame);
+        this.add(playMusic);
+        this.add(settings);
+
+        this.setVisible(true);
+    }
+
+    public void setColor(Color color1, Color color2){
+        this.color1 = color1;
+        this.color2 = color2;
+        rPanel.setColor(color1, color2);
+        bottomPanel.setColor(color1, color2);
+        lPanel.setColor(color1, color2);
+        repaint();
+    }
+
+    public void setNewMusic(String newSong){
+        clip.stop();
+        clip.close();
+        music = newSong;
+
+        if(musicOff.equals("on")){
+            se.setFile(music);
+            se.playMusic();
+        }
+    }
+
+    /**
+     * The paintComponent()- method is responsible for the drawing of the GUI.
+     * "super.paintComponent(g)" is responsible for rendering and painting the background
+     * The parameter "g" in the paintComponent()- method is casted to a Graphics2D object.
+     * Which gives more access to the control of colors. GradientPaint is used to create the
+     * gradient colors. x = 0 and y = 0 are the coordinates of where the colors will start
+     * to gradiate, which is the top left corner. The getWidth and getHeight() methods
+     * decides how far the colors will stretch.
+     * @author Saman
+     */
+    @Override
+    protected void paintComponent(Graphics g){
+        super.paintComponent(g);
+
+        Graphics2D graphics = (Graphics2D) g;
+
+        GradientPaint gradientPaint = new GradientPaint(0, 0,
+                color1, getWidth(), getHeight(), color2);
+
+        graphics.setPaint(gradientPaint);
+        graphics.fillRect(0, 0, getWidth(), getHeight()); //the colors will cover the whole panel
     }
 
     /**
@@ -56,11 +122,56 @@ public class TopPanel extends JPanel {
      * button, and then you will se what I mean :)
      */
     private void CreateBtn(){
+        startGame = new JButton("Start game");
+
+        showHighscore = new JButton("Show highscore");
+
+        playMusic = new JButton("Music on");
+
+        endGame = new JButton("End game");
+
+        settings = new JButton("Settings");
+
         startGame.setBounds(247, 28, 100, 35);
         Color green = new Color(0, 128, 60, 157);
         startGame.setBackground(green);
         startGame.setFocusPainted(false);
         startGame.setFocusable(false);
+
+
+        showHighscore.setBounds(147, 64, 129, 35);
+        Color orange = new Color(167, 112, 50);
+        showHighscore.setBackground(orange);
+        showHighscore.setFocusPainted(false);
+
+        endGame.setBounds(335, 64, 115, 35);
+        Color red = new Color(192, 30, 30);
+        endGame.setBackground(red);
+
+        playMusic.setBounds(0,0,100,35);
+        playMusic.setBackground(Color.WHITE);
+        playMusic.setFocusPainted(false);
+        playMusic.setFocusable(false);
+
+        playMusic.setActionCommand("gameMusic");
+        music = "src/Ljud/audio1.wav";
+        musicOff ="on";
+        se.setFile(music);
+        se.playMusic();
+
+        settings.setBounds(500, 0, 100, 35);
+        settings.setBackground(Color.WHITE);
+        settings.setFocusable(false);
+
+    }
+
+    public void addActionListeners(){
+        settings.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SettingsFrame settingsFrame = new SettingsFrame(controller, mainFrame, TopPanel.this);
+            }
+        });
 
         startGame.addActionListener(new ActionListener() {
             @Override
@@ -71,19 +182,12 @@ public class TopPanel extends JPanel {
             }
         });
 
-        this.add(startGame);
-
-        showHighscore.setBounds(147, 64, 129, 35);
-        Color orange = new Color(167, 112, 50);
-        showHighscore.setBackground(orange);
-        showHighscore.setFocusPainted(false);
-
-        this.add(showHighscore);
-
-        endGame.setBounds(335, 64, 115, 35);
-        Color red = new Color(192, 30, 30);
-        endGame.setBackground(red);
-        //  avslutaSpel.setFocusPainted(false);
+        playMusic.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                checkIfPlay(musicOff);
+            }
+        });
 
         endGame.addActionListener(new ActionListener() {
             @Override
@@ -96,45 +200,12 @@ public class TopPanel extends JPanel {
                 }
             }
         });
-        this.add(endGame);
-
-        playMusic.setBounds(0,0,100,35);
-        playMusic.setBackground(Color.WHITE);
-        playMusic.setFocusPainted(false);
-        playMusic.setFocusable(false);
-        playMusic.setActionCommand("gameMusic");
-        music = "src/Ljud/audio1.wav";
-        musicOff ="on";
-        se.setFile(music);
-        se.playTheSong();
-
-        playMusic.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                checkIfPlay(musicOff);
-            }
-        });
-        this.add(playMusic);
-
-        settings.setBounds(500, 0, 100, 35);
-        settings.setBackground(Color.WHITE);
-        settings.setFocusable(false);
-
-        settings.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SettingsFrame settingsFrame = new SettingsFrame(controller, mainFrame, TopPanel.this);
-            }
-        });
-
-
-        this.add(settings);
     }
 
     public void checkIfPlay(String musicOff){
         if (musicOff.equals("off")) {
             se.setFile(music);
-            se.playTheSong();
+            se.playMusic();
             this.musicOff = "on";
             playMusic.setText("Music on");
         }
@@ -146,27 +217,43 @@ public class TopPanel extends JPanel {
         }
     }
 
-    public void setNewMusic(String newSong){
-        clip.stop();
-        clip.close();
-        music = newSong;
+    public void incrementVolume() {
+        currentAudioVolume += 3.0f; //"f" står för float
 
-        if(musicOff.equals("on")){
-            se.setFile(music);
-            se.playTheSong();
+        if(currentAudioVolume > 6.0f){
+            currentAudioVolume = 6.0f;
         }
 
+        controlVolume.setValue(currentAudioVolume);
     }
 
-    public class soundEffect{
+    /**
+     * This method is used to lower the volume of music.
+     * The lowest volume that a floatControl can manage is
+     * -80, of type float.
+     * @author Saman
+     */
+    public void decrementVolume() {
+        currentAudioVolume -= 3.0f; //"f" står för float
+
+        if(currentAudioVolume < -80.f){
+            currentAudioVolume = -80.f;
+        }
+
+        controlVolume.setValue(currentAudioVolume);
+    }
+
+    public class sound {
         File file;
-        AudioInputStream sound;
+        AudioInputStream audioInputStream;
         public void setFile(String SoundFileName) {
             try {
                 file = new File(SoundFileName);
-                sound = AudioSystem.getAudioInputStream(file);
+                audioInputStream = AudioSystem.getAudioInputStream(file);
                 clip = AudioSystem.getClip();
-                clip.open(sound);
+                clip.open(audioInputStream);
+                controlVolume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+
             } catch (UnsupportedAudioFileException e) {
                 throw new RuntimeException(e);
             } catch (LineUnavailableException e) {
@@ -175,13 +262,9 @@ public class TopPanel extends JPanel {
                 throw new RuntimeException(e);
             }
         }
-        public void playTheSong(){
+
+        public void playMusic(){
             clip.start();
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-
-        }
-
-        public void loop(){
             clip.loop(Clip.LOOP_CONTINUOUSLY);
         }
 
@@ -190,6 +273,5 @@ public class TopPanel extends JPanel {
             clip.close();
         }
     }
-
 
 }

@@ -1,7 +1,8 @@
-package View.Settings;
+package Settings;
 
 import Control.Controller;
 import View.MainFrame;
+import View.Settings.SettingsFrame;
 
 import javax.swing.*;
 import java.awt.*;
