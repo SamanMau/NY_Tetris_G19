@@ -80,7 +80,7 @@ public class Controller {
                     } else {
                         boolean checkBlockInPlayfield = checkBlockOutOfPlayfield();
                         if (checkBlockInPlayfield) {
-                            if (isAtBottom() || isCollidingWithBlock()) {
+                            if (isAtBottom() || isCollidingWithBlock(0)) {
                                 addColorToBoard();
                             } else {
                                 block.incrementY();
@@ -128,9 +128,9 @@ public class Controller {
         return (block.getY() + block.getShape().length) * kvadrat >= board.length * kvadrat;
     }
 
-    private boolean isCollidingWithBlock() {
-        int y = block.getY(); // Get the Y-coordinate of the block's position on the board
-        int x = block.getX(); // Get the X-coordinate of the block's position on the board
+    private boolean isCollidingWithBlock(int xIncrement) {
+        int y = block.getY() +1; // Get the Y-coordinate of the block's position on the board
+        int x = block.getX() + xIncrement; // Get the X-coordinate of the block's position on the board
         int[][] shape = block.getShape(); // Get the shape of the block
 
         // Loop through each cell of the block shape
@@ -147,7 +147,8 @@ public class Controller {
                     // finns minst en rad kvar under den aktuella raden på spelplanen
                     // board[boardRow + 1][boardCol] != null, kontrollera om det finns block i nästa rad under det aktuella blocket
                     // Om både villkoren uppfylls returnerar true, alltså att det finns collision annars false
-                    if (boardRow + 1 < board.length && board[boardRow + 1][boardCol] != null) {
+                    //if (boardRow + 1 < board.length && board[boardRow + 1][boardCol] != null) {
+                    if (boardCol < board.length && board[boardRow][boardCol] != null) {
                         return true;
                     }
                 }
@@ -198,11 +199,11 @@ public class Controller {
                     //Den kontrollerar att blocken inte går utanför spelplanen
                     //Om platsen vi ska gå till innehåller redan block (dvs den är inte null) så fortsätter loopen uppåt
                     board[boardRow][boardCol] = block.getColor();
-
                 }
             }
         }
         collision = true;
+        clearFullRows();
     }
 
 
@@ -234,41 +235,82 @@ public class Controller {
     public void decideMove(String action) {
 
         if (action.equals("left")) {
-            if ((block.getX() == 0) || isAtBottom() || isCollidingWithBlock()) {
+            if ((block.getX() == 0) || isAtBottom() || isCollidingWithBlock(-1)) {
                 return;
             }
             block.goLeft();
         } else if (action.equals("right")) {
-            if ((block.getX() + block.getShape()[0].length >= column) || isAtBottom() || isCollidingWithBlock()) {
+            if ((block.getX() + block.getShape()[0].length >= column) || isAtBottom() || isCollidingWithBlock(1)) {
                 return;
             }
             block.goRight();
         } else if (action.equals("down") || action.equals("space")) {
 
             do {
-                block.goDown();
-            } while (action.equals("space") && !isAtBottom() && !isCollidingWithBlock());
+                if(!isCollidingWithBlock(0)) {
+                    block.goDown();
+                }
+            } while (action.equals("space") && !isAtBottom() && !isCollidingWithBlock(0));
 
-            if (isAtBottom() || isCollidingWithBlock()) {
+            if (isAtBottom() || isCollidingWithBlock(0)) {
                 block.incrementY(-1);
                 addColorToBoard();
+                clearFullRows();
                 generateBlock();
                 restartGameLogic();
             }
 
         } else if (action.equals("up")) {
-            if (!isCollidingWithBlock() && !isAtBottom()) {
+            if (!isCollidingWithBlock(0) && !isAtBottom()) {
                 block.rotationBlock();
             }
         }
         playfield.repaint();
     }
 
+
     private void restartGameLogic() {
         collision = false;
         if (!gameState) {
             startTimer(true);
         }
+    }
+
+    public void clearFullRows() {
+        int width = board[0].length;
+        int height = board.length;
+
+        //loop som kollar ifall någon rad är fylld.
+        for (int row = height - 1; row >= 0; row--) {
+            boolean fullRow = true;
+
+            //inre loop går igenom varje column i en specefik rad för
+            // att se om alla columner är fyllda.
+            for (int col = 0; col < width; col++) {
+                if (board[row][col] == null) {
+                    fullRow = false;
+                    break;
+                }
+            }
+
+            //om true, en loop som raderar raden och flyttar ovanstående ner.
+            // "r" = varje kolumn i specefik rad får värdet av kolumnen från raden ovanför.
+            if (fullRow) {
+                for (int r = row; r > 0; r--) {
+                    for (int c = 0; c < width; c++) {
+                        board[r][c] = board[r- 1][c];
+                    }
+                }
+
+                //Columner i övra raden blir null
+                for (int c = 0; c < width; c++) {
+                    board[0][c] = null;
+                }
+
+                row++;
+            }
+        }
+        playfield.repaint();
     }
 
 }
