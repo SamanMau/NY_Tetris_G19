@@ -112,6 +112,7 @@ public class Controller {
         }
         if (blockHeight + rowWithColor > board.length) {
             System.out.println("You lost");
+            resetColorBoard();
             return false;
         } else {
             return true;
@@ -257,7 +258,7 @@ public class Controller {
                 addColorToBoard();
                 clearFullRows();
                 generateBlock();
-                restartGameLogic();
+                collision = false;
             }
 
         } else if (action.equals("up")) {
@@ -309,6 +310,17 @@ public class Controller {
                 row++;
             }
         }
+        playfield.repaint();
+    }
+
+    public void resetColorBoard(){
+        for (int row = 0; row < board.length; row++) {
+            for (int col = 0; col < board[0].length; col++) {
+                board[row][col] = null;
+            }
+        }
+        gameState = false;
+        this.speed.stop();
         playfield.repaint();
     }
 
