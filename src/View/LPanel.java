@@ -7,14 +7,25 @@ import javax.swing.*;
 import java.awt.*;
 
 public class LPanel extends JPanel {
-    JLabel poangText = new JLabel();
-    JLabel levelText = new JLabel();
+    JLabel poangText;
+    JLabel levelText;
+    private Color color1;
+    private Color color2;
+
     public LPanel(){
         this.setPreferredSize(new Dimension(150, 300));
-        this.setBackground(Color.gray);
+        poangText = new JLabel();
+        levelText = new JLabel();
         createPointCounter(0);
         createLevelCounter(1);
+        setColor(Color.gray, Color.gray);
         this.setVisible(true);
+    }
+
+    public void setColor(Color color1, Color color2){
+        this.color1 = color1;
+        this.color2 = color2;
+        repaint();
     }
 
     /**
@@ -39,4 +50,21 @@ public class LPanel extends JPanel {
         this.add(Box.createVerticalStrut(50));
         this.add(levelText);
     }
+
+
+
+    @Override
+    protected void paintComponent(Graphics g){
+        super.paintComponent(g);
+
+        Graphics2D graphics = (Graphics2D) g;
+
+        GradientPaint gradientPaint = new GradientPaint(0, 0,
+                color1, getWidth(), getHeight(), color2);
+
+        graphics.setPaint(gradientPaint);
+        graphics.fillRect(0, 0, getWidth(), getHeight());
+    }
+
+
 }

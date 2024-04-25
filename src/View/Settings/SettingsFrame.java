@@ -1,6 +1,9 @@
 package View.Settings;
 
 import Control.Controller;
+import Settings.AudioPanel;
+import Settings.KeyboardPanel;
+import Settings.ThemePanel;
 import View.MainFrame;
 import View.TopPanel;
 
@@ -10,6 +13,7 @@ public class SettingsFrame extends JFrame {
     private Controller controller;
     private MainFrame mainFrame;
     private TopPanel topPanel;
+    private JTabbedPane tab;
 
     public SettingsFrame(Controller controller, MainFrame mainFrame, TopPanel topPanel){
         super("Settings");
@@ -17,22 +21,26 @@ public class SettingsFrame extends JFrame {
         this.mainFrame = mainFrame;
         this.topPanel = topPanel;
         this.setSize(500, 500);
+        this.setResizable(false);
 
         createTabs();
+        this.add(tab);
+
 
         this.setVisible(true);
     }
 
     public void createTabs(){
-        JTabbedPane tab = new JTabbedPane();
+        tab = new JTabbedPane();
 
         AudioPanel audioPanel = new AudioPanel(controller, mainFrame, this, topPanel);
 
         KeyboardPanel keyboardPanel = new KeyboardPanel(controller, mainFrame, this);
 
+        ThemePanel themePanel = new ThemePanel(controller, mainFrame, topPanel);
+
         tab.addTab("Audio", audioPanel);
         tab.addTab("Controls", keyboardPanel);
-
-        this.add(tab);
+        tab.addTab("Theme", themePanel);
     }
 }
