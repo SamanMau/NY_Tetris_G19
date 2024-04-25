@@ -292,7 +292,6 @@ public class Controller {
                     break;
                 }
             }
-
             //om true, en loop som raderar raden och flyttar ovanstående ner.
             // "r" = varje kolumn i specefik rad får värdet av kolumnen från raden ovanför.
             if (fullRow) {
