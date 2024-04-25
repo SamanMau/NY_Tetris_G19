@@ -143,10 +143,13 @@ public class TopPanel extends JPanel {
         Color orange = new Color(167, 112, 50);
         showHighscore.setBackground(orange);
         showHighscore.setFocusPainted(false);
+        showHighscore.setFocusable(false);
 
         endGame.setBounds(335, 64, 115, 35);
         Color red = new Color(192, 30, 30);
         endGame.setBackground(red);
+        endGame.setFocusPainted(false);
+        endGame.setFocusable(false);
 
         playMusic.setBounds(0,0,100,35);
         playMusic.setBackground(Color.WHITE);
