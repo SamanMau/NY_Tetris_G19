@@ -59,8 +59,6 @@ public class MainFrame extends JFrame{
      * while "actionMapKey" is the identifier.
      */
     public void createKeys(String left, String right, String up, String down, String space){
-        InputMap key;
-
         key = this.getRootPane().getInputMap();
         action = this.getRootPane().getActionMap();
 
@@ -122,4 +120,5 @@ public class MainFrame extends JFrame{
     public void sendFileToTopPanel(String file){
             topPanel.setNewMusic(file);
     }
+
 }
