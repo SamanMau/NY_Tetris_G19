@@ -59,9 +59,7 @@ public class MainFrame extends JFrame{
      * while "actionMapKey" is the identifier.
      */
     public void createKeys(String left, String right, String up, String down, String space){
-        InputMap key;
-
-        key = this.getRootPane().getInputMap();
+        this.key = this.getRootPane().getInputMap();
         action = this.getRootPane().getActionMap();
 
         key.put(KeyStroke.getKeyStroke(left), "leftKey");
@@ -117,6 +115,10 @@ public class MainFrame extends JFrame{
                 }
             });
         }
+    }
+
+    public void disableKeyboard(String key) {
+        action.remove(key);
     }
 
     public void sendFileToTopPanel(String file){

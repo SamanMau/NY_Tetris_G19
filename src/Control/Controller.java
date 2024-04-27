@@ -320,8 +320,17 @@ public class Controller {
             }
         }
         gameState = false;
+        disableKeyboard();
         this.speed.stop();
         playfield.repaint();
+    }
+
+    public void disableKeyboard(){
+        mainFrame.disableKeyboard("leftKey");
+        mainFrame.disableKeyboard("rightKey");
+        mainFrame.disableKeyboard("upKey");
+        mainFrame.disableKeyboard("downKey");
+        mainFrame.disableKeyboard("spaceKey");
     }
 
 }
