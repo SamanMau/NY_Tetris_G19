@@ -29,7 +29,6 @@ public class Playfield extends JPanel{
         this.setVisible(true);
         this.controller = controller;
         getBlock();
-        getBoard();
     }
 
     /**
@@ -51,6 +50,7 @@ public class Playfield extends JPanel{
      *
      * @param g The Graphics g used for rendering.
      */
+
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -70,19 +70,20 @@ public class Playfield extends JPanel{
         */
         for(int width = 0; width < column; width++){
             for(int height = 0; height < row; height++){
+                //Draw block that has collided with other block or bottom of playfield
                 if (board[height][width] != null) {
                     g.setColor(board[height][width]);
                     g.fillRect(width * kvadrat, height * kvadrat, kvadrat, kvadrat);
                     g.setColor(Color.BLACK);
                     g.drawRect(width * kvadrat, height * kvadrat, kvadrat, kvadrat);
                 }
+                //Draw playfield grid
                 else {
                     g.setColor(Color.gray);
                     g.drawRect(width * kvadrat, height * kvadrat, kvadrat, kvadrat);
                 }
             }
         }
-
         drawBlock(g);
     }
 

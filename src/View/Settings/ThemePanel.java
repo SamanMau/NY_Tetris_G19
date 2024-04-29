@@ -1,6 +1,6 @@
-package Settings;
+package View.Settings;
 
-import Information.InformationFrame;
+import View.Information.*;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package Settings;
+package View.Settings;
 
 import Control.Controller;
 import View.MainFrame;
@@ -122,8 +122,7 @@ public class AudioPanel extends JPanel {
 
     public void setUpPicture(){
         ImageIcon image = new ImageIcon("src/Bilder/musicVolume.png");
-        Image oldSize = image.getImage();
-        Image changedSize = oldSize.getScaledInstance(40, 40, Image.SCALE_AREA_AVERAGING);
+        Image changedSize = image.getImage().getScaledInstance(40, 40, Image.SCALE_AREA_AVERAGING);
         ImageIcon newSize = new ImageIcon(changedSize);
 
         JLabel label = new JLabel(newSize);

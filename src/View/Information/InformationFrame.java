@@ -1,4 +1,4 @@
-package Information;
+package View.Information;
 
 import javax.swing.*;
 

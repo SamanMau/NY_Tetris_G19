@@ -51,8 +51,6 @@ public class LPanel extends JPanel {
         this.add(levelText);
     }
 
-
-
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);

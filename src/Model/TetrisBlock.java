@@ -11,8 +11,6 @@ public class TetrisBlock  {
     private Color color;
     private int x; // is used to determine where in the game plan the tetris block is going to move in the x coordinate.
     private int y; // is used to determine where in the game plan the tetris block is going to move in the y coordinate.
-    private int rotateNum;
-    int[][] tempBlock;
 
     /**
      * Constructor used to create objects of a tetris block.
@@ -63,11 +61,6 @@ public class TetrisBlock  {
         return y;
     }
 
-    public void resetCoordinate(){
-        this.x = 4;
-        this.y = -2;
-    }
-
     public void goRight(){
         x++;
     }
@@ -80,13 +73,6 @@ public class TetrisBlock  {
         y++;
     }
 
-    public int checkLeft(){
-        return x;
-    }
-
-    public int checkRight(){
-        return x;
-    }
 
     public void incrementY(int i) {
     }
@@ -98,84 +84,34 @@ public class TetrisBlock  {
 
     //Rotate block
     public void rotationBlock() {
-        if(rotateNum == 2){
-            tempBlock = rotate2();
-        }
-        else{
-            tempBlock = rotate1();
-        }
-        this.shape = tempBlock;
+        this.shape = rotate();
     }
 
-    public int[][] rotate1(){
-        int[][] tempBlock = new int[shape[0].length][shape.length];
-        //Save the currentBlock to a tempBlock array
-        for(int col = 0; col < shape[0].length ; col++){
-            for(int row = 0; row < shape.length; row++){
-                tempBlock[col][row] = shape[row][col];
-            }
-        }
-        if(tempBlock[0].length > tempBlock.length){
-            //Flip tempBlock
-            for(int row = 0; row < tempBlock.length-1; row++){
-                for(int col = 0; col < tempBlock[0].length; col++){
-                    int temp = tempBlock[row][col];
-                    tempBlock[row][col] = tempBlock[tempBlock.length - 1][col];
-                    tempBlock[tempBlock.length - 1][col] = temp;
+    public int[][] rotate(){
+        int[][] tempShape = new int[shape[0].length][shape.length];
+        int tempShapeRow = 0;
+        int tempShapeCol = 0;
+
+        for(int col = 0; col < shape[0].length; col++){
+            for (int row = shape.length-1; row >= 0; row--) {
+                tempShape[tempShapeRow][tempShapeCol] = shape[row][col];
+                if (tempShapeCol < shape.length){
+                    tempShapeCol++;
                 }
             }
+            tempShapeRow++;
+            tempShapeCol = 0;
         }
+
         if(getX() + getShape().length  <= 10){
-            return tempBlock;
+            return tempShape;
         }
         else {
             int decrementTimes = getX() + getShape().length - 10;
             for (int i = 0; i < decrementTimes; i++){
                 decrementX();
             }
-            return tempBlock;
+            return tempShape;
         }
-
-    }
-    public int[][] rotate2(){
-        int[][] tempBlock = new int[shape[0].length][shape.length];
-        //Save the currentBlock to a tempBlock array
-        for(int col = 0; col < shape[0].length ; col++){
-            for(int row = 0; row < shape.length; row++){
-                tempBlock[col][row] = shape[row][col];
-            }
-        }
-        for(int row = 0; row < tempBlock.length; row++){
-            for(int col = 0; col < tempBlock[0].length; col++){
-                if(col == 1){
-                    continue;
-                }
-                int temp = tempBlock[row][col];
-                tempBlock[row][col] = tempBlock[row][tempBlock[0].length-1];
-                tempBlock[row][tempBlock[0].length-1] = temp;
-            }
-        }
-        if(getX() + getShape().length  <= 10){
-            return tempBlock;
-        }
-        else{
-            int decrementTimes = getX() + getShape().length - 10;
-            for (int i = 0; i < decrementTimes; i++){
-                decrementX();
-            }
-            return tempBlock;
-        }
-    }
-
-    public int getRotateNum(){
-        if(shape.length > shape[0].length){
-            return 2;
-        }
-        return 0;
-    }
-
-
-    public void rotateBlock() {
-        //TODO rotate here
     }
 }
