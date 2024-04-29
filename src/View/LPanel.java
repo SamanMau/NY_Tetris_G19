@@ -47,6 +47,7 @@ public class LPanel extends JPanel {
     public void createLevelCounter(int level){
         levelText.setText("Level: " + level);
         levelText.setFont(new Font("Calibri", Font.BOLD, 20));
+        this.add(Box.createVerticalStrut(50));
         this.add(levelText);
     }
 
