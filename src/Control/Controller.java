@@ -6,6 +6,7 @@ package Control;
 import Model.IncorrectFormatException;
 import Model.ListOfBlocks;
 import Model.TetrisBlock;
+import View.LPanel;
 import View.MainFrame;
 import View.Playfield;
 
@@ -27,6 +28,7 @@ public class Controller {
     private int kvadrat = 30;
     private final int column = 10;
     private final int row = 20;
+    private int seconds;
     private Random rd = new Random();
     private int randomNum = rd.nextInt(7); // 7
     private Color[][] board = new Color[20][10];
@@ -35,6 +37,8 @@ public class Controller {
     private boolean gameState = false;
     private Playfield playfield;
     private MainFrame mainFrame;
+    // private ArrayList<Integer> scores = new ArrayList<>();
+
 
     public Controller() {
         this.playfield = new Playfield(this);
@@ -66,11 +70,16 @@ public class Controller {
         }
     }
 
-    public void startTimer(boolean gameState) {
+    public int getCurrentSpeed(){
+        return seconds;
+    }
+
+    public void startTimer(boolean gameState, int time) {
         this.gameState = gameState;
+        this.seconds = time;
 
         if (gameState) {
-            this.speed = new Timer(400, new ActionListener() {
+            this.speed = new Timer(seconds, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (collision) {
@@ -130,7 +139,7 @@ public class Controller {
     }
 
     private boolean isCollidingWithBlock(int xIncrement) {
-        int y = block.getY() +1; // Get the Y-coordinate of the block's position on the board
+        int y = block.getY() + 1; // Get the Y-coordinate of the block's position on the board
         int x = block.getX() + xIncrement; // Get the X-coordinate of the block's position on the board
         int[][] shape = block.getShape(); // Get the shape of the block
 
@@ -165,8 +174,8 @@ public class Controller {
      */
     public void generateBlock() {
         randomNum = rd.nextInt(7);
-        int[][] shape = listOfShape.get(randomNum);
-        Color color = listOfColors.get(randomNum);
+        int[][] shape = listOfShape.get(4);
+        Color color = listOfColors.get(4);
         block = new TetrisBlock(shape, color);
     }
 
@@ -248,7 +257,7 @@ public class Controller {
         } else if (action.equals("down") || action.equals("space")) {
 
             do {
-                if(!isCollidingWithBlock(0)) {
+                if (!isCollidingWithBlock(0)) {
                     block.goDown();
                 }
             } while (action.equals("space") && !isAtBottom() && !isCollidingWithBlock(0));
@@ -270,16 +279,18 @@ public class Controller {
     }
 
 
-    private void restartGameLogic() {
+  /*  private void restartGameLogic() {
         collision = false;
         if (!gameState) {
             startTimer(true);
         }
-    }
+    } */
 
     public void clearFullRows() {
         int width = board[0].length;
         int height = board.length;
+        int pointsEarned = 0;
+        int rowsCleared = 0;
 
         //loop som kollar ifall någon rad är fylld.
         for (int row = height - 1; row >= 0; row--) {
@@ -296,6 +307,8 @@ public class Controller {
             //om true, en loop som raderar raden och flyttar ovanstående ner.
             // "r" = varje kolumn i specefik rad får värdet av kolumnen från raden ovanför.
             if (fullRow) {
+              //  int width = board[0].length;
+                //  int height = board.length;
                 for (int r = row; r > 0; r--) {
                     for (int c = 0; c < width; c++) {
                         board[r][c] = board[r- 1][c];
@@ -306,13 +319,40 @@ public class Controller {
                 for (int c = 0; c < width; c++) {
                     board[0][c] = null;
                 }
-
+                rowsCleared++;
+               // clearRow(row);
                 row++;
             }
+
         }
+
+        pointsEarned = calculatePointsForRowClear(rowsCleared);
+        mainFrame.incrementPoints(pointsEarned);
         playfield.repaint();
     }
 
+    private int calculatePointsForRowClear(int rowsCleared) {
+        int pointsEarned = 0;
+
+        switch (rowsCleared) {
+            case 1:
+                pointsEarned = 100;
+                break;
+            case 2:
+                pointsEarned = 300;
+                break;
+            case 3:
+                pointsEarned = 500;
+                break;
+            case 4:
+                pointsEarned = 800;
+                break;
+            default:
+                break;
+        }
+        return pointsEarned;
+    }
+    
     public void resetColorBoard(){
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[0].length; col++) {

@@ -12,7 +12,6 @@ package View;
 
 import Control.Controller;
 
-import javax.naming.ldap.Control;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -34,7 +33,7 @@ public class MainFrame extends JFrame{
         this.controller = controller;
         this.setSize(width, height);
         this.playfield = playfield;
-        lPanel = new View.LPanel();
+        lPanel = new View.LPanel(controller);
         rPanel = new View.RPanel();
         bottomPanel = new View.BottomPanel();
         topPanel = new View.TopPanel(playfield, lPanel, rPanel, bottomPanel, this, controller);
@@ -124,4 +123,9 @@ public class MainFrame extends JFrame{
     public void sendFileToTopPanel(String file){
             topPanel.setNewMusic(file);
     }
+
+    public void incrementPoints(int points){
+        lPanel.updateScore(points);
+    }
+
 }

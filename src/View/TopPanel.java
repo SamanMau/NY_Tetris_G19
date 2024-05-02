@@ -180,7 +180,7 @@ public class TopPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mainFrame.linkKeyToEvent(true);
-                controller.startTimer(true);
+                controller.startTimer(true, 400);
                 gameStarted = true;
             }
         });
@@ -275,6 +275,6 @@ public class TopPanel extends JPanel {
             clip.stop();
             clip.close();
         }
-    }
 
+        }
 }
