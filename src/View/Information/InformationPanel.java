@@ -1,4 +1,4 @@
-package Information;
+package View.Information;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,7 +7,6 @@ public class InformationPanel extends JPanel {
     private Color color;
     private JTextArea textArea;
     private String choice;
-
 
     public InformationPanel(String choice){
         this.setBounds(0, 0, 300, 300);
@@ -38,7 +37,7 @@ public class InformationPanel extends JPanel {
                     "accompanies the " + "party theme matches well \nwith the colors.");
         }
 
-        if(choice.equals("Wild west info")){
+        else if(choice.equals("Wild west info")){
             textArea.setText("The wild west theme lets you play tetris like \n" +
                     "a real cowboy! With its old and vibrant colors, \n" +
                     "you are guaranteed to feel like a cowboy in the \n" +
@@ -47,6 +46,5 @@ public class InformationPanel extends JPanel {
                     "associated with the wild west.\n" +
                     "Buckle up, and play Tetris!" );
         }
-
     }
 }

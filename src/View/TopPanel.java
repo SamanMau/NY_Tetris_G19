@@ -221,10 +221,11 @@ public class TopPanel extends JPanel {
     }
 
     public void incrementVolume() {
-        currentAudioVolume += 3.0f; //"f" står för float
-
         if(currentAudioVolume > 6.0f){
             currentAudioVolume = 6.0f;
+        }
+        else{
+            currentAudioVolume += 3.0f; //"f" står för float
         }
 
         controlVolume.setValue(currentAudioVolume);

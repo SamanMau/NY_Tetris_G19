@@ -7,11 +7,13 @@ package Model;
 import java.awt.*;
 import java.util.*;
 /**
- * This class manage a list of blocks for a game.
+ * This class manage a list of blocks for the game.
  * Each block is represented by a 2D array of integers where 1 represents a block cell and 0 represents an empty cell.
  * This class also manages a list of colors related to each block.
  */
-public class ListOfBlocks  {
+
+
+public class BlocksManager {
     private int[][] tBlock;
     private int[][] lBlock;
     private int[][] zBlock;
@@ -26,7 +28,7 @@ public class ListOfBlocks  {
      * Create blocks and add them to the list.
      * Also create the list of colors.
      */
-    public ListOfBlocks(){
+    public BlocksManager(){
         createBlock();
         listOfBlocks = new ArrayList<>();
         this.listOfColors = new ArrayList<>();

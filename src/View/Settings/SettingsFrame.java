@@ -1,9 +1,8 @@
 package View.Settings;
 
 import Control.Controller;
-import Settings.AudioPanel;
+import View.Settings.*;
 import Settings.KeyboardPanel;
-import Settings.ThemePanel;
 import View.MainFrame;
 import View.TopPanel;
 

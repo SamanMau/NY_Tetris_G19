@@ -4,7 +4,7 @@
 package Control;
 
 import Model.IncorrectFormatException;
-import Model.ListOfBlocks;
+import Model.BlocksManager;
 import Model.TetrisBlock;
 import View.LPanel;
 import View.MainFrame;
@@ -17,11 +17,9 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
-//committar
+
 public class Controller {
-    //halloj vi testar!
-    //test
-    private ListOfBlocks listOfBlocksObj;
+    private BlocksManager blocksManager;
     private ArrayList<int[][]> listOfShape;
     private ArrayList<Color> listOfColors;
     private TetrisBlock block;
@@ -30,7 +28,7 @@ public class Controller {
     private final int row = 20;
     private int seconds;
     private Random rd = new Random();
-    private int randomNum = rd.nextInt(7); // 7
+    private int randomNum = rd.nextInt(7);
     private Color[][] board = new Color[20][10];
     private Timer speed;
     private boolean collision;
@@ -43,9 +41,9 @@ public class Controller {
     public Controller() {
         this.playfield = new Playfield(this);
         mainFrame = new MainFrame(this, playfield);
-        listOfBlocksObj = new ListOfBlocks();
-        this.listOfShape = listOfBlocksObj.getBlockList();
-        this.listOfColors = listOfBlocksObj.getListOfColors();
+        blocksManager = new BlocksManager();
+        this.listOfShape = blocksManager.getBlockList();
+        this.listOfColors = blocksManager.getListOfColors();
         generateBlock();
         collision = false;
     }
@@ -87,8 +85,8 @@ public class Controller {
                         generateBlock();
                         collision = false;
                     } else {
-                        boolean checkBlockInPlayfield = checkBlockOutOfPlayfield();
-                        if (checkBlockInPlayfield) {
+                        boolean checkBlockOutOfPlayfield = checkBlockOutOfPlayfield();
+                        if (!checkBlockOutOfPlayfield) {
                             if (isAtBottom() || isCollidingWithBlock(0)) {
                                 addColorToBoard();
                             } else {
@@ -105,9 +103,6 @@ public class Controller {
         }
     }
 
-
-    //ttest
-
     private boolean checkBlockOutOfPlayfield() {
         int blockHeight = block.getHeight();
         int rowWithColor = 0;
@@ -119,19 +114,19 @@ public class Controller {
                 }
             }
         }
-        if (blockHeight + rowWithColor > board.length) {
+            if (blockHeight + rowWithColor > board.length) {
             System.out.println("You lost");
             resetColorBoard();
-            return false;
-        } else {
             return true;
+        } else {
+            return false;
         }
     }
 
     //Den här metoden kontrollerar ifall det aktuella blocket har nått botten av spelplanen
     private boolean isAtBottom() {
         // block getY(),  hämtar den aktuella y-posisionen för det aktuella blocket på spelplanen
-        //  block.getShape().length, Hämtar höjden på det aktuella blocket på spelplanen
+        // block.getShape().length, Hämtar höjden på det aktuella blocket på spelplanen
         //Först beräknas den potentiella positionen för botten av blocket
         //Sedan jämförs den beräknade position med längden av spelplanen
         //Om position är större eller lika med längeden på spelplan, innebär att blocket har nått botten eller passerat botten av spelplan
@@ -201,11 +196,13 @@ public class Controller {
         // Loop through each cell of the block shape
         for (int row = 0; row < shape.length; row++) {
             for (int col = 0; col < shape[0].length; col++) {
+
                 /*If the cell of the block at row and col contain 1,
                  set the board at Y-coordinate and X-coordinate to the color of the block*/
                 if (shape[row][col] == 1) {
                     int boardRow = y + row;
                     int boardCol = x + col;
+
                     //Den kontrollerar att blocken inte går utanför spelplanen
                     //Om platsen vi ska gå till innehåller redan block (dvs den är inte null) så fortsätter loopen uppåt
                     board[boardRow][boardCol] = block.getColor();
@@ -216,9 +213,6 @@ public class Controller {
         clearFullRows();
     }
 
-
-     /*TODO: To make the block stay on each other, everytime when the color add to the board check
-                if that board coordinate contain a color. If it does put the block one column above the previous one.*/
 
     /**
      * Return a game board.
@@ -243,7 +237,6 @@ public class Controller {
      * @param action represents what key has been pressed.
      */
     public void decideMove(String action) {
-
         if (action.equals("left")) {
             if ((block.getX() == 0) || isAtBottom() || isCollidingWithBlock(-1)) {
                 return;
@@ -361,7 +354,7 @@ public class Controller {
         }
         gameState = false;
         disableKeyboard();
-        this.speed.stop();
+        stopTimer();
         playfield.repaint();
     }
 
