@@ -35,11 +35,12 @@ public class AudioPanel extends JPanel {
     private JLabel changeAudioText;
     private JButton higher;
     private JButton lower;
+    private Color color1;
+    private Color color2;
 
     public AudioPanel(Controller controller, MainFrame mainFrame, SettingsFrame settingsFrame,
                       TopPanel topPanel){
         this.setBounds(100, 100, 100, 100);
-        this.setBackground(Color.ORANGE);
         this.setLayout(null);
 
         this.controller = controller;
@@ -87,34 +88,34 @@ public class AudioPanel extends JPanel {
         defaultSong = new JRadioButton("Default");
 
         theme1.setBounds(200, 50, 80, 35);
-        theme1.setBackground(Color.LIGHT_GRAY);
+        theme1.setBackground(Color.WHITE);
 
         theme2.setBounds(200, 90, 80, 35);
-        theme2.setBackground(Color.LIGHT_GRAY);
+        theme2.setBackground(Color.WHITE);
 
         theme3.setBounds(200, 130, 80, 35);
-        theme3.setBackground(Color.LIGHT_GRAY);
+        theme3.setBackground(Color.WHITE);
 
         defaultSong.setBounds(200, 170, 80, 35);
-        defaultSong.setBackground(Color.LIGHT_GRAY);
+        defaultSong.setBackground(Color.WHITE);
 
         chooseOwnText = new JLabel("Or choose your own");
         chooseOwnText.setBounds(185, 210, 150, 40);
 
         chooseOwnSongBtn = new JButton("Choose own song");
         chooseOwnSongBtn.setBounds(170, 250, 160, 40);
-        chooseOwnSongBtn.setBackground(Color.lightGray);
+        chooseOwnSongBtn.setBackground(Color.WHITE);
 
         information = new JLabel("The chosen file needs to be a .wav file");
         information.setBounds(120, 290, 300, 40);
 
         higher = new JButton("+");
         higher.setBounds(260, 380, 50, 30);
-        higher.setBackground(Color.lightGray);
+        higher.setBackground(Color.WHITE);
 
         lower = new JButton("-");
         lower.setBounds(160, 380, 50, 30);
-        lower.setBackground(Color.lightGray);
+        lower.setBackground(Color.WHITE);
 
         changeAudioText = new JLabel("Change volume of audio");
         changeAudioText.setBounds(160, 340, 280, 40);
@@ -152,6 +153,43 @@ public class AudioPanel extends JPanel {
 
         label.setBounds(210, 370, 50, 50);
         this.add(label);
+    }
+
+    /**
+     * Sets the two colors of the GUI. If the colors are different
+     * then the colors will fade together, creating a gradient color.
+     * @param color1 first color that will be faded
+     * @param color2 second color that will be faded
+     * @author Saman
+     */
+    public void setColor(Color color1, Color color2){
+        this.color1 = color1;
+        this.color2 = color2;
+        repaint();
+    }
+
+
+    /**
+     * This method manages the gradient of colors. "super.paintComponent(g)" is
+     * responsible for rendering and painting the background. "Graphics2D"
+     * gives more control of the colors. The gradientpaint object is used to
+     * create gradient colors. x and y are the coordinates of where the colors
+     * will start to gradiate (top left corner). The getWidth and getHeight()
+     * methods decides how far the colors will stretch.
+     * @param g the <code>Graphics</code> object to protect
+     * @author Saman
+     */
+    @Override
+    protected void paintComponent(Graphics g){
+        super.paintComponent(g);
+
+        Graphics2D graphics = (Graphics2D) g;
+
+        GradientPaint gradientPaint = new GradientPaint(0, 0,
+                color1, getWidth(), getHeight(), color2);
+
+        graphics.setPaint(gradientPaint);
+        graphics.fillRect(0, 0, getWidth(), getHeight()); //the colors will cover the whole panel
     }
 
     /**

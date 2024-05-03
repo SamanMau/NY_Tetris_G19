@@ -14,6 +14,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -268,6 +270,22 @@ public class Controller {
         playfield.repaint();
     }
 
+    /**
+     * Method called to play a video from the desktop. URI is used to
+     * format the file location to a URI, which then gets sent to
+     * the "browse" method in the Desktop class to play the video.
+     * @author Saman
+     */
+    public void playVideo(){
+        File video = new File("src/Video/trailer.mp4");
+        URI uri = video.toURI();
+
+        try {
+            Desktop.getDesktop().browse(uri);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private void restartGameLogic() {
         collision = false;

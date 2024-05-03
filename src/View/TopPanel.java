@@ -57,11 +57,16 @@ public class TopPanel extends JPanel {
         this.bottomPanel = bottomPanel;
         this.lPanel = lPanel;
         this.rPanel = rPanel;
+        currentAudioVolume = -20;
 
         this.controller = controller;
         this.mainFrame = mainFrame;
         this.playfield = playfield;
-        setColor(Color.gray, Color.gray);
+
+        Color color1 = new Color(106, 130, 251);
+        Color color2 = new Color(218, 119, 242);
+
+        setColor(color1, color2);
         CreateBtn();
         addActionListeners();
 
@@ -96,6 +101,7 @@ public class TopPanel extends JPanel {
         clip.stop();
         clip.close();
         music = newSong;
+        controlVolume.setValue(currentAudioVolume);
 
         if(musicOff.equals("on")){
             se.setFile(music);
@@ -250,11 +256,11 @@ public class TopPanel extends JPanel {
      * @author Saman
      */
     public void incrementVolume() {
-        if(currentAudioVolume > 6.0f){
+        if(currentAudioVolume >= 6.0f){
             currentAudioVolume = 6.0f;
         }
         else{
-            currentAudioVolume += 3.0f; //"f" står för float
+            currentAudioVolume += 2.0f; //"f" står för float
         }
 
         controlVolume.setValue(currentAudioVolume);
@@ -271,7 +277,7 @@ public class TopPanel extends JPanel {
     public void decrementVolume() {
         currentAudioVolume -= 3.0f; //"f" står för float
 
-        if(currentAudioVolume < -80.f){
+        if(currentAudioVolume <= -80.f){
             currentAudioVolume = -80.f;
         }
 
@@ -288,6 +294,7 @@ public class TopPanel extends JPanel {
                 clip = AudioSystem.getClip();
                 clip.open(audioInputStream);
                 controlVolume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                controlVolume.setValue(currentAudioVolume);
 
             } catch (UnsupportedAudioFileException e) {
                 throw new RuntimeException(e);
