@@ -44,6 +44,13 @@ public class Controller {
         collision = false;
     }
 
+    /**
+     * This method is called when the user tries choosing a song.
+     * JFileChooser opens up the file manager in the users computer.
+     * The variable "openDialog" returns "0" if the user selected a file.
+     * The try catch checks if the chosen file is a wav file or not.
+     * @author Saman
+     */
     public void chooseOwnSong() {
         JFileChooser fileChooser = new JFileChooser();
         int openDialog = fileChooser.showSaveDialog(null);
@@ -219,13 +226,12 @@ public class Controller {
     }
 
     /**
-     * The if statemnts after "if(action.equals(specific action)" basically checks if the tetris block already
-     * is at the edge of the play field. This is essential so, when the block is at the edge or at the bottom,
-     * the user cannot longer move the block. In informal words, the first if statement can be translated to
-     * "if the block already is at the edge of the game area or if the block has touched the bottom". If this
-     * statement is not correct, then the block is moved to the relevant location.
-     *
-     * @param action represents what key has been pressed.
+     * This method is called when a button is clicked on the keyboard.
+     * Different approaches are taken based on what key has been pressed.
+     * The nested if statements checks whether the tetris block already
+     * is at the edge or at the bottom of the playfield.
+     * @param action refers to the button clicked
+     * @author Saman, Huy
      */
     public void decideMove(String action) {
         if (action.equals("left")) {

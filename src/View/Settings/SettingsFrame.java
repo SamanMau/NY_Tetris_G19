@@ -1,8 +1,13 @@
+/**
+ * This frame represents settings. It manages different
+ * panels, such as audioPanel and keyboardpanel.
+ * @author Saman, Melvin
+ */
 package View.Settings;
 
 import Control.Controller;
-import View.Settings.*;
 import Settings.KeyboardPanel;
+import Settings.ThemePanel;
 import View.MainFrame;
 import View.TopPanel;
 
@@ -29,10 +34,14 @@ public class SettingsFrame extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * This method displays each panel as a specific tab
+     * @author Saman, Melvin
+     */
     public void createTabs(){
         tab = new JTabbedPane();
 
-        AudioPanel audioPanel = new AudioPanel(controller, mainFrame, this, topPanel);
+        View.Settings.AudioPanel audioPanel = new View.Settings.AudioPanel(controller, mainFrame, this, topPanel);
 
         KeyboardPanel keyboardPanel = new KeyboardPanel(controller, mainFrame, this);
 

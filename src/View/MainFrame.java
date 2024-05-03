@@ -1,12 +1,11 @@
 /**
- * This class represents the main frame of our GUI. This class is responsible for
- * adding the different panels (LPanel, RPanel, Playfield etc.) to the GUI.
- * This class also manages the creation of keys and links them to actions.
- * The main objects used to create keys is "InputMap" and "ActionMap".
- * These classes makes it possible for the user to control in what direction the tetris blocks will go.
- * Inputmap tells the computer which keyboard key should be linked to an "identifier" which you could name to anything.
- * The ActionMap then uses this identifier from the InputMap to associate an action / event to each key.
- * This concept is very similar to the relation between keys and values in a hashmap.
+ * This class represents the main frame of the GUI. This class is responsible for
+ * adding the different panels to the GUI. This class also manages the creation
+ * of keys and links them to actions. The main objects used to create keys is
+ * "InputMap" and "ActionMap". Inputmap decides which keys should react to
+ * keyboard clicks, while ActionMap decides what will happen when a button
+ * is clicked.
+ * @author Saman, Huy
  */
 package View;
 
@@ -29,6 +28,12 @@ public class MainFrame extends JFrame{
     private View.RPanel rPanel;
     private View.BottomPanel bottomPanel;
 
+    /**
+     * Constructor, creates and adds the different panels.
+     * @param controller controller object
+     * @param playfield playfield object, the game field itself.
+     * @author Huy
+     */
     public MainFrame(Controller controller, View.Playfield playfield){
         super("Tetris");
         this.controller = controller;
@@ -54,9 +59,10 @@ public class MainFrame extends JFrame{
     }
 
     /**
-     * This method creates key binds for keyboard inputs. The method "put" can be seen as the method "add" in an arraylist.
-     * The parameter you see marked as "s" right after "getKeyStroke" represents the name of the key on your keyboard,
-     * while "actionMapKey" is the identifier.
+     * This method creates key binds for keyboard inputs. The first
+     * parameter after "getKeyStroke" represents the name of the key
+     * on your keyboard, while "actionMapKey" is the identifier.
+     * @author Saman, Melvin
      */
     public void createKeys(String left, String right, String up, String down, String space){
         this.key = this.getRootPane().getInputMap();
@@ -76,6 +82,7 @@ public class MainFrame extends JFrame{
      * in the controller class "decideMove" which determines whether the block will change
      * its location on the x coordinate or y coordinate.
      * @param started Indicates whether the game has started or not.
+     * @author Saman
      */
     public void linkKeyToEvent(boolean started){
         if(started){

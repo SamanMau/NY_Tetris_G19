@@ -1,3 +1,10 @@
+/**
+ * This panel manages audios. The user can choose pre-defined
+ * themes, choose a theme from their filemanager, and change
+ * the volume of the audio.
+ * @author Saman
+ */
+
 package View.Settings;
 
 import Control.Controller;
@@ -63,6 +70,11 @@ public class AudioPanel extends JPanel {
         this.add(lower);
     }
 
+    /**
+     * This method creates buttons, jLabels and sets
+     * different colors.
+     * @author Saman
+     */
     public void setUpButtons(){
         font = new Font("Times new Roman", Font.BOLD, 16);
 
@@ -108,6 +120,11 @@ public class AudioPanel extends JPanel {
         changeAudioText.setBounds(160, 340, 280, 40);
     }
 
+    /**
+     * This method sets fonts to different
+     * jLabels and buttons.
+     * @author Saman
+     */
     public void setFont(){
         chooseSong.setFont(font);
         defaultSong.setFont(font);
@@ -120,6 +137,12 @@ public class AudioPanel extends JPanel {
         changeAudioText.setFont(font);
     }
 
+    /**
+     * This method sets up a picture of a music logo,
+     * it changes the size of the piccture to fit in
+     * the GUI.
+     * @author Saman
+     */
     public void setUpPicture(){
         ImageIcon image = new ImageIcon("src/Bilder/musicVolume.png");
         Image changedSize = image.getImage().getScaledInstance(40, 40, Image.SCALE_AREA_AVERAGING);
@@ -131,6 +154,10 @@ public class AudioPanel extends JPanel {
         this.add(label);
     }
 
+    /**
+     * Adds action listeners to different buttons
+     * @author Saman
+     */
     public void addActionListeners(){
 
         higher.addActionListener(new ActionListener() {

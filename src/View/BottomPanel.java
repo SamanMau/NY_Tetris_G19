@@ -1,5 +1,8 @@
 /**
- * A class that will be used to add an image of our choice to the GUI.
+ * This class represents the bottom panel of the GUI.
+ * This class handles the creation and the resize of
+ * tetris logo.
+ * @author Saman, Abdulkadir
  */
 package View;
 
@@ -20,7 +23,10 @@ public class BottomPanel extends JPanel {
     }
 
 
-
+    /**
+     * This method creates and resizes the tetris logo.
+     * @author Abdulkadir
+     */
     public void createImage(){
 
         try{
@@ -38,6 +44,13 @@ public class BottomPanel extends JPanel {
         }
     }
 
+    /**
+     * Sets the two colors of the GUI. If the colors are different
+     * then the colors will fade together, creating a gradient color.
+     * @param color1 first color that will be faded
+     * @param color2 second color that will be faded
+     * @author Abdulkadir
+     */
     public void setColor(Color color1, Color color2){
         this.color1 = color1;
         this.color2 = color2;
@@ -45,6 +58,16 @@ public class BottomPanel extends JPanel {
         repaint();
     }
 
+    /**
+     * This method manages the gradient of colors. "super.paintComponent(g)" is
+     * responsible for rendering and painting the background. "Graphics2D"
+     * gives more control of the colors. The gradientpaint object is used to
+     * create gradient colors. x and y are the coordinates of where the colors
+     * will start to gradiate (top left corner). The getWidth and getHeight()
+     * methods decides how far the colors will stretch.
+     * @param g the <code>Graphics</code> object to protect
+     * @author Saman
+     */
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);

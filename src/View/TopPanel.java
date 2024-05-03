@@ -1,11 +1,17 @@
 /**
  * A panel in the GUI which represents the top panel. It has 3 buttons.
  * Flowcontrol is used to manage the volume of audio.
+ * @author Saman, Melvin
  */
 package View;
 
 import Control.Controller;
 import View.Settings.SettingsFrame;
+import View.LPanel;
+import View.Playfield;
+import View.MainFrame;
+import View.BottomPanel;
+
 
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -70,6 +76,13 @@ public class TopPanel extends JPanel {
         this.setVisible(true);
     }
 
+    /**
+     * Sets the two colors of the GUI. If the colors are different
+     * then the colors will fade together, creating a gradient color.
+     * @param color1 first color that will be faded
+     * @param color2 second color that will be faded
+     * @author Saman
+     */
     public void setColor(Color color1, Color color2){
         this.color1 = color1;
         this.color2 = color2;
@@ -91,13 +104,13 @@ public class TopPanel extends JPanel {
     }
 
     /**
-     * The paintComponent()- method is responsible for the drawing of the GUI.
-     * "super.paintComponent(g)" is responsible for rendering and painting the background
-     * The parameter "g" in the paintComponent()- method is casted to a Graphics2D object.
-     * Which gives more access to the control of colors. GradientPaint is used to create the
-     * gradient colors. x = 0 and y = 0 are the coordinates of where the colors will start
-     * to gradiate, which is the top left corner. The getWidth and getHeight() methods
-     * decides how far the colors will stretch.
+     * This method manages the gradient of colors. "super.paintComponent(g)" is
+     * responsible for rendering and painting the background. "Graphics2D"
+     * gives more control of the colors. The gradientpaint object is used to
+     * create gradient colors. x and y are the coordinates of where the colors
+     * will start to gradiate (top left corner). The getWidth and getHeight()
+     * methods decides how far the colors will stretch.
+     * @param g the <code>Graphics</code> object to protect
      * @author Saman
      */
     @Override
@@ -115,11 +128,9 @@ public class TopPanel extends JPanel {
 
     /**
      * Initializes buttons and gives them coordinates and colors. Each button is then given an
-     * actionlistener, for instance, for the "startgame" button, we call the startTimer method which
-     * basically makes the blocks fall down. And then we also call "linkButtonToEvent" to link keys to events.
-     * For the "startgame" button we use "setFocusable(false)" because without this method, it is not possible to
-     * use the keys after pressing a button. Try removing the method. And then, run the program, press "startGame"
-     * button, and then you will se what I mean :)
+     * actionlistener. For the "startgame" button we use "setFocusable(false)" because without this method, it is not possible to
+     * use the keys after pressing a button.
+     * @author Saman
      */
     private void CreateBtn(){
         startGame = new JButton("Start game");
@@ -168,6 +179,10 @@ public class TopPanel extends JPanel {
 
     }
 
+    /**
+     * Adds actionlisteners to the different keys.
+     * @author Saman
+     */
     public void addActionListeners(){
         settings.addActionListener(new ActionListener() {
             @Override
@@ -205,6 +220,11 @@ public class TopPanel extends JPanel {
         });
     }
 
+    /**
+     * Checks if the music is playing or not.
+     * @param musicOff
+     * @author Saman, Melvin
+     */
     public void checkIfPlay(String musicOff){
         if (musicOff.equals("off")) {
             se.setFile(music);
@@ -220,6 +240,15 @@ public class TopPanel extends JPanel {
         }
     }
 
+    /**
+     * Increments the volume of the music currently playing.
+     * "6.0" is the highest decible that a song can handle.
+     * We need to make sure that the audio does not go above
+     * 6.0, as it would cause an error. The higher the number,
+     * the higher the volume. We then set this audio volume
+     * to the float control, which changes the volume.
+     * @author Saman
+     */
     public void incrementVolume() {
         if(currentAudioVolume > 6.0f){
             currentAudioVolume = 6.0f;
@@ -232,9 +261,11 @@ public class TopPanel extends JPanel {
     }
 
     /**
-     * This method is used to lower the volume of music.
-     * The lowest volume that a floatControl can manage is
-     * -80, of type float.
+     * Decrements the volume of the music currently playing.
+     * "-80.0" is the lowest decible that a song can handle.
+     * We need to make sure that the audio does not go under
+     * -80.0, as it would cause an error. We then set this
+     * audio volume to the float control, which changes the volume.
      * @author Saman
      */
     public void decrementVolume() {

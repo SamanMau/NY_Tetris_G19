@@ -1,6 +1,9 @@
-package View.Settings;
+/**
+ * This class represents a panel which manages different themes.
+ * @author Saman
+ */
 
-import View.Information.*;
+package Settings;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,8 +15,6 @@ public class ThemePanel extends JPanel {
     private View.MainFrame mainFrame;
     private View.BottomPanel bottomPanel;
     private View.TopPanel topPanel;
-    private View.RPanel rPanel;
-    private View.LPanel lPanel;
     private JLabel chooseText;
     private JButton party;
     private JButton partyInfo;
@@ -25,8 +26,6 @@ public class ThemePanel extends JPanel {
         this.controller = controller;
         this.mainFrame = mainFrame;
         this.topPanel = topPanel;
-        this.rPanel = rPanel;
-        this.lPanel = lPanel;
 
         this.setBounds(100, 100, 100, 100);
         this.setBackground(Color.ORANGE);
@@ -42,6 +41,12 @@ public class ThemePanel extends JPanel {
         this.add(wildWestInfo);
     }
 
+    /**
+     * This method creates the different jLabels and buttons
+     * that will be displayed in the panel. The labels and
+     * buttons also get a specific color and font
+     * @author Saman
+     */
     public void setup(){
         chooseText = new JLabel("Choose theme in GUI");
         chooseText.setBounds(175, 10, 150, 25);
@@ -69,18 +74,22 @@ public class ThemePanel extends JPanel {
         wildWest.setFont(font);
     }
 
+    /**
+     * Adds actionlisteners to the different buttons.
+     * @author Saman
+     */
     public void addListeners(){
         partyInfo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                InformationFrame informationFrame = new InformationFrame("Party info");
+                View.Information.InformationFrame informationFrame = new View.Information.InformationFrame("Party info");
             }
         });
 
         wildWestInfo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                InformationFrame informationFrame = new InformationFrame("Wild west info");
+                View.Information.InformationFrame informationFrame = new View.Information.InformationFrame("Wild west info");
             }
         });
 

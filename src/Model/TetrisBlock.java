@@ -61,14 +61,26 @@ public class TetrisBlock  {
         return y;
     }
 
+    /**
+     * Tetris block moves one step to the right.
+     * @author Saman
+     */
     public void goRight(){
         x++;
     }
 
+    /**
+     * Tetris block moves one step to the left.
+     * @author Saman
+     */
     public void goLeft(){
         x--;
     }
 
+    /**
+     * Tetris block moves one step down.
+     * @author Saman
+     */
     public void goDown(){
         y++;
     }
