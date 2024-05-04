@@ -1,7 +1,7 @@
 /**
  * A class that represents a left panel.
  */
-package View;
+package View.GameFrame;
 
 import javax.swing.*;
 import java.awt.*;

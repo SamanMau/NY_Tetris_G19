@@ -1,5 +1,6 @@
 package View.Settings;
 
+import View.GameFrame.*;
 import View.Information.*;
 
 import javax.swing.*;
@@ -9,11 +10,11 @@ import java.awt.event.ActionListener;
 
 public class ThemePanel extends JPanel {
     private Control.Controller controller;
-    private View.MainFrame mainFrame;
-    private View.BottomPanel bottomPanel;
-    private View.TopPanel topPanel;
-    private View.RPanel rPanel;
-    private View.LPanel lPanel;
+    private MainFrame mainFrame;
+    private BottomPanel bottomPanel;
+    private TopPanel topPanel;
+    private RPanel rPanel;
+    private LPanel lPanel;
     private JLabel chooseText;
     private JButton party;
     private JButton partyInfo;
@@ -21,7 +22,7 @@ public class ThemePanel extends JPanel {
     private JTextArea partyText;
     private JButton wildWest;
 
-    public ThemePanel(Control.Controller controller, View.MainFrame mainFrame, View.TopPanel topPanel){
+    public ThemePanel(Control.Controller controller, MainFrame mainFrame, TopPanel topPanel){
         this.controller = controller;
         this.mainFrame = mainFrame;
         this.topPanel = topPanel;

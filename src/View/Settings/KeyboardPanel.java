@@ -1,7 +1,7 @@
 package Settings;
 
 import Control.Controller;
-import View.MainFrame;
+import View.GameFrame.MainFrame;
 import View.Settings.SettingsFrame;
 
 import javax.swing.*;

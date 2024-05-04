@@ -1,4 +1,4 @@
-package View;
+package View.GameFrame;
 
 import Control.Controller;
 import Model.*;

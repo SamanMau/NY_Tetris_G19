@@ -1,4 +1,4 @@
-package View;
+package View.GameFrame;
 
 import javax.swing.*;
 import java.awt.*;

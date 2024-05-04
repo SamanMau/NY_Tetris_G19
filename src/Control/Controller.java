@@ -6,9 +6,8 @@ package Control;
 import Model.IncorrectFormatException;
 import Model.BlocksManager;
 import Model.TetrisBlock;
-import View.MainFrame;
-import View.Playfield;
-import View.TopPanel;
+import View.GameFrame.MainFrame;
+import View.GameFrame.Playfield;
 
 import javax.sound.sampled.*;
 import javax.swing.*;

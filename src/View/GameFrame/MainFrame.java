@@ -8,11 +8,10 @@
  * The ActionMap then uses this identifier from the InputMap to associate an action / event to each key.
  * This concept is very similar to the relation between keys and values in a hashmap.
  */
-package View;
+package View.GameFrame;
 
 import Control.Controller;
 
-import javax.naming.ldap.Control;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -21,23 +20,23 @@ public class MainFrame extends JFrame{
     private static int width = 615; //600
     private static int height = 840; // 800
     private InputMap key;
-    private View.Playfield playfield;
+    private Playfield playfield;
     private ActionMap action;
     private Controller controller;
-    private View.TopPanel topPanel;
-    private View.LPanel lPanel;
-    private View.RPanel rPanel;
-    private View.BottomPanel bottomPanel;
+    private TopPanel topPanel;
+    private LPanel lPanel;
+    private RPanel rPanel;
+    private BottomPanel bottomPanel;
 
-    public MainFrame(Controller controller, View.Playfield playfield){
+    public MainFrame(Controller controller, Playfield playfield){
         super("Tetris");
         this.controller = controller;
         this.setSize(width, height);
         this.playfield = playfield;
-        lPanel = new View.LPanel();
-        rPanel = new View.RPanel();
-        bottomPanel = new View.BottomPanel();
-        topPanel = new View.TopPanel(playfield, lPanel, rPanel, bottomPanel, this, controller);
+        lPanel = new LPanel();
+        rPanel = new RPanel();
+        bottomPanel = new BottomPanel();
+        topPanel = new TopPanel(playfield, lPanel, rPanel, bottomPanel, this, controller);
 
         //Add panel
         this.add(lPanel, BorderLayout.WEST);

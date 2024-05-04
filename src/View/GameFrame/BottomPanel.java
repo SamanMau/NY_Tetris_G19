@@ -1,7 +1,7 @@
 /**
  * A class that will be used to add an image of our choice to the GUI.
  */
-package View;
+package View.GameFrame;
 
 import javax.swing.*;
 import java.awt.*;

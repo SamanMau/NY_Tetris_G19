@@ -2,18 +2,15 @@
  * A panel in the GUI which represents the top panel. It has 3 buttons.
  * Flowcontrol is used to manage the volume of audio.
  */
-package View;
+package View.GameFrame;
 
 import Control.Controller;
 import View.Settings.SettingsFrame;
 
-import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 
 public class TopPanel extends JPanel {
     private JButton startGame;
@@ -22,7 +19,7 @@ public class TopPanel extends JPanel {
     private JButton endGame;
     private JButton settings;
     private LPanel lPanel;
-    private View.RPanel rPanel;
+    private RPanel rPanel;
     private boolean gameStarted;
     private Controller controller;
     private Playfield playfield;
@@ -37,7 +34,7 @@ public class TopPanel extends JPanel {
      * @param playfield used to call the timer method
      * @param mainFrame used to call a method that linkes keys (right, left, up, down, space) to a specific action.
      */
-    public TopPanel(View.Playfield playfield, View.LPanel lPanel, RPanel rPanel, BottomPanel bottomPanel, MainFrame mainFrame, Controller controller){
+    public TopPanel(Playfield playfield, LPanel lPanel, RPanel rPanel, BottomPanel bottomPanel, MainFrame mainFrame, Controller controller){
         this.setPreferredSize(new Dimension(600, 100));
         this.setBackground(Color.gray);
 

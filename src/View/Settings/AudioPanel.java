@@ -1,10 +1,8 @@
 package View.Settings;
 
 import Control.Controller;
-import View.MainFrame;
-import View.TopPanel;
-
-import View.Settings.SettingsFrame;
+import View.GameFrame.MainFrame;
+import View.GameFrame.TopPanel;
 
 import javax.swing.*;
 import java.awt.*;
