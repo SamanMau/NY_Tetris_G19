@@ -44,6 +44,9 @@ public class TetrisBlock  {
     public void incrementY() {
         y++;
     }
+    public void decrementY() {
+        y--;
+    }
 
     public void incrementX() {
         x++;
@@ -103,15 +106,42 @@ public class TetrisBlock  {
             tempShapeCol = 0;
         }
 
-        if(getX() + getShape().length  <= 10){
+        if(!xOutOfBounds() && !yOutOfBounds()){
             return tempShape;
         }
-        else {
+        else if (xOutOfBounds()){
             int decrementTimes = getX() + getShape().length - 10;
             for (int i = 0; i < decrementTimes; i++){
                 decrementX();
             }
             return tempShape;
+        }
+        else if(yOutOfBounds()){
+            int decrementTimes = getY() + getShape()[0].length - 20;
+            for (int i = 0; i < decrementTimes; i++){
+                decrementY();
+            }
+            return tempShape;
+        }
+        else {
+            return tempShape;
+        }
+    }
+    public boolean xOutOfBounds(){
+        if(getX() + getShape().length  <= 10){
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    public boolean yOutOfBounds(){
+        if(getY() + getShape()[0].length  <= 20){
+            return false;
+        }
+        else {
+            return true;
         }
     }
 }

@@ -56,7 +56,7 @@ public class Controller {
         music = "src/Ljud/audio1.wav";
         musicOff ="on";
         setFile(music);
-        playMusic();
+        //playMusic();
     }
 
     public void chooseOwnSong() {
@@ -175,8 +175,8 @@ public class Controller {
      */
     public void generateBlock() {
         randomNum = rd.nextInt(7);
-        int[][] shape = listOfShape.get(randomNum);
-        Color color = listOfColors.get(randomNum);
+        int[][] shape = listOfShape.get(4);
+        Color color = listOfColors.get(4);
         block = new TetrisBlock(shape, color);
     }
 
