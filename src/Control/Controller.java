@@ -38,7 +38,7 @@ public class Controller {
         this.playfield = new Playfield(this);
         mainFrame = new MainFrame(this, playfield);
         blocksManager = new BlocksManager();
-        this.listOfShape = blocksManager.getBlockList();
+        this.listOfShape = blocksManager.getListOfShape();
         this.listOfColors = blocksManager.getListOfColors();
         generateBlock();
         collision = false;
