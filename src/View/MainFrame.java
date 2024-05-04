@@ -122,6 +122,6 @@ public class MainFrame extends JFrame{
     }
 
     public void sendFileToTopPanel(String file){
-            topPanel.setNewMusic(file);
+            controller.setNewMusic(file);
     }
 }

@@ -88,7 +88,7 @@ public class ThemePanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 topPanel.setColor(Color.MAGENTA, Color.YELLOW);
-                topPanel.setNewMusic("src/Ljud/party.wav");
+                controller.setNewMusic("src/Ljud/party.wav");
             }
         });
 
@@ -100,7 +100,7 @@ public class ThemePanel extends JPanel {
                 Color color2 = new Color(194, 53, 45);
 
                 topPanel.setColor(color2 ,color1);
-                topPanel.setNewMusic("src/Ljud/wildWest.wav");
+                controller.setNewMusic("src/Ljud/wildWest.wav");
             }
         });
     }

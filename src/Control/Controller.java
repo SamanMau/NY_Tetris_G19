@@ -8,12 +8,15 @@ import Model.BlocksManager;
 import Model.TetrisBlock;
 import View.MainFrame;
 import View.Playfield;
+import View.TopPanel;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -33,6 +36,13 @@ public class Controller {
     private boolean gameState = false;
     private Playfield playfield;
     private MainFrame mainFrame;
+    private Clip clip;
+    private String music, musicOff;
+    private FloatControl controlVolume;
+    private File file;
+    private AudioInputStream audioInputStream;
+    private float previousAudioVolume = 0;
+    private float currentAudioVolume = 0;
 
     public Controller() {
         this.playfield = new Playfield(this);
@@ -42,6 +52,11 @@ public class Controller {
         this.listOfColors = blocksManager.getListOfColors();
         generateBlock();
         collision = false;
+
+        music = "src/Ljud/audio1.wav";
+        musicOff ="on";
+        setFile(music);
+        playMusic();
     }
 
     public void chooseOwnSong() {
@@ -326,4 +341,87 @@ public class Controller {
         mainFrame.disableKeyboard("spaceKey");
     }
 
+    public void setFile(String SoundFileName) {
+        try {
+            file = new File(SoundFileName);
+            audioInputStream = AudioSystem.getAudioInputStream(file);
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            controlVolume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+
+        } catch (UnsupportedAudioFileException e) {
+            throw new RuntimeException(e);
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void playMusic(){
+        clip.start();
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+    }
+
+    public void stop(){
+        clip.stop();
+        clip.close();
+    }
+
+    public void setNewMusic(String newSong){
+        clip.stop();
+        clip.close();
+        music = newSong;
+
+        if(musicOff.equals("on")){
+            setFile(music);
+            playMusic();
+        }
+    }
+
+    /**
+     * This method is used to lower the volume of music.
+     * The lowest volume that a floatControl can manage is
+     * -80, of type float.
+     * @author Saman
+     */
+    public void decrementVolume() {
+        currentAudioVolume -= 3.0f; //"f" står för float
+
+        if(currentAudioVolume < -80.f){
+            currentAudioVolume = -80.f;
+        }
+
+        controlVolume.setValue(currentAudioVolume);
+    }
+
+    public void incrementVolume() {
+        if(currentAudioVolume > 6.0f){
+            currentAudioVolume = 6.0f;
+        }
+        else{
+            currentAudioVolume += 3.0f; //"f" står för float
+        }
+
+        controlVolume.setValue(currentAudioVolume);
+    }
+
+    public void checkIfPlay(String musicOff){
+        if (musicOff.equals("off")) {
+            setFile(music);
+            playMusic();
+            this.musicOff = "on";
+           // playMusic.setText("Music on");
+        }
+
+        else if (musicOff.equals("on")) {
+            stop();
+            this.musicOff = ("off");
+            //playMusic.setText("Music off");
+        }
+    }
+
+    public String getMusicOff() {
+        return musicOff;
+    }
 }

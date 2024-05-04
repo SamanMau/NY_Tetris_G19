@@ -21,15 +21,7 @@ public class InformationPanel extends JPanel {
     }
 
     public void setTextField(){
-        textArea = new JTextArea();
-
-        textArea.setBounds(0, 0, 250, 300);
-        textArea.setEditable(false);
-        textArea.setFocusable(false);
-        textArea.setBackground(color);
-        textArea.setForeground(Color.WHITE); //ändrar färg på texten till vit
-        textArea.setLineWrap(true);
-        textArea.setBorder(BorderFactory.createEmptyBorder());
+        createTextArea();
 
         if(choice.equals("Party info")){
             textArea.setText("The party theme has cheerful colors that give \n" +
@@ -46,5 +38,16 @@ public class InformationPanel extends JPanel {
                     "associated with the wild west.\n" +
                     "Buckle up, and play Tetris!" );
         }
+    }
+
+    public void createTextArea(){
+        textArea = new JTextArea();
+        textArea.setBounds(0, 0, 250, 300);
+        textArea.setEditable(false);
+        textArea.setFocusable(false);
+        textArea.setBackground(color);
+        textArea.setForeground(Color.WHITE); //ändrar färg på texten till vit
+        textArea.setLineWrap(true);
+        textArea.setBorder(BorderFactory.createEmptyBorder());
     }
 }

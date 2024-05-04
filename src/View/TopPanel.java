@@ -24,20 +24,13 @@ public class TopPanel extends JPanel {
     private LPanel lPanel;
     private View.RPanel rPanel;
     private boolean gameStarted;
-    private Clip clip;
     private Controller controller;
-    private sound se= new sound();
-    private String music, musicOff;
-    private FloatControl controlVolume;
-
     private Playfield playfield;
     private MainFrame mainFrame;
     private BottomPanel bottomPanel;
     private Color color1;
     private Color color2;
 
-    private float previousAudioVolume = 0;
-    private float currentAudioVolume = 0;
 
     /**
      * Constructor that sets a dimension for the panel and a color.
@@ -79,16 +72,6 @@ public class TopPanel extends JPanel {
         repaint();
     }
 
-    public void setNewMusic(String newSong){
-        clip.stop();
-        clip.close();
-        music = newSong;
-
-        if(musicOff.equals("on")){
-            se.setFile(music);
-            se.playMusic();
-        }
-    }
 
     /**
      * The paintComponent()- method is responsible for the drawing of the GUI.
@@ -157,10 +140,7 @@ public class TopPanel extends JPanel {
         playMusic.setFocusable(false);
 
         playMusic.setActionCommand("gameMusic");
-        music = "src/Ljud/audio1.wav";
-        musicOff ="on";
-        se.setFile(music);
-        se.playMusic();
+
 
         settings.setBounds(500, 0, 100, 35);
         settings.setBackground(Color.WHITE);
@@ -188,7 +168,13 @@ public class TopPanel extends JPanel {
         playMusic.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                checkIfPlay(musicOff);
+                controller.checkIfPlay(controller.getMusicOff());
+                if(controller.getMusicOff() == "off"){
+                    playMusic.setText("Music off");
+                }
+                else{
+                    playMusic.setText("Music on");
+                }
             }
         });
 
@@ -204,78 +190,4 @@ public class TopPanel extends JPanel {
             }
         });
     }
-
-    public void checkIfPlay(String musicOff){
-        if (musicOff.equals("off")) {
-            se.setFile(music);
-            se.playMusic();
-            this.musicOff = "on";
-            playMusic.setText("Music on");
-        }
-
-        else if (musicOff.equals("on")) {
-            se.stop();
-            this.musicOff = ("off");
-            playMusic.setText("Music off");
-        }
-    }
-
-    public void incrementVolume() {
-        if(currentAudioVolume > 6.0f){
-            currentAudioVolume = 6.0f;
-        }
-        else{
-            currentAudioVolume += 3.0f; //"f" står för float
-        }
-
-        controlVolume.setValue(currentAudioVolume);
-    }
-
-    /**
-     * This method is used to lower the volume of music.
-     * The lowest volume that a floatControl can manage is
-     * -80, of type float.
-     * @author Saman
-     */
-    public void decrementVolume() {
-        currentAudioVolume -= 3.0f; //"f" står för float
-
-        if(currentAudioVolume < -80.f){
-            currentAudioVolume = -80.f;
-        }
-
-        controlVolume.setValue(currentAudioVolume);
-    }
-
-    public class sound {
-        File file;
-        AudioInputStream audioInputStream;
-        public void setFile(String SoundFileName) {
-            try {
-                file = new File(SoundFileName);
-                audioInputStream = AudioSystem.getAudioInputStream(file);
-                clip = AudioSystem.getClip();
-                clip.open(audioInputStream);
-                controlVolume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-
-            } catch (UnsupportedAudioFileException e) {
-                throw new RuntimeException(e);
-            } catch (LineUnavailableException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        public void playMusic(){
-            clip.start();
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        }
-
-        public void stop(){
-            clip.stop();
-            clip.close();
-        }
-    }
-
 }
