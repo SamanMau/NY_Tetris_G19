@@ -8,6 +8,7 @@ import Model.BlocksManager;
 import Model.TetrisBlock;
 import View.GameFrame.MainFrame;
 import View.GameFrame.Playfield;
+import View.LoginRegister.LoginRegisterFrame;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -42,10 +43,12 @@ public class Controller {
     private AudioInputStream audioInputStream;
     private float previousAudioVolume = 0;
     private float currentAudioVolume = 0;
+    private LoginRegisterFrame loginRegisterFrame;
 
     public Controller() {
         this.playfield = new Playfield(this);
-        mainFrame = new MainFrame(this, playfield);
+        loginRegisterFrame = new LoginRegisterFrame();
+        //mainFrame = new MainFrame(this, playfield);
         blocksManager = new BlocksManager();
         this.listOfShape = blocksManager.getListOfShape();
         this.listOfColors = blocksManager.getListOfColors();
