@@ -11,16 +11,22 @@ public class TetrisBlock  {
     private Color color;
     private int x; // is used to determine where in the game plan the tetris block is going to move in the x coordinate.
     private int y; // is used to determine where in the game plan the tetris block is going to move in the y coordinate.
+    private int index;
 
     /**
      * Constructor used to create objects of a tetris block.
      * @param shape when creating a block, you enter 1:s and 0:s in a 2d array.
      * @param color and then you give it a color.
      */
-   public TetrisBlock(int[][] shape, Color color){
+   public TetrisBlock(int[][] shape, Color color, int index){
        createBlock(shape, color);
        this.x = 4;
        this.y = 0;
+       this.index = index;
+   }
+
+   public int getIndex(){
+       return index;
    }
 
    public void createBlock(int[][] shape, Color color){

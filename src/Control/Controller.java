@@ -15,7 +15,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
+import java.util.Queue;
+import java.util.LinkedList;
 
 public class Controller {
     private BlocksManager blocksManager;
@@ -33,6 +36,8 @@ public class Controller {
     private boolean gameState = false;
     private Playfield playfield;
     private MainFrame mainFrame;
+    private Queue<TetrisBlock> blockQueue;
+    private TetrisBlock nextBlock;
 
     public Controller() {
         this.playfield = new Playfield(this);
@@ -40,8 +45,51 @@ public class Controller {
         blocksManager = new BlocksManager();
         this.listOfShape = blocksManager.getBlockList();
         this.listOfColors = blocksManager.getListOfColors();
-        generateBlock();
+     //   generateBlock();
+        blockQueue = new LinkedList<>();
+        addToQueue();
         collision = false;
+    }
+
+    /*
+    public void addToQueue(){
+        if(blockQueue.peek() != null){
+            nextBlock = blockQueue.peek();
+            int index = nextBlock.getIndex();
+            mainFrame.sendUpComingBlock(index);
+            System.out.println(index);
+            block = blockQueue.poll();
+
+            blockQueue.add(generateBlock());
+            blockQueue.add(generateBlock());
+        } else {
+            blockQueue.add(generateBlock());
+            blockQueue.add(generateBlock());
+
+            block = blockQueue.poll();
+            nextBlock = blockQueue.peek();
+            int index = nextBlock.getIndex();
+            mainFrame.sendUpComingBlock(index);
+            System.out.println(index);
+        }
+    }
+
+     */
+
+    public void addToQueue(){
+        while(blockQueue.size() < 2){
+            blockQueue.add(generateBlock());
+        }
+
+        block = blockQueue.poll();
+        
+        TetrisBlock newBlock = blockQueue.peek();
+        if(newBlock != null){
+            int index = newBlock.getIndex();
+            mainFrame.sendUpComingBlock(index);
+            System.out.println(index);
+        }
+
     }
 
     public void chooseOwnSong() {
@@ -73,7 +121,9 @@ public class Controller {
                 public void actionPerformed(ActionEvent e) {
                     if (collision) {
                         addColorToBoard();
-                        generateBlock();
+                      //  generateBlock();
+                        addToQueue();
+
                         collision = false;
                     } else {
                         boolean checkBlockOutOfPlayfield = checkBlockOutOfPlayfield();
@@ -158,11 +208,12 @@ public class Controller {
      * is then used to get a tetris block from an index. We retrieve its shape
      * and color, and then we create a new instance of "block".
      */
-    public void generateBlock() {
+    public TetrisBlock generateBlock() {
         randomNum = rd.nextInt(7);
         int[][] shape = listOfShape.get(randomNum);
         Color color = listOfColors.get(randomNum);
-        block = new TetrisBlock(shape, color);
+        block = new TetrisBlock(shape, color, randomNum);
+        return block;
     }
 
     /**
@@ -250,7 +301,8 @@ public class Controller {
                 block.incrementY(-1);
                 addColorToBoard();
                 clearFullRows();
-                generateBlock();
+              //  generateBlock();
+                addToQueue();
                 collision = false;
             }
 

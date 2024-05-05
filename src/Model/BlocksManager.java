@@ -44,8 +44,8 @@ public class BlocksManager {
         iBlock = new int[][]{{1},{1},{1},{1}};
         jBlock = new int[][]{{0,1},{0,1},{1,1}};
         oBlock = new int[][]{{1,1}, {1,1}};
-
     }
+
     /**
      * Initializes all block.
      */

@@ -11,6 +11,10 @@ public class LPanel extends JPanel {
     JLabel levelText;
     private Color color1;
     private Color color2;
+    private JLabel label;
+    private Image currentImage;
+    private boolean needToDraw;
+    private String currentFile;
 
     public LPanel(){
         this.setPreferredSize(new Dimension(150, 300));
@@ -21,6 +25,28 @@ public class LPanel extends JPanel {
         setColor(Color.gray, Color.gray);
         this.setVisible(true);
     }
+
+    public void showUpComingBlock(String file){
+        try{
+            ImageIcon image = new ImageIcon(file);
+            Image oldSize = image.getImage();
+            Image changedSize = oldSize.getScaledInstance(90, 80, Image.SCALE_AREA_AVERAGING);
+            ImageIcon newSize = new ImageIcon(changedSize);
+
+            if(label == null){
+                label = new JLabel(newSize);
+                this.add(label);
+            } else {
+                label.setIcon(newSize);
+            }
+
+
+        } catch (NullPointerException e){
+            System.out.println("error");
+        }
+    }
+
+
 
     public void setColor(Color color1, Color color2){
         this.color1 = color1;
@@ -62,6 +88,8 @@ public class LPanel extends JPanel {
 
         graphics.setPaint(gradientPaint);
         graphics.fillRect(0, 0, getWidth(), getHeight());
+
+
     }
 
 

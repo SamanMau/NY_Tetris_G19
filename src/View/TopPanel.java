@@ -257,6 +257,8 @@ public class TopPanel extends JPanel {
                 clip = AudioSystem.getClip();
                 clip.open(audioInputStream);
                 controlVolume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                currentAudioVolume = -35;
+                controlVolume.setValue(currentAudioVolume);
 
             } catch (UnsupportedAudioFileException e) {
                 throw new RuntimeException(e);
