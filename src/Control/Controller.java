@@ -9,6 +9,7 @@ import Model.TetrisBlock;
 import View.GameFrame.MainFrame;
 import View.GameFrame.Playfield;
 import View.LoginRegister.LoginRegisterFrame;
+import View.MainMenu.MainMenu;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -47,8 +48,7 @@ public class Controller {
 
     public Controller() {
         this.playfield = new Playfield(this);
-        loginRegisterFrame = new LoginRegisterFrame();
-        //mainFrame = new MainFrame(this, playfield);
+        loginRegisterFrame = new LoginRegisterFrame(this);
         blocksManager = new BlocksManager();
         this.listOfShape = blocksManager.getListOfShape();
         this.listOfColors = blocksManager.getListOfColors();
@@ -59,6 +59,14 @@ public class Controller {
         musicOff ="on";
         setFile(music);
         //playMusic();
+    }
+
+    public void startMainFrame(){
+        mainFrame = new MainFrame(this, playfield);
+    }
+
+    public void startMainMenu(){
+        MainMenu mainMenu = new MainMenu(this);
     }
 
     public void chooseOwnSong() {

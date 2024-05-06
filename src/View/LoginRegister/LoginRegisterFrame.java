@@ -1,6 +1,8 @@
 package View.LoginRegister;
 
+import Control.Controller;
 import View.GameFrame.TopPanel;
+import View.MainMenu.MainMenu;
 import View.Settings.SettingsFrame;
 
 import javax.swing.*;
@@ -9,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginRegisterFrame extends JFrame {
+    Controller controller;
     private static int width = 615; //600
     private static int height = 840; // 800
     private JLabel backgroundLabel;
@@ -23,10 +26,11 @@ public class LoginRegisterFrame extends JFrame {
     private JButton loginButton2 = new JButton();
     private JButton registerButton2 = new JButton();
 
-    public LoginRegisterFrame(){
+    public LoginRegisterFrame(Controller controller){
         super("Login/Register");
         this.setSize(width, height);
 
+        this.controller = controller;
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
@@ -132,6 +136,7 @@ public class LoginRegisterFrame extends JFrame {
         backgroundLabel.add(passwordTextField);
 
         // Update frame
+        addActionListeners();
         revalidate();
         repaint();
     }
@@ -210,6 +215,10 @@ public class LoginRegisterFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //If correct username and password. Move to mainMenu. Else show a error message and user have to try again
+
+                //Move to mainMenu
+                dispose();
+                controller.startMainMenu();
             }
         });
 
