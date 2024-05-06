@@ -1,14 +1,19 @@
 package View.MainMenu;
 
 import Control.Controller;
+import View.GameFrame.MainFrame;
+import View.GameFrame.TopPanel;
+import View.Settings.SettingsFrame;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.RoundRectangle2D;
 
 public class MainMenu extends JFrame {
     Controller controller;
+    MainFrame mainFrame;
     private static int width = 615; //600
     private static int height = 840; // 800
     private JLabel backgroundLabel;
@@ -19,11 +24,13 @@ public class MainMenu extends JFrame {
     private JLabel welcomeText;
     private String username = "(Username)";
     private JButton logoutButton;
+    private JButton muteButton;
 
-    public MainMenu(Controller controller){
+    public MainMenu(Controller controller, MainFrame mainFrame){
         super("Main menu");
         this.setSize(width, height);
         this.controller = controller;
+        this.mainFrame = mainFrame;
 
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -81,13 +88,11 @@ public class MainMenu extends JFrame {
         backgroundLabel = new JLabel(tetrisBackground);
         backgroundLabel.setBounds(0, 1, width-15, height-40);
 
-
         //Tetris logo
         ImageIcon tetrisLogo = new ImageIcon("src/Bilder/Tetris_logo.png");
         tetrisLogo.setImage(tetrisLogo.getImage().getScaledInstance(280, 200, Image.SCALE_SMOOTH));
         logoLabel = new JLabel(tetrisLogo);
         logoLabel.setBounds(160, 100, 280, 200);
-
 
         this.add(backgroundLabel);
         backgroundLabel.add(logoLabel);
@@ -112,7 +117,7 @@ public class MainMenu extends JFrame {
         settingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                SettingsFrame settingsFrame = new SettingsFrame(controller);
             }
         });
     }

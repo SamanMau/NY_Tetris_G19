@@ -9,15 +9,11 @@ import javax.swing.*;
 
 public class SettingsFrame extends JFrame {
     private Controller controller;
-    private MainFrame mainFrame;
-    private TopPanel topPanel;
     private JTabbedPane tab;
 
-    public SettingsFrame(Controller controller, MainFrame mainFrame, TopPanel topPanel){
+    public SettingsFrame(Controller controller){
         super("Settings");
         this.controller = controller;
-        this.mainFrame = mainFrame;
-        this.topPanel = topPanel;
         this.setSize(500, 500);
         this.setResizable(false);
 
@@ -31,11 +27,11 @@ public class SettingsFrame extends JFrame {
     public void createTabs(){
         tab = new JTabbedPane();
 
-        AudioPanel audioPanel = new AudioPanel(controller, mainFrame, this, topPanel);
+        AudioPanel audioPanel = new AudioPanel(controller, this);
 
-        KeyboardPanel keyboardPanel = new KeyboardPanel(controller, mainFrame, this);
+        KeyboardPanel keyboardPanel = new KeyboardPanel(controller, this);
 
-        ThemePanel themePanel = new ThemePanel(controller, mainFrame, topPanel);
+        ThemePanel themePanel = new ThemePanel(controller);
 
         tab.addTab("Audio", audioPanel);
         tab.addTab("Controls", keyboardPanel);

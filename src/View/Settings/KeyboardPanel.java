@@ -11,18 +11,16 @@ import java.awt.event.ActionListener;
 
 public class KeyboardPanel extends JPanel {
     private Controller controller;
-    private MainFrame mainFrame;
     private SettingsFrame settingsFrame;
     private JRadioButton arrow;
     private JRadioButton WASD;
 
-    public KeyboardPanel(Controller controller, MainFrame mainFrame, SettingsFrame settingsFrame){
+    public KeyboardPanel(Controller controller, SettingsFrame settingsFrame){
         this.setBounds(100, 100, 150, 100);
         this.setBackground(Color.ORANGE);
         this.setLayout(null);
 
         this.controller = controller;
-        this.mainFrame = mainFrame;
 
         setUpKeyboard();
     }
@@ -49,14 +47,14 @@ public class KeyboardPanel extends JPanel {
         WASD.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainFrame.createKeys("A","D","W","S","SPACE");
+                controller.changeKeys("A","D","W","S","SPACE");
             }
         });
 
         arrow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainFrame.createKeys("LEFT", "RIGHT", "UP", "DOWN", "SPACE");
+                controller.changeKeys("LEFT", "RIGHT", "UP", "DOWN", "SPACE");
             }
         });
 

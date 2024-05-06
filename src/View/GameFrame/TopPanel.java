@@ -145,11 +145,15 @@ public class TopPanel extends JPanel {
 
     }
 
+    public void startSettingsFrame(){
+        SettingsFrame settingsFrame = new SettingsFrame(controller);
+    }
+
     public void addActionListeners(){
         settings.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SettingsFrame settingsFrame = new SettingsFrame(controller, mainFrame, TopPanel.this);
+                SettingsFrame settingsFrame = new SettingsFrame(controller);
             }
         });
 

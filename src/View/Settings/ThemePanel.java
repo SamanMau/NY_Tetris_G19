@@ -10,9 +10,7 @@ import java.awt.event.ActionListener;
 
 public class ThemePanel extends JPanel {
     private Control.Controller controller;
-    private MainFrame mainFrame;
     private BottomPanel bottomPanel;
-    private TopPanel topPanel;
     private RPanel rPanel;
     private LPanel lPanel;
     private JLabel chooseText;
@@ -22,10 +20,8 @@ public class ThemePanel extends JPanel {
     private JTextArea partyText;
     private JButton wildWest;
 
-    public ThemePanel(Control.Controller controller, MainFrame mainFrame, TopPanel topPanel){
+    public ThemePanel(Control.Controller controller){
         this.controller = controller;
-        this.mainFrame = mainFrame;
-        this.topPanel = topPanel;
         this.rPanel = rPanel;
         this.lPanel = lPanel;
 
@@ -88,20 +84,15 @@ public class ThemePanel extends JPanel {
         party.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                topPanel.setColor(Color.MAGENTA, Color.YELLOW);
-                controller.setNewMusic("src/Ljud/party.wav");
+                controller.changeTheme("Party");
             }
         });
 
         wildWest.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                controller.changeTheme("Wildwest");
 
-                Color color1 = new Color(255, 209, 87);
-                Color color2 = new Color(194, 53, 45);
-
-                topPanel.setColor(color2 ,color1);
-                controller.setNewMusic("src/Ljud/wildWest.wav");
             }
         });
     }

@@ -11,8 +11,6 @@ import java.awt.event.ActionListener;
 
 public class AudioPanel extends JPanel {
     private Controller controller;
-    private MainFrame mainFrame;
-    private TopPanel topPanel;
     private ButtonGroup group;
     private JRadioButton theme1;
     private JRadioButton theme2;
@@ -27,15 +25,12 @@ public class AudioPanel extends JPanel {
     private JButton higher;
     private JButton lower;
 
-    public AudioPanel(Controller controller, MainFrame mainFrame, SettingsFrame settingsFrame,
-                      TopPanel topPanel){
+    public AudioPanel(Controller controller, SettingsFrame settingsFrame){
         this.setBounds(100, 100, 100, 100);
         this.setBackground(Color.ORANGE);
         this.setLayout(null);
 
         this.controller = controller;
-        this.mainFrame = mainFrame;
-        this.topPanel = topPanel;
 
         setUpButtons();
         setFont();

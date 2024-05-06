@@ -123,4 +123,18 @@ public class MainFrame extends JFrame{
     public void sendFileToTopPanel(String file){
             controller.setNewMusic(file);
     }
+
+    public void changeTheme(String theme){
+        if(theme == "Wildwest"){
+            Color color1 = new Color(255, 209, 87);
+            Color color2 = new Color(194, 53, 45);
+
+            topPanel.setColor(color2 ,color1);
+            controller.setNewMusic("src/Ljud/wildWest.wav");
+        }
+        else if(theme == "Party"){
+            topPanel.setColor(Color.MAGENTA, Color.YELLOW);
+            controller.setNewMusic("src/Ljud/party.wav");
+        }
+    }
 }

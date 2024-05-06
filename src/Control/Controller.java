@@ -66,7 +66,7 @@ public class Controller {
     }
 
     public void startMainMenu(){
-        MainMenu mainMenu = new MainMenu(this);
+        MainMenu mainMenu = new MainMenu(this, mainFrame);
     }
 
     public void chooseOwnSong() {
@@ -434,4 +434,21 @@ public class Controller {
     public String getMusicOff() {
         return musicOff;
     }
+
+    public void changeKeys(String left, String right, String up, String down, String space){
+        if (mainFrame != null){
+            mainFrame.createKeys(left,right,up,down,space);
+        }
+    }
+    public void changeTheme(String theme){
+        if (mainFrame != null){
+            if(theme == "Wildwest"){
+                mainFrame.changeTheme(theme);
+            }
+            else if(theme == "Party"){
+                mainFrame.changeTheme(theme);
+            }
+        }
+    }
+
 }
