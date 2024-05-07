@@ -66,7 +66,7 @@ public class MainMenu extends JFrame {
         highscoreButton.setBackground(Color.orange);
         highscoreButton.setForeground(Color.black);
 
-        //playAsGuestButton button
+        //playAsGuest button
         settingButton = new JButton("Settings");
         settingButton.setFont(new Font("Italic", Font.PLAIN, 25));
         settingButton.setBounds(150, 520, 300, 50);
