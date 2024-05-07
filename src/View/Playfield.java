@@ -1,14 +1,16 @@
-package View;
-
-import Control.Controller;
-import Model.*;
-
-import javax.swing.*;
-import java.awt.*;
 /**
  * This class represent the playfield where the Tetris game is displayed.
  * Responsible for rendering the game board and Tetris blocks.
+ * @author
  */
+package View;
+
+import Control.Controller;
+import Model.TetrisBlock;
+
+import javax.swing.*;
+import java.awt.*;
+
 public class Playfield extends JPanel{
     private final int column = 10;
     private final int row = 20;
@@ -16,10 +18,10 @@ public class Playfield extends JPanel{
     private TetrisBlock block;
     private Color[][] board = new Color[20][10];
     Controller controller;
+
     /**
      * Starts the playfield dimensions, background color, and layout.
      * Also start the controller and get the tetris block and game board from the controller.
-     *
      * @param controller The controller managing game logic.
      */
     public Playfield(Controller controller){

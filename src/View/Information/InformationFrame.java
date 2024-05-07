@@ -1,3 +1,9 @@
+/**
+ * A frame which is displayed when the user wants
+ * information about the different themes.
+ * @author Saman
+ */
+
 package View.Information;
 
 import javax.swing.*;
