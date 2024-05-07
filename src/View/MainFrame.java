@@ -39,7 +39,7 @@ public class MainFrame extends JFrame{
         this.controller = controller;
         this.setSize(width, height);
         this.playfield = playfield;
-        lPanel = new View.LPanel();
+        lPanel = new View.LPanel(controller);
         rPanel = new View.RPanel();
         bottomPanel = new View.BottomPanel();
         topPanel = new View.TopPanel(playfield, lPanel, rPanel, bottomPanel, this, controller);
@@ -124,6 +124,32 @@ public class MainFrame extends JFrame{
         }
     }
 
+    public void sendUpComingBlock(int index){
+        switch (index){
+            case 0: lPanel.showUpComingBlock("src/Bilder/0.png");
+                break;
+
+            case 1: lPanel.showUpComingBlock("src/Bilder/1.png");
+                break;
+
+            case 2: lPanel.showUpComingBlock("src/Bilder/2.png");
+                break;
+
+            case 3: lPanel.showUpComingBlock("src/Bilder/3.png");
+                break;
+
+            case 4: lPanel.showUpComingBlock("src/Bilder/4.png");
+                break;
+
+            case 5: lPanel.showUpComingBlock("src/Bilder/5.png");
+                break;
+
+            case 6: lPanel.showUpComingBlock("src/Bilder/6.png");
+                break;
+
+        }
+
+    }
     public void disableKeyboard(String key) {
         action.remove(key);
     }
@@ -131,4 +157,9 @@ public class MainFrame extends JFrame{
     public void sendFileToTopPanel(String file){
             topPanel.setNewMusic(file);
     }
+
+    public void incrementPoints(int points){
+        lPanel.updateScore(points);
+    }
+
 }

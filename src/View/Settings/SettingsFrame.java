@@ -6,6 +6,7 @@
 package View.Settings;
 
 import Control.Controller;
+import Settings.CustomizePanel;
 import Settings.KeyboardPanel;
 import Settings.ThemePanel;
 import Settings.TrailerPanel;
@@ -26,6 +27,7 @@ public class SettingsFrame extends JFrame {
     private KeyboardPanel keyboardPanel;
     private ThemePanel themePanel;
     private TrailerPanel trailerPanel;
+    private CustomizePanel customizePanel;
 
     public SettingsFrame(Controller controller, MainFrame mainFrame, TopPanel topPanel){
         super("Settings");
@@ -58,10 +60,15 @@ public class SettingsFrame extends JFrame {
 
         trailerPanel = new TrailerPanel(controller, this);
 
-        themePanel = new ThemePanel(controller, mainFrame, topPanel, audioPanel, keyboardPanel, trailerPanel);
+        customizePanel = new CustomizePanel(controller, mainFrame, topPanel, audioPanel, keyboardPanel,
+                trailerPanel);
+
+        themePanel = new ThemePanel(controller, mainFrame, topPanel, audioPanel, keyboardPanel,
+                trailerPanel, customizePanel);
 
         tab.addTab("Audio", audioPanel);
         tab.addTab("Controls", keyboardPanel);
+        tab.addTab("Customize", customizePanel);
         tab.addTab("Theme", themePanel);
         tab.addTab("Trailer", trailerPanel);
         tab.setBackground(Color.WHITE);

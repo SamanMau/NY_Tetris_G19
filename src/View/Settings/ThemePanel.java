@@ -31,14 +31,18 @@ public class ThemePanel extends JPanel {
     private TrailerPanel trailerPanel;
     private JButton rock;
     private JButton rockInfo;
+    private JLabel customize;
+    private CustomizePanel customizePanel;
 
     public ThemePanel(Control.Controller controller, View.MainFrame mainFrame,
                       View.TopPanel topPanel, View.Settings.AudioPanel audioPanel,
-                      KeyboardPanel keyboardPanel, TrailerPanel trailerPanel){
+                      KeyboardPanel keyboardPanel, TrailerPanel trailerPanel,
+                      CustomizePanel customizePanel){
         this.controller = controller;
         this.mainFrame = mainFrame;
         this.topPanel = topPanel;
         this.trailerPanel = trailerPanel;
+        this.customizePanel = customizePanel;
 
         defaultColor1 = new Color(106, 130, 251);
         defaultColor2 = new Color(218, 119, 242);
@@ -58,6 +62,7 @@ public class ThemePanel extends JPanel {
         this.add(wildWestInfo);
         this.add(rock);
         this.add(rockInfo);
+        this.add(customize);
 
         this.add(defaultTheme);
     }
@@ -71,6 +76,9 @@ public class ThemePanel extends JPanel {
     public void setup(){
         chooseText = new JLabel("Choose theme in GUI");
         chooseText.setBounds(175, 10, 150, 25);
+
+        customize = new JLabel("Want to customize your own GUI? Press the Customize tab!");
+        customize.setBounds(10, 400, 450, 25);
 
         party = new JButton("Party theme");
         party.setBounds(180, 50, 150, 35);
@@ -110,6 +118,7 @@ public class ThemePanel extends JPanel {
         party.setFont(font);
         wildWest.setFont(font);
         rock.setFont(font);
+        customize.setFont(font);
     }
 
     /**
@@ -165,6 +174,7 @@ public class ThemePanel extends JPanel {
                 keyboardPanel.setColor(color1, color2);
                 audioPanel.setColor(color1, color2);
                 trailerPanel.setColor(color1, color2);
+
                 topPanel.setNewMusic("src/Ljud/rock.wav");
             }
         });
@@ -177,6 +187,7 @@ public class ThemePanel extends JPanel {
                 keyboardPanel.setColor(defaultColor1, defaultColor2);
                 audioPanel.setColor(defaultColor1, defaultColor2);
                 trailerPanel.setColor(defaultColor1, defaultColor2);
+                customizePanel.setColor(defaultColor1, defaultColor2);
             }
         });
 

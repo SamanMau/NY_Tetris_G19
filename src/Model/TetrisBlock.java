@@ -11,17 +11,23 @@ public class TetrisBlock  {
     private Color color;
     private int x; // is used to determine where in the game plan the tetris block is going to move in the x coordinate.
     private int y; // is used to determine where in the game plan the tetris block is going to move in the y coordinate.
+    private int index;
 
     /**
      * Constructor used to create objects of a tetris block.
      * @param shape when creating a block, you enter 1:s and 0:s in a 2d array.
      * @param color and then you give it a color.
      */
-   public TetrisBlock(int[][] shape, Color color){
+   public TetrisBlock(int[][] shape, Color color, int index){
        createBlock(shape, color);
        this.x = 4;
        this.y = 0;
+       this.index = index;
    }
+
+    public int getIndex(){
+        return index;
+    }
 
    public void createBlock(int[][] shape, Color color){
        this.shape = shape;
@@ -43,6 +49,9 @@ public class TetrisBlock  {
 
     public void incrementY() {
         y++;
+    }
+    public void decrementY() {
+        y--;
     }
 
     public void incrementX() {
@@ -115,15 +124,43 @@ public class TetrisBlock  {
             tempShapeCol = 0;
         }
 
-        if(getX() + getShape().length  <= 10){
+        if(!xOutOfBounds() && !yOutOfBounds()){
             return tempShape;
         }
-        else {
+        else if (xOutOfBounds()){
             int decrementTimes = getX() + getShape().length - 10;
             for (int i = 0; i < decrementTimes; i++){
                 decrementX();
             }
             return tempShape;
+        }
+        else if(yOutOfBounds()){
+            int decrementTimes = getY() + getShape()[0].length - 20;
+            for (int i = 0; i < decrementTimes; i++){
+                decrementY();
+            }
+            return tempShape;
+        }
+        else {
+            return tempShape;
+        }
+    }
+
+    public boolean xOutOfBounds(){
+        if(getX() + getShape().length  <= 10){
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    public boolean yOutOfBounds(){
+        if(getY() + getShape()[0].length  <= 20){
+            return false;
+        }
+        else {
+            return true;
         }
     }
 }

@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Queue;
+import java.util.LinkedList;
 
 public class Controller {
     private BlocksManager blocksManager;
@@ -27,6 +29,7 @@ public class Controller {
     private int kvadrat = 30;
     private final int column = 10;
     private final int row = 20;
+    private int seconds;
     private Random rd = new Random();
     private int randomNum = rd.nextInt(7);
     private Color[][] board = new Color[20][10];
@@ -35,6 +38,8 @@ public class Controller {
     private boolean gameState = false;
     private Playfield playfield;
     private MainFrame mainFrame;
+    private Queue<TetrisBlock> blockQueue;
+    private TetrisBlock nextBlock;
 
     public Controller() {
         this.playfield = new Playfield(this);
@@ -42,8 +47,28 @@ public class Controller {
         blocksManager = new BlocksManager();
         this.listOfShape = blocksManager.getBlockList();
         this.listOfColors = blocksManager.getListOfColors();
-        generateBlock();
+        //generateBlock();
+        blockQueue = new LinkedList<>();
+        addToQueue();
         collision = false;
+    }
+
+    public void addToQueue(){
+        while(blockQueue.size() < 2){
+            blockQueue.add(generateBlock());
+        }
+
+        block = blockQueue.poll();
+
+        TetrisBlock newBlock = blockQueue.peek();
+        if(newBlock != null){
+            int index = newBlock.getIndex();
+            mainFrame.sendUpComingBlock(index);
+        }
+    }
+
+    public void setCurrentSpeed(int speed){
+        this.seconds = speed;
     }
 
     /**
@@ -73,16 +98,22 @@ public class Controller {
         }
     }
 
-    public void startTimer(boolean gameState) {
+    public int getCurrentSpeed(){
+        return seconds;
+    }
+
+    public void startTimer(boolean gameState, int time) {
         this.gameState = gameState;
+        this.seconds = time;
 
         if (gameState) {
-            this.speed = new Timer(400, new ActionListener() {
+            this.speed = new Timer(seconds, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (collision) {
                         addColorToBoard();
-                        generateBlock();
+                        //generateBlock();
+                        addToQueue();
                         collision = false;
                     } else {
                         boolean checkBlockOutOfPlayfield = checkBlockOutOfPlayfield();
@@ -167,11 +198,12 @@ public class Controller {
      * is then used to get a tetris block from an index. We retrieve its shape
      * and color, and then we create a new instance of "block".
      */
-    public void generateBlock() {
+    public TetrisBlock generateBlock() {
         randomNum = rd.nextInt(7);
-        int[][] shape = listOfShape.get(randomNum);
-        Color color = listOfColors.get(randomNum);
-        block = new TetrisBlock(shape, color);
+        int[][] shape = listOfShape.get(4);
+        Color color = listOfColors.get(4);
+        block = new TetrisBlock(shape, color, 4);
+        return block;
     }
 
     /**
@@ -258,7 +290,8 @@ public class Controller {
                 block.incrementY(-1);
                 addColorToBoard();
                 clearFullRows();
-                generateBlock();
+                //generateBlock();
+                addToQueue();
                 collision = false;
             }
 
@@ -287,16 +320,21 @@ public class Controller {
         }
     }
 
+    /*
     private void restartGameLogic() {
         collision = false;
         if (!gameState) {
-            startTimer(true);
+            startTimer(true, 500);
         }
     }
+
+     */
 
     public void clearFullRows() {
         int width = board[0].length;
         int height = board.length;
+        int pointsEarned = 0;
+        int rowsCleared = 0;
 
         //loop som kollar ifall någon rad är fylld.
         for (int row = height - 1; row >= 0; row--) {
@@ -313,6 +351,8 @@ public class Controller {
             //om true, en loop som raderar raden och flyttar ovanstående ner.
             // "r" = varje kolumn i specefik rad får värdet av kolumnen från raden ovanför.
             if (fullRow) {
+                //  int width = board[0].length;
+                //  int height = board.length;
                 for (int r = row; r > 0; r--) {
                     for (int c = 0; c < width; c++) {
                         board[r][c] = board[r- 1][c];
@@ -323,11 +363,46 @@ public class Controller {
                 for (int c = 0; c < width; c++) {
                     board[0][c] = null;
                 }
-
+                rowsCleared++;
+                // clearRow(row);
                 row++;
             }
+
         }
+
+        pointsEarned = calculatePointsForRowClear(rowsCleared);
+        mainFrame.incrementPoints(pointsEarned);
         playfield.repaint();
+    }
+
+    /**
+     * Calculates the points earned for clearing rows based on the number of rows cleared.
+     * This method calls in clearFullRows method.
+     * @param rowsCleared - represents the number of rows that have been cleared
+     * @return - The points earned by clearing the specified rows
+     * @author Abdulkadir
+     */
+
+    private int calculatePointsForRowClear(int rowsCleared) {
+        int pointsEarned = 0;
+
+        switch (rowsCleared) {
+            case 1:
+                pointsEarned = 100;
+                break;
+            case 2:
+                pointsEarned = 300;
+                break;
+            case 3:
+                pointsEarned = 500;
+                break;
+            case 4:
+                pointsEarned = 800;
+                break;
+            default:
+                break;
+        }
+        return pointsEarned;
     }
 
     public void resetColorBoard(){
