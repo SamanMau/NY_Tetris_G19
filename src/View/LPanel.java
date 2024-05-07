@@ -36,18 +36,38 @@ public class LPanel extends JPanel {
         repaint();
     }
 
+    /**
+     * This method is used to decrease the speed of the game by one unit and starts the
+     * timer with the newSpeed. It gets the current speeed of the game from controller.
+     * Then calculates the newSpeed by subtracting one unit from the current speed.
+     * Starts the game timer with the updated speed.
+     * @author Abdulkadir, Saman
+     */
     public void changeSpeed() {
         int seconds = controller.getCurrentSpeed();
         int newSpeed = seconds - 1;
         controller.startTimer(true, newSpeed);
     }
 
+    /**
+     * Increases the game level by one and updates the text field to display the users current level.
+     * This method is called whenever the user reaches a new level,
+     * and it updates the text field with the new level value.
+     * @author Abdulkadir, Saman
+     */
     public void increaseLevel() {
         this.newLevel = newLevel + 1;
         levelText.setText("Level: " + newLevel);
         changeSpeed();
     }
 
+    /**
+     * Updates the user's total score and checks if the user has reached the next level.
+     * This method is called whenever the user scores point, and it updates the total score,
+     * displayed in the text field.
+     * @param score the points earned by the user to be added to the total score.
+     * @author Abdulkadir, Saman
+     */
     public void updateScore(int score) {
         this.totalScore += score;
         poangText.setText("Points: " + totalScore);

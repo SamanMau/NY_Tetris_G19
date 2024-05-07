@@ -123,36 +123,42 @@ public class Controller {
         }
     }
 
-    //Den här metoden kontrollerar ifall det aktuella blocket har nått botten av spelplanen
+    /**
+     * Checks if the current block has reached or passed the bottom of the game board.
+     * block.getY() : gets the current y-coordinate of the block on the game board
+     * block.getShape().length : gets the height of the current block on the game board.
+     * First, calculates the potential position of the bottom of the block.
+     * Then compares the calculated position with the length of the game board.
+     * If the position is greater than or equal to the length of the game board, it means the block has reached or passed the bottom of the board.
+     * @return true if the block is at or below the bottom of the board, false otherwise.
+     * @author Abdulkadir
+     *
+     */
     private boolean isAtBottom() {
-        // block getY(),  hämtar den aktuella y-posisionen för det aktuella blocket på spelplanen
-        // block.getShape().length, Hämtar höjden på det aktuella blocket på spelplanen
-        //Först beräknas den potentiella positionen för botten av blocket
-        //Sedan jämförs den beräknade position med längden av spelplanen
-        //Om position är större eller lika med längeden på spelplan, innebär att blocket har nått botten eller passerat botten av spelplan
         return (block.getY() + block.getShape().length) * kvadrat >= board.length * kvadrat;
     }
 
+    /**
+     * Checks if the current block collides with another block when moved horizontally by the given increment.
+     * It loops through each cell of the block shape, then it checks if the cell of the block at row and col contain 1.
+     * Then it checks if the specified column index is valid with in the game board's bound
+     * and if there is a block already placed at the calculated position
+     * @param xIncrement The amount by which the block is moved horizontally.
+     * @return True if the block collides with another block, otherwise false
+     * @author Abdulkadir, Bisma
+     */
     private boolean isCollidingWithBlock(int xIncrement) {
-        int y = block.getY() + 1; // Get the Y-coordinate of the block's position on the board
-        int x = block.getX() + xIncrement; // Get the X-coordinate of the block's position on the board
-        int[][] shape = block.getShape(); // Get the shape of the block
+        int y = block.getY() + 1;
+        int x = block.getX() + xIncrement;
+        int[][] shape = block.getShape();
 
-        // Loop through each cell of the block shape
         for (int row = 0; row < shape.length; row++) {
             for (int col = 0; col < shape[0].length; col++) {
-                /*If the cell of the block at row and col contain 1,
-                 set the board at Y-coordinate and X-coordinate to the color of the block*/
+
                 if (shape[row][col] == 1) {
                     int boardRow = y + row;
                     int boardCol = x + col;
 
-                    // Denna if-sats ser till att blocken inte går utanför spelplan
-                    // Om boardRow + 1 är mindre än board.length innebär att det
-                    // finns minst en rad kvar under den aktuella raden på spelplanen
-                    // board[boardRow + 1][boardCol] != null, kontrollera om det finns block i nästa rad under det aktuella blocket
-                    // Om både villkoren uppfylls returnerar true, alltså att det finns collision annars false
-                    //if (boardRow + 1 < board.length && board[boardRow + 1][boardCol] != null) {
                     if (boardCol < board.length && board[boardRow][boardCol] != null) {
                         return true;
                     }
@@ -323,6 +329,14 @@ public class Controller {
         mainFrame.incrementPoints(pointsEarned);
         playfield.repaint();
     }
+
+    /**
+     * Calculates the points earned for clearing rows based on the number of rows cleared.
+     * This method calls in clearFullRows method.
+     * @param rowsCleared - represents the number of rows that have been cleared
+     * @return - The points earned by clearing the specified rows
+     * @author Abdulkadir
+     */
 
     private int calculatePointsForRowClear(int rowsCleared) {
         int pointsEarned = 0;

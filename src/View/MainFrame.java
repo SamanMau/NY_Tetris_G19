@@ -124,6 +124,10 @@ public class MainFrame extends JFrame{
             topPanel.setNewMusic(file);
     }
 
+    /**
+     *
+     * @param points
+     */
     public void incrementPoints(int points){
         lPanel.updateScore(points);
     }
