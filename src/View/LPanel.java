@@ -15,6 +15,7 @@ public class LPanel extends JPanel {
     private Image currentImage;
     private boolean needToDraw;
     private String currentFile;
+    private JLabel nextBlockText;
 
     public LPanel(){
         this.setPreferredSize(new Dimension(150, 300));
@@ -46,8 +47,6 @@ public class LPanel extends JPanel {
         }
     }
 
-
-
     public void setColor(Color color1, Color color2){
         this.color1 = color1;
         this.color2 = color2;
@@ -75,6 +74,11 @@ public class LPanel extends JPanel {
         levelText.setFont(new Font("Calibri", Font.BOLD, 20));
         this.add(Box.createVerticalStrut(50));
         this.add(levelText);
+
+        nextBlockText = new JLabel("Next block");
+        nextBlockText.setFont(new Font("Calibri", Font.BOLD, 20));
+        this.add(Box.createVerticalStrut(100));
+        this.add(nextBlockText);
     }
 
     @Override
