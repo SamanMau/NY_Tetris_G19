@@ -47,6 +47,17 @@ public class Playfield extends JPanel{
         board = controller.getBoard();
     }
 
+    public void drawGameOverText(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(Color.RED);
+        g2.setFont(new Font("Times New Roman", Font.BOLD, 40));
+
+        int x = (getWidth() - g2.getFontMetrics().stringWidth("Game Over")) / 2;
+        int y = getHeight() / 2;
+
+        g2.drawString("Game Over", x, y);
+    }
+
     /**
      * Renders the game board and Tetris block.
      *
@@ -87,6 +98,9 @@ public class Playfield extends JPanel{
             }
         }
         drawBlock(g);
+        if (!controller.gameState()) {
+             drawGameOverText(g);
+        }
     }
 
     /**

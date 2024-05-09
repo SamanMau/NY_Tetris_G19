@@ -28,6 +28,7 @@ public class MainFrame extends JFrame{
     private View.RPanel rPanel;
     private View.BottomPanel bottomPanel;
 
+
     /**
      * Constructor, creates and adds the different panels.
      * @param controller controller object

@@ -35,7 +35,7 @@ public class Controller {
     private Color[][] board = new Color[20][10];
     private Timer speed;
     private boolean collision;
-    private boolean gameState = false;
+    private boolean gameState = true;
     private Playfield playfield;
     private MainFrame mainFrame;
     private Queue<TetrisBlock> blockQueue;
@@ -53,21 +53,21 @@ public class Controller {
         collision = false;
     }
 
-    public void addToQueue(){
-        while(blockQueue.size() < 2){
+    public void addToQueue() {
+        while (blockQueue.size() < 2) {
             blockQueue.add(generateBlock());
         }
 
         block = blockQueue.poll();
 
         TetrisBlock newBlock = blockQueue.peek();
-        if(newBlock != null){
+        if (newBlock != null) {
             int index = newBlock.getIndex();
             mainFrame.sendUpComingBlock(index);
         }
     }
 
-    public void setCurrentSpeed(int speed){
+    public void setCurrentSpeed(int speed) {
         this.seconds = speed;
     }
 
@@ -76,6 +76,7 @@ public class Controller {
      * JFileChooser opens up the file manager in the users computer.
      * The variable "openDialog" returns "0" if the user selected a file.
      * The try catch checks if the chosen file is a wav file or not.
+     *
      * @author Saman
      */
     public void chooseOwnSong() {
@@ -98,7 +99,7 @@ public class Controller {
         }
     }
 
-    public int getCurrentSpeed(){
+    public int getCurrentSpeed() {
         return seconds;
     }
 
@@ -134,24 +135,37 @@ public class Controller {
         }
     }
 
-    private boolean checkBlockOutOfPlayfield() {
-        int blockHeight = block.getHeight();
-        int rowWithColor = 0;
-        for (int row = 0; row < board.length; row++) {
-            for (int col = 0; col < board[0].length; col++) {
-                if (board[row][col] != null) {
-                    rowWithColor++;
-                    break;
+    public boolean gameIsOver() {
+        gameState = false;
+        playfield.repaint();
+        return false;
+    }
+
+    public boolean checkBlockOutOfPlayfield() {
+            int blockHeight = block.getHeight();
+            int rowWithColor = 0;
+            for (int row = 0; row < board.length; row++) {
+                for (int col = 0; col < board[0].length; col++) {
+                    if (board[row][col] != null) {
+                        rowWithColor++;
+                        break;
+                    }
                 }
             }
-        }
             if (blockHeight + rowWithColor > board.length) {
-            System.out.println("You lost");
-            resetColorBoard();
-            return true;
-        } else {
-            return false;
+              //  System.out.println("You lost");
+                gameIsOver();
+                resetColorBoard();
+
+                return true;
+            } else {
+                return false;
+            }
         }
+
+
+    public boolean gameState() {
+        return gameState;
     }
 
     //Den här metoden kontrollerar ifall det aktuella blocket har nått botten av spelplanen
@@ -193,6 +207,7 @@ public class Controller {
         return false;
     }
 
+    //
     /**
      * Generates a random number between 0 - 6. This random generated number
      * is then used to get a tetris block from an index. We retrieve its shape
@@ -200,9 +215,9 @@ public class Controller {
      */
     public TetrisBlock generateBlock() {
         randomNum = rd.nextInt(7);
-        int[][] shape = listOfShape.get(4);
-        Color color = listOfColors.get(4);
-        block = new TetrisBlock(shape, color, 4);
+        int[][] shape = listOfShape.get(randomNum);
+        Color color = listOfColors.get(randomNum);
+        block = new TetrisBlock(shape, color, randomNum);
         return block;
     }
 
