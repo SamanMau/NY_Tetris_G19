@@ -13,7 +13,7 @@ public class InformationFrame extends JFrame {
 
     public InformationFrame(String choice){
         this.setLayout(null);
-        this.setSize(300, 300);
+        this.setSize(600, 400);
         this.setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //stänger bara ett fönster. Påverkar ej resten av programmet.
         this.choice = choice;

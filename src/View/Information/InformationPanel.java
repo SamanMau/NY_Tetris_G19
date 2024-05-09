@@ -16,7 +16,8 @@ public class InformationPanel extends JPanel {
     private String choice;
 
     public InformationPanel(String choice){
-        this.setBounds(0, 0, 300, 300);
+        this.setLayout(null);
+        this.setBounds(0, 0, 600, 400);
         this.choice = choice;
 
         color = new Color(89, 110, 136, 221);
@@ -36,7 +37,7 @@ public class InformationPanel extends JPanel {
     public void setTextField(){
         textArea = new JTextArea();
 
-        textArea.setBounds(0, 0, 250, 300);
+        textArea.setBounds(0, 20, 600, 400);
         textArea.setEditable(false);
         textArea.setFocusable(false);
         textArea.setBackground(color);
@@ -45,19 +46,72 @@ public class InformationPanel extends JPanel {
         textArea.setBorder(BorderFactory.createEmptyBorder());
 
         if(choice.equals("Party info")){
-            textArea.setText("The party theme has cheerful colors that give \n" +
-                    "the feeling of being at a party! The music that \n" +
-                    "accompanies the " + "party theme matches well \nwith the colors.");
+            textArea.setText("The party theme has cheerful colors that give" +
+                    "the feeling of being at a party! The music that accompanies the \n" +
+                    "party theme matches well with the colors. \n \n Preview");
+
+            try{
+                ImageIcon image = new ImageIcon("src/Bilder/party.png");
+                Image oldSize = image.getImage();
+                Image changedSize = oldSize.getScaledInstance(190, 250, Image.SCALE_AREA_AVERAGING);
+                ImageIcon newSize = new ImageIcon(changedSize);
+
+                JLabel label = new JLabel(newSize);
+                label.setBounds(200, 100, 190, 250);
+
+                this.add(label);
+
+            } catch (NullPointerException e){
+                System.out.println("error");
+            }
         }
 
         else if(choice.equals("Wild west info")){
-            textArea.setText("The wild west theme lets you play tetris like \n" +
-                    "a real cowboy! With its old and vibrant colors, \n" +
-                    "you are guaranteed to feel like a cowboy in the \n" +
-                    "1800's in Texas. The music that accompanies\n" +
-                    "this theme is a well known song that is often \n" +
-                    "associated with the wild west.\n" +
-                    "Buckle up, and play Tetris!" );
+            textArea.setText("The wild west theme lets you play tetris like" +
+                    "a real cowboy! With its old and vibrant colors, " +
+                    "you are guaranteed \nto feel like a cowboy in the" +
+                    "1800's in Texas. The music that accompanies" +
+                    "this theme is a well known song \n that is often " +
+                    "associated with the wild west. " +
+                    "Buckle up, and play Tetris! \n Preview" );
+
+            try{
+                ImageIcon image = new ImageIcon("src/Bilder/wildWest.png");
+                Image oldSize = image.getImage();
+                Image changedSize = oldSize.getScaledInstance(190, 250, Image.SCALE_AREA_AVERAGING);
+                ImageIcon newSize = new ImageIcon(changedSize);
+
+                JLabel label = new JLabel(newSize);
+                label.setBounds(200, 100, 190, 250);
+
+                this.add(label);
+
+            } catch (NullPointerException e){
+                System.out.println("error");
+            }
+        }
+
+        else if(choice.equals("Rock info")){
+            textArea.setText("Have you ever wanted to play tetris while " +
+            "feeling like a rockstar? Then this is the " +
+                    "right theme for you! \nThe rock theme which is accompanied" +
+                    " by this theme makes you a real rockstar. \n " +
+                    "Get your guitar, go crazy, and play Tetris! \n Preview");
+
+            try{
+                ImageIcon image = new ImageIcon("src/Bilder/rock.png");
+                Image oldSize = image.getImage();
+                Image changedSize = oldSize.getScaledInstance(190, 250, Image.SCALE_AREA_AVERAGING);
+                ImageIcon newSize = new ImageIcon(changedSize);
+
+                JLabel label = new JLabel(newSize);
+                label.setBounds(200, 100, 190, 250);
+
+                this.add(label);
+
+            } catch (NullPointerException e){
+                System.out.println("error");
+            }
         }
     }
 }

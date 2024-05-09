@@ -61,7 +61,7 @@ public class SettingsFrame extends JFrame {
         trailerPanel = new TrailerPanel(controller, this);
 
         customizePanel = new CustomizePanel(controller, mainFrame, topPanel, audioPanel, keyboardPanel,
-                trailerPanel);
+                trailerPanel, this);
 
         themePanel = new ThemePanel(controller, mainFrame, topPanel, audioPanel, keyboardPanel,
                 trailerPanel, customizePanel);
@@ -79,6 +79,15 @@ public class SettingsFrame extends JFrame {
         themePanel.setColor(color1, color2);
         keyboardPanel.setColor(color1, color2);
         trailerPanel.setColor(color1, color2);
+        customizePanel.setColor(color1, color2);
+    }
 
+    public void setColors(Color color1, Color color2){
+        audioPanel.setColor(color1, color2);
+        themePanel.setColor(color1, color2);
+        keyboardPanel.setColor(color1, color2);
+        trailerPanel.setColor(color1, color2);
+        customizePanel.setColor(color1, color2);
+        topPanel.setColor(color1, color2);
     }
 }

@@ -174,6 +174,8 @@ public class ThemePanel extends JPanel {
                 keyboardPanel.setColor(color1, color2);
                 audioPanel.setColor(color1, color2);
                 trailerPanel.setColor(color1, color2);
+                customizePanel.setColor(color1, color2);
+
 
                 topPanel.setNewMusic("src/Ljud/rock.wav");
             }
@@ -188,6 +190,7 @@ public class ThemePanel extends JPanel {
                 audioPanel.setColor(defaultColor1, defaultColor2);
                 trailerPanel.setColor(defaultColor1, defaultColor2);
                 customizePanel.setColor(defaultColor1, defaultColor2);
+                topPanel.setNewMusic("src/Ljud/audio1.wav");
             }
         });
 
@@ -195,6 +198,13 @@ public class ThemePanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 View.Information.InformationFrame informationFrame = new View.Information.InformationFrame("Party info");
+            }
+        });
+
+        rockInfo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                View.Information.InformationFrame informationFrame = new View.Information.InformationFrame("Rock info");
             }
         });
 
@@ -213,6 +223,7 @@ public class ThemePanel extends JPanel {
                 keyboardPanel.setColor(Color.MAGENTA, Color.YELLOW);
                 audioPanel.setColor(Color.MAGENTA, Color.YELLOW);
                 trailerPanel.setColor(Color.MAGENTA, Color.YELLOW);
+                customizePanel.setColor(Color.MAGENTA, Color.YELLOW);
                 topPanel.setNewMusic("src/Ljud/party.wav");
             }
         });
@@ -228,6 +239,7 @@ public class ThemePanel extends JPanel {
                 setColor(color2, color1);
                 keyboardPanel.setColor(color2, color1);
                 audioPanel.setColor(color2, color1);
+                customizePanel.setColor(color2, color1);
                 topPanel.setNewMusic("src/Ljud/wildWest.wav");
             }
         });
