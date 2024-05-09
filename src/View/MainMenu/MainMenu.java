@@ -3,6 +3,7 @@ package View.MainMenu;
 import Control.Controller;
 import View.GameFrame.MainFrame;
 import View.GameFrame.TopPanel;
+import View.LoginRegister.LoginRegisterFrame;
 import View.Settings.SettingsFrame;
 
 import javax.swing.*;
@@ -25,6 +26,7 @@ public class MainMenu extends JFrame {
     private String username = "(Username)";
     private JButton logoutButton;
     private JButton muteButton;
+    private JButton profileButton;
 
     public MainMenu(Controller controller, MainFrame mainFrame){
         super("Main menu");
@@ -75,6 +77,36 @@ public class MainMenu extends JFrame {
         settingButton.setBackground(Color.lightGray);
         settingButton.setForeground(Color.black);
 
+        //Mute button
+        muteButton = new JButton("Music on");
+        muteButton.setFont(new Font("Italic", Font.PLAIN, 15));
+        muteButton.setBounds(5, 5, 100, 50);
+        muteButton.setFocusPainted(false);
+        muteButton.setFocusable(false);
+        muteButton.setBackground(Color.white);
+        muteButton.setForeground(Color.black);
+
+        //Mute button
+        profileButton = new JButton("Profile");
+        profileButton.setFont(new Font("Italic", Font.PLAIN, 15));
+        profileButton.setBounds(5, 60, 100, 50);
+        profileButton.setFocusPainted(false);
+        profileButton.setFocusable(false);
+        profileButton.setBackground(Color.white);
+        profileButton.setForeground(Color.black);
+
+        //Log out button
+        logoutButton = new JButton("Log out");
+        logoutButton.setFont(new Font("Italic", Font.PLAIN, 15));
+        logoutButton.setBounds(500, 0, 100, 50);
+        logoutButton.setFocusPainted(false);
+        logoutButton.setFocusable(false);
+        logoutButton.setBackground(Color.red);
+        logoutButton.setForeground(Color.black);
+
+        backgroundLabel.add(logoutButton);
+        backgroundLabel.add(profileButton);
+        backgroundLabel.add(muteButton);
         backgroundLabel.add(welcomeText);
         backgroundLabel.add(startGameButton);
         backgroundLabel.add(highscoreButton);
@@ -118,6 +150,43 @@ public class MainMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SettingsFrame settingsFrame = new SettingsFrame(controller);
+            }
+        });
+
+        muteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.checkIfPlay(controller.getMusicOff());
+                if(controller.getMusicOff() == "off"){
+                    muteButton.setText("Music off");
+                }
+                else{
+                    muteButton.setText("Music on");
+                }
+            }
+        });
+
+        profileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getRootPane().setGlassPane(new JComponent() {
+                    public void paintComponent(Graphics g) {
+                        g.setColor(new Color(0, 0, 0, 100));
+                        g.fillRect(0, 0, getWidth(), getHeight());
+                        super.paintComponent(g);
+                    }
+                });
+
+                getRootPane().getGlassPane().setVisible(true);
+
+            }
+        });
+
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                LoginRegisterFrame loginRegisterFrame = new LoginRegisterFrame(controller);
             }
         });
     }
