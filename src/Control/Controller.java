@@ -200,9 +200,9 @@ public class Controller {
      */
     public TetrisBlock generateBlock() {
         randomNum = rd.nextInt(7);
-        int[][] shape = listOfShape.get(4);
-        Color color = listOfColors.get(4);
-        block = new TetrisBlock(shape, color, 4);
+        int[][] shape = listOfShape.get(randomNum);
+        Color color = listOfColors.get(randomNum);
+        block = new TetrisBlock(shape, color, randomNum);
         return block;
     }
 
