@@ -171,13 +171,28 @@ public class MainMenu extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 getRootPane().setGlassPane(new JComponent() {
                     public void paintComponent(Graphics g) {
-                        g.setColor(new Color(0, 0, 0, 100));
+                        g.setColor(new Color(0, 0, 0, 150));
                         g.fillRect(0, 0, getWidth(), getHeight());
+
+                        g.setColor(new Color(0, 157, 191));
+                        g.fillRoundRect(125, 200, 350, 500, 50, 50);
+
+                        g.setColor(Color.white);
+                        g.setFont(new Font(Font.SANS_SERIF, Font.ITALIC, 30));
+                        g.drawString("Username", 232, 250);
+                        g.setFont(new Font("Italic", Font.PLAIN, 50));
+                        g.drawString("Grand Master", 150, 330);
+                        g.drawString("100.000.000", 160, 435);
+                        g.drawString("999", 260, 540);
+                        g.drawString("777", 260, 645);
+
+
                         super.paintComponent(g);
                     }
                 });
 
                 getRootPane().getGlassPane().setVisible(true);
+
 
             }
         });
