@@ -32,10 +32,9 @@ public class TopPanel extends JPanel {
     private boolean gameStarted;
     private Clip clip;
     private Controller controller;
-    private sound se= new sound();
+    private sound se = new sound();
     private String music, musicOff;
     private FloatControl controlVolume;
-
     private Playfield playfield;
     private MainFrame mainFrame;
     private BottomPanel bottomPanel;

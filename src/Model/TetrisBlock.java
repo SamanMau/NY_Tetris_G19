@@ -46,7 +46,6 @@ public class TetrisBlock  {
      * The methods below are used to increment or decrement x and y coordinates so that
      * we are able to move a block in tehe gameArea.
      */
-
     public void incrementY() {
         y++;
     }

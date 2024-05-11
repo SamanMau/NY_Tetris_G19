@@ -116,8 +116,6 @@ public class LPanel extends JPanel {
         }
     }
 
-
-
     /**
      * Method used to make a text field that represents the users points,
      * this will increase everytime the user gets more points.
