@@ -186,6 +186,15 @@ public class MainMenu extends JFrame {
                         g.drawString("999", 260, 540);
                         g.drawString("777", 260, 645);
 
+                        g.setColor(new Color(0, 21, 133));
+                        g.setFont(new Font("Italic", Font.PLAIN, 30));
+                        g.drawString("Status", 260, 370);
+                        g.drawString("Total points", 222, 475);
+                        g.drawString("Total challenges", 190, 580);
+                        g.drawString("Total games", 217, 685);
+
+
+
 
                         super.paintComponent(g);
                     }
