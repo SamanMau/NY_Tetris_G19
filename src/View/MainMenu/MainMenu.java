@@ -142,7 +142,7 @@ public class MainMenu extends JFrame {
         highscoreButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                Highscores highscoresFrame = new Highscores();
             }
         });
 
@@ -192,9 +192,6 @@ public class MainMenu extends JFrame {
                         g.drawString("Total points", 222, 475);
                         g.drawString("Total challenges", 190, 580);
                         g.drawString("Total games", 217, 685);
-
-
-
 
                         super.paintComponent(g);
                     }
