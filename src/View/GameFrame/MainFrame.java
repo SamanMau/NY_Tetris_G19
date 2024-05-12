@@ -33,7 +33,7 @@ public class MainFrame extends JFrame{
         this.controller = controller;
         this.setSize(width, height);
         this.playfield = playfield;
-        lPanel = new LPanel();
+        lPanel = new LPanel(controller);
         rPanel = new RPanel();
         bottomPanel = new BottomPanel();
         topPanel = new TopPanel(playfield, lPanel, rPanel, bottomPanel, this, controller);
@@ -136,5 +136,13 @@ public class MainFrame extends JFrame{
             topPanel.setColor(Color.MAGENTA, Color.YELLOW);
             controller.setNewMusic("src/Ljud/party.wav");
         }
+    }
+
+    public void incrementPoints(int points){
+        lPanel.updateScore(points);
+    }
+
+    public int getTotalPoints(){
+        return lPanel.getTotalPoints();
     }
 }

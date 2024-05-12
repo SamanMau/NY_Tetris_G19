@@ -10,6 +10,7 @@ import View.GameFrame.MainFrame;
 import View.GameFrame.Playfield;
 import View.LoginRegister.LoginRegisterFrame;
 import View.MainMenu.MainMenu;
+import Control.DatabaseController;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -29,6 +30,7 @@ public class Controller {
     private int kvadrat = 30;
     private final int column = 10;
     private final int row = 20;
+    private int seconds;
     private Random rd = new Random();
     private int randomNum = rd.nextInt(7);
     private Color[][] board = new Color[20][10];
@@ -45,6 +47,13 @@ public class Controller {
     private float previousAudioVolume = 0;
     private float currentAudioVolume = 0;
     private LoginRegisterFrame loginRegisterFrame;
+    private DatabaseController databaseController;
+    private String nameUser;
+    private int userID;
+    private String status;
+    private int totalPoints;
+    private int totalChallenges;
+    private int totalGames;
 
     public Controller() {
         this.playfield = new Playfield(this);
@@ -54,11 +63,56 @@ public class Controller {
         this.listOfColors = blocksManager.getListOfColors();
         generateBlock();
         collision = false;
+        databaseController = new DatabaseController();
 
         music = "src/Ljud/audio1.wav";
         musicOff ="on";
         setFile(music);
         //playMusic();
+    }
+
+    public void setUserID(int id){
+        this.userID = id;
+    }
+
+    public void setCurrentSpeed(int speed) {
+        this.seconds = speed;
+    }
+
+
+    public int getCurrentSpeed() {
+        return seconds;
+    }
+
+    public int getUserIDNoConn(){
+        return userID;
+    }
+
+    public int getUserID(String nameUser){
+        int id = databaseController.getUserID(nameUser);
+        return id;
+    }
+
+    public String getStatus(int id){
+        String status = databaseController.getStatus(id);
+        return status;
+    }
+
+    public int getTotalGames(int id){
+        int totalGames = databaseController.getTotalGames(id);
+        return totalGames;
+    }
+
+    public int getTotalPoints(String nameUser){
+        int id = databaseController.getUserID(nameUser);
+
+        int points = databaseController.getUserPoints(id);
+        return points;
+    }
+
+    public int getTotalChallenges(int id){
+        int totalChallenges = databaseController.getTotalChallenges(id);
+        return totalChallenges;
     }
 
     public void startMainFrame(){
@@ -89,11 +143,12 @@ public class Controller {
         }
     }
 
-    public void startTimer(boolean gameState) {
+    public void startTimer(boolean gameState, int time) {
         this.gameState = gameState;
+        this.seconds = time;
 
         if (gameState) {
-            this.speed = new Timer(400, new ActionListener() {
+            this.speed = new Timer(seconds, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (collision) {
@@ -110,6 +165,7 @@ public class Controller {
                             }
                         } else {
                             stopTimer();
+
                         }
                     }
                     playfield.repaint();
@@ -117,6 +173,34 @@ public class Controller {
             });
             this.speed.start();
         }
+    }
+
+    public void checkIfNewStatus(){
+        int points = databaseController.getUserPoints(userID);
+        String status = databaseController.getStatus(userID);
+
+        if((points >= 10000) && (points <= 14000) && (!status.equals("Intermediate"))){ // 10000 && 20000 (original)
+            databaseController.updateStatus("Intermediate", userID);
+
+        } else if(points > 14000 && (points <= 20000) && (!status.equals("Advanced"))){ //20000 && 40000 (original)
+            databaseController.updateStatus("Advanced", userID);
+
+        } else if(points > 20000 && (points <= 24000) && (!status.equals("Expert"))){ // 40000 && 60000 (original)
+            databaseController.updateStatus("Expert", userID);
+        }
+        else if(points > 24000 && (points <= 29000) && (!status.equals("Master"))){ //60000 && 80000 (original)
+            databaseController.updateStatus("Master", userID);
+        }
+        else if(points > 29000 && (points <= 33000) && (!status.equals("Grandmaster"))){ //80000 && 100000 (original)
+            databaseController.updateStatus("Grandmaster", userID);
+        }
+        else if(points > 33000 && (points <= 37000) && (!status.equals("Legend"))){ //100000 && 150000 (original)
+            databaseController.updateStatus("Legend", userID);
+        }
+        else if((points > 37000) && (!status.equals("The Head Of The Table"))){ //150000 (original)
+            databaseController.updateStatus("The Head Of The Table", userID);
+        }
+
     }
 
     private boolean checkBlockOutOfPlayfield() {
@@ -132,6 +216,10 @@ public class Controller {
         }
             if (blockHeight + rowWithColor > board.length) {
             System.out.println("You lost");
+            int totalPoints = mainFrame.getTotalPoints();
+            databaseController.updateAmountGames(userID);
+            databaseController.updatePoints(userID, totalPoints);
+            checkIfNewStatus();
             resetColorBoard();
             return true;
         } else {
@@ -287,17 +375,11 @@ public class Controller {
         playfield.repaint();
     }
 
-
-    private void restartGameLogic() {
-        collision = false;
-        if (!gameState) {
-            startTimer(true);
-        }
-    }
-
     public void clearFullRows() {
         int width = board[0].length;
         int height = board.length;
+        int pointsEarned = 0;
+        int rowsCleared = 0;
 
         //loop som kollar ifall någon rad är fylld.
         for (int row = height - 1; row >= 0; row--) {
@@ -314,6 +396,8 @@ public class Controller {
             //om true, en loop som raderar raden och flyttar ovanstående ner.
             // "r" = varje kolumn i specefik rad får värdet av kolumnen från raden ovanför.
             if (fullRow) {
+                //  int width = board[0].length;
+                //  int height = board.length;
                 for (int r = row; r > 0; r--) {
                     for (int c = 0; c < width; c++) {
                         board[r][c] = board[r- 1][c];
@@ -324,11 +408,46 @@ public class Controller {
                 for (int c = 0; c < width; c++) {
                     board[0][c] = null;
                 }
-
+                rowsCleared++;
+                // clearRow(row);
                 row++;
             }
+
         }
+
+        pointsEarned = calculatePointsForRowClear(rowsCleared);
+        mainFrame.incrementPoints(pointsEarned);
         playfield.repaint();
+    }
+
+    /**
+     * Calculates the points earned for clearing rows based on the number of rows cleared.
+     * This method calls in clearFullRows method.
+     * @param rowsCleared - represents the number of rows that have been cleared
+     * @return - The points earned by clearing the specified rows
+     * @author Abdulkadir
+     */
+
+    private int calculatePointsForRowClear(int rowsCleared) {
+        int pointsEarned = 0;
+
+        switch (rowsCleared) {
+            case 1:
+                pointsEarned = 100;
+                break;
+            case 2:
+                pointsEarned = 300;
+                break;
+            case 3:
+                pointsEarned = 500;
+                break;
+            case 4:
+                pointsEarned = 800;
+                break;
+            default:
+                break;
+        }
+        return pointsEarned;
     }
 
     public void resetColorBoard(){
@@ -429,6 +548,35 @@ public class Controller {
             this.musicOff = ("off");
             //playMusic.setText("Music off");
         }
+    }
+
+    public int validateUserLoginInfo(String name, String password){
+        int exists = databaseController.validateUserLoginInfo(name, password);
+
+        if(exists == 1){
+            setUserName(name);
+            int id = getUserID(nameUser);
+            setUserID(id);
+        }
+
+        return exists;
+    }
+
+    public String validateUserRegisterInfo(String name, String password){
+        String userName = databaseController.validateUserRegisterInfo(name, password);
+        setUserName(userName);
+        int id = getUserID(nameUser);
+        setUserID(id);
+
+        return userName;
+    }
+
+    public void setUserName(String name){
+        this.nameUser = name;
+    }
+
+    public String getUserName(){
+        return nameUser;
     }
 
     public String getMusicOff() {

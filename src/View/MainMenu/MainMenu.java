@@ -23,10 +23,15 @@ public class MainMenu extends JFrame {
     private JButton highscoreButton;
     private JButton settingButton;
     private JLabel welcomeText;
-    private String username = "(Username)";
+    private String username;
     private JButton logoutButton;
     private JButton muteButton;
     private JButton profileButton;
+    private String status;
+    private int totalPoints;
+    private int totalChallenges;
+    private int totalGames;
+    private int userID;
 
     public MainMenu(Controller controller, MainFrame mainFrame){
         super("Main menu");
@@ -44,9 +49,25 @@ public class MainMenu extends JFrame {
 
         this.setVisible(true);
     }
+
+    public void userInfo(){
+        username = controller.getUserName();
+        totalPoints = controller.getTotalPoints(username);
+        userID = controller.getUserIDNoConn();
+        status = controller.getStatus(userID);
+        totalChallenges = controller.getTotalChallenges(userID);
+        totalGames = controller.getTotalGames(userID);
+    }
+
+    public void setStatus(String status){
+        this.status = status;
+    }
+
     private void createButton(){
+        userInfo();
+
         welcomeText = new JLabel("Welcome " + username);
-        welcomeText.setBounds(200, 310, 300, 50);
+        welcomeText.setBounds(220, 310, 300, 50);
         welcomeText.setFont(new Font("Italic", Font.PLAIN, 20));
         welcomeText.setForeground(Color.white);
 
@@ -179,12 +200,12 @@ public class MainMenu extends JFrame {
 
                         g.setColor(Color.white);
                         g.setFont(new Font(Font.SANS_SERIF, Font.ITALIC, 30));
-                        g.drawString("Username", 232, 250);
-                        g.setFont(new Font("Italic", Font.PLAIN, 50));
-                        g.drawString("Grand Master", 150, 330);
-                        g.drawString("100.000.000", 160, 435);
-                        g.drawString("999", 260, 540);
-                        g.drawString("777", 260, 645);
+                        g.drawString(username, 260, 250);
+                        g.setFont(new Font("Italic", Font.PLAIN, 30)); //45
+                        g.drawString(status, 150, 330);
+                        g.drawString(String.valueOf(totalPoints), 250, 435);
+                        g.drawString(String.valueOf(totalChallenges), 280, 540);
+                        g.drawString(String.valueOf(totalGames), 270, 645);
 
                         g.setColor(new Color(0, 21, 133));
                         g.setFont(new Font("Italic", Font.PLAIN, 30));

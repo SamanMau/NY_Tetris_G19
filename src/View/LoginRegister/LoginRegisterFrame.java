@@ -25,6 +25,8 @@ public class LoginRegisterFrame extends JFrame {
     private JTextField passwordTextField;
     private JButton loginButton2 = new JButton();
     private JButton registerButton2 = new JButton();
+    private String userName;
+    private String userPassword;
 
     public LoginRegisterFrame(Controller controller){
         super("Login/Register");
@@ -101,11 +103,12 @@ public class LoginRegisterFrame extends JFrame {
 
         usernameLabel = new JLabel();
         usernameLabel.setText("Username");
+
         usernameLabel.setBounds(150, 310, 300, 50);
         usernameLabel.setFont(new Font("Italic", Font.PLAIN, 20));
         usernameLabel.setForeground(Color.white);
 
-        usernameTextField = new JTextField();
+        this.usernameTextField = new JTextField();
         usernameTextField.setFont(new Font("Italic", Font.PLAIN, 20));
         usernameTextField   .setForeground(Color.BLACK);
         usernameTextField.setBounds(150, 350, 300, 50);
@@ -136,6 +139,7 @@ public class LoginRegisterFrame extends JFrame {
         backgroundLabel.add(passwordTextField);
 
         // Update frame
+
         addActionListeners();
         revalidate();
         repaint();
@@ -182,6 +186,7 @@ public class LoginRegisterFrame extends JFrame {
         backgroundLabel.add(passwordLabel);
         backgroundLabel.add(passwordTextField);
 
+        addActionListeners();
         // Update frame
         revalidate();
         repaint();
@@ -217,16 +222,52 @@ public class LoginRegisterFrame extends JFrame {
                 //If correct username and password. Move to mainMenu. Else show a error message and user have to try again
 
                 //Move to mainMenu
-                dispose();
-                controller.startMainMenu();
+                String name = usernameTextField.getText();
+                String password = passwordTextField.getText();
+                setPassword(password);
+                setName(name);
+                int exists = controller.validateUserLoginInfo(name, password);
+
+                if(exists == 0){
+                    JOptionPane.showMessageDialog(null, "Wrong username and/or password");
+                } else if(exists == 1){
+                    dispose();
+                    controller.startMainMenu();
+                }
+
             }
         });
 
         registerButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //If username and password given, it should save to the database and the user move to mainMenu.
+
+                String name = usernameTextField.getText();
+                String password = passwordTextField.getText();
+                setPassword(password);
+                setName(name);
+                String namee = controller.validateUserRegisterInfo(name, password);
+                System.out.println("Name: " + namee);
+                dispose();
+                controller.startMainMenu();
             }
         });
+
+    }
+
+    public void setPassword(String password){
+        this.userPassword = password;
+    }
+
+    public String getUserPassword(){
+        return userPassword;
+    }
+
+    public void setName(String name){
+        this.userName = name;
+    }
+
+    public String getUserName(){
+        return userName;
     }
 }
