@@ -257,6 +257,8 @@ public class Controller {
 
     public void stopTimer() {
         this.speed.stop();
+        mainFrame.setEnabledTrue();
+        disableKeyboard();
     }
 
     /**

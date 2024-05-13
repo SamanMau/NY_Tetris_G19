@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
 
 public class ThemePanel extends JPanel {
     private Control.Controller controller;
@@ -18,11 +19,15 @@ public class ThemePanel extends JPanel {
     private JLabel chooseText;
     private JButton party;
     private JButton partyInfo;
+    private JButton happy;
     private JButton wildWestInfo;
     private JTextArea partyText;
     private JButton wildWest;
     private Color color1;
     private Color color2;
+    private Color color3;
+    private Color color4;
+    private boolean multiColors;
     private View.Settings.AudioPanel audioPanel;
     private KeyboardPanel keyboardPanel;
     private JButton defaultTheme;
@@ -63,6 +68,7 @@ public class ThemePanel extends JPanel {
         this.add(rock);
         this.add(rockInfo);
         this.add(customize);
+        this.add(happy);
 
         this.add(defaultTheme);
     }
@@ -113,12 +119,18 @@ public class ThemePanel extends JPanel {
         rockInfo.setBounds(330, 220, 80, 15);
         rockInfo.setBackground(Color.white);
 
+        happy = new JButton("Happy theme");
+        happy.setBounds(180, 250, 150, 35);
+        happy.setBackground(Color.WHITE);
+        happy.setFocusable(false);
+
         Font font = new Font("Times new Roman", Font.BOLD, 16);
         chooseText.setFont(font);
         party.setFont(font);
         wildWest.setFont(font);
         rock.setFont(font);
         customize.setFont(font);
+        happy.setFont(font);
     }
 
     /**
@@ -131,6 +143,17 @@ public class ThemePanel extends JPanel {
     public void setColor(Color color1, Color color2){
         this.color1 = color1;
         this.color2 = color2;
+        multiColors = false;
+        repaint();
+    }
+
+    public void setMultiColors(Color color1, Color color2, Color color3,
+                               Color color4) {
+        this.color1 = color1;
+        this.color2 = color2;
+        this.color3 = color3;
+        this.color4 = color4;
+        multiColors = true;
         repaint();
     }
 
@@ -148,14 +171,32 @@ public class ThemePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
-
         Graphics2D graphics = (Graphics2D) g;
 
-        GradientPaint gradientPaint = new GradientPaint(0, 0,
-                color1, getWidth(), getHeight(), color2);
+        if(multiColors){
+            Point2D startGradient = new Point2D.Float(0, 0); //starting point of the gradient
+            Point2D endGradient = new Point2D.Float(getWidth(), getHeight()); //end point of the gradient
+            float[] colorCoordinates = {0.25f, 0.5f, 0.70f, 1.0f}; //places the colors at different places
+            Color[] colorList = {color1, color2, color3, color4};
 
-        graphics.setPaint(gradientPaint);
-        graphics.fillRect(0, 0, getWidth(), getHeight()); //the colors will cover the whole panel
+            LinearGradientPaint gradientPaint = new LinearGradientPaint(startGradient, endGradient,
+                    colorCoordinates, colorList); //paints colors on a line
+
+            graphics.setPaint(gradientPaint); //sets the paint created by "LinearGradientPaint"
+
+            graphics.fillRect(0, 0, getWidth(), getHeight()); //the colors will cover the whole panel
+
+        } else {
+
+            GradientPaint gradientPaint = new GradientPaint(0, 0,
+                    color1, getWidth(), getHeight(), color2);
+
+            graphics.setPaint(gradientPaint);
+
+            graphics.fillRect(0, 0, getWidth(), getHeight()); //the colors will cover the whole panel
+
+        }
+
     }
 
     /**
@@ -163,6 +204,41 @@ public class ThemePanel extends JPanel {
      * @author Saman
      */
     public void addListeners(){
+
+        happy.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Color color1 = new Color(255, 255, 0);
+                Color color2 = new Color(255, 165, 0);
+                Color color3 = new Color(255, 0, 255);
+                Color color4 = new Color(0, 191, 255);
+
+
+                 setMultiColors(color1, color2, color3, color4);
+
+
+                audioPanel.setMultiColors(color1, color2, color3, color4);
+                customizePanel.setMultiColors(color1, color2, color3, color4);
+                keyboardPanel.setMultiColors(color1, color2, color3, color4);
+                trailerPanel.setMultiColors(color1, color2, color3, color4);
+                topPanel.setMultiColors(color1, color2, color3, color4);
+
+
+
+               // setMultiColors(Color.ORANGE, Color.RED, Color.blue, Color.MAGENTA);
+
+                /*
+                audioPanel.setMultiColors(Color.ORANGE, Color.RED, Color.blue, Color.MAGENTA);
+                customizePanel.setMultiColors(Color.ORANGE, Color.RED, Color.blue, Color.MAGENTA);
+                keyboardPanel.setMultiColors(Color.ORANGE, Color.RED, Color.blue, Color.MAGENTA);
+                trailerPanel.setMultiColors(Color.ORANGE, Color.RED, Color.blue, Color.MAGENTA);
+                topPanel.setMultiColors(Color.ORANGE, Color.RED, Color.blue, Color.MAGENTA);
+
+                 */
+
+                topPanel.setNewMusic("src/Ljud/happy.wav");
+            }
+        });
 
         rock.addActionListener(new ActionListener() {
             @Override

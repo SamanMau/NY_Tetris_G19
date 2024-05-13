@@ -154,6 +154,10 @@ public class MainFrame extends JFrame{
         action.remove(key);
     }
 
+    public void setEnabledTrue(){
+        topPanel.setEnabledTrue();
+    }
+
     public void sendFileToTopPanel(String file){
             topPanel.setNewMusic(file);
     }

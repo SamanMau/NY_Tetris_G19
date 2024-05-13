@@ -18,6 +18,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
 
@@ -41,6 +42,9 @@ public class TopPanel extends JPanel {
     private BottomPanel bottomPanel;
     private Color color1;
     private Color color2;
+    private Color color3;
+    private Color color4;
+    private boolean multiColors;
 
     private float previousAudioVolume = 0;
     private float currentAudioVolume = 0;
@@ -81,6 +85,19 @@ public class TopPanel extends JPanel {
         this.setVisible(true);
     }
 
+    public void setMultiColors(Color color1, Color color2, Color color3,
+                               Color color4) {
+        this.color1 = color1;
+        this.color2 = color2;
+        this.color3 = color3;
+        this.color4 = color4;
+        rPanel.setMultiColors(color1, color2, color3, color4);
+        bottomPanel.setMultiColors(color1, color2, color3, color4);
+        lPanel.setMultiColors(color1, color2, color3, color4);
+        multiColors = true;
+        repaint();
+    }
+
     /**
      * Sets the two colors of the GUI. If the colors are different
      * then the colors will fade together, creating a gradient color.
@@ -89,11 +106,12 @@ public class TopPanel extends JPanel {
      * @author Saman
      */
     public void setColor(Color color1, Color color2){
-        this.color1 = color1;
-        this.color2 = color2;
+        this.color1 = color2;
+        this.color2 = color1;
         rPanel.setColor(color1, color2);
         bottomPanel.setColor(color1, color2);
         lPanel.setColor(color1, color2);
+        multiColors = false;
         repaint();
     }
 
@@ -122,14 +140,32 @@ public class TopPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
-
         Graphics2D graphics = (Graphics2D) g;
 
-        GradientPaint gradientPaint = new GradientPaint(0, 0,
-                color1, getWidth(), getHeight(), color2);
+        if(multiColors){
+            Point2D startGradient = new Point2D.Float(0, 0); //starting point of the gradient
+            Point2D endGradient = new Point2D.Float(getWidth(), getHeight()); //end point of the gradient
+            float[] colorCoordinates = {0.25f, 0.5f, 0.70f, 1.0f}; //places the colors at different places
+            Color[] colorList = {color1, color2, color3, color1};
 
-        graphics.setPaint(gradientPaint);
-        graphics.fillRect(0, 0, getWidth(), getHeight()); //the colors will cover the whole panel
+            LinearGradientPaint gradientPaint = new LinearGradientPaint(startGradient, endGradient,
+                    colorCoordinates, colorList); //paints colors on a line
+
+            graphics.setPaint(gradientPaint); //sets the paint created by "LinearGradientPaint"
+
+            graphics.fillRect(0, 0, getWidth(), getHeight()); //the colors will cover the whole panel
+
+        } else {
+
+            GradientPaint gradientPaint = new GradientPaint(0, 0,
+                    color1, getWidth(), getHeight(), color2);
+
+            graphics.setPaint(gradientPaint);
+
+            graphics.fillRect(0, 0, getWidth(), getHeight()); //the colors will cover the whole panel
+
+        }
+
     }
 
     /**
@@ -185,6 +221,10 @@ public class TopPanel extends JPanel {
 
     }
 
+    public void setEnabledTrue(){
+        startGame.setEnabled(true);
+    }
+
     /**
      * Adds actionlisteners to the different keys.
      * @author Saman
@@ -203,6 +243,7 @@ public class TopPanel extends JPanel {
                 mainFrame.linkKeyToEvent(true);
                 controller.startTimer(true, 500); //500
                 gameStarted = true;
+                startGame.setEnabled(false);
             }
         });
 
