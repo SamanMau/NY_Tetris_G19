@@ -59,10 +59,6 @@ public class MainMenu extends JFrame {
         totalGames = controller.getTotalGames(userID);
     }
 
-    public void setStatus(String status){
-        this.status = status;
-    }
-
     private void createButton(){
         userInfo();
 
@@ -187,6 +183,18 @@ public class MainMenu extends JFrame {
             }
         });
 
+        /*
+        Eftersom storleken på strängen "status" kan variera i längd, allt från
+        "Expert" till "The head of the table", så behöver vi en funktion som alltid lägger
+        status label i mitten, oavsett dess längd. Vi börjar med att använda FontMetrics,
+        som används för att mäta bredden på en label baserat på vilken font den är i.
+
+        I koden "int x = (width - statusWidth);" subtraherar vi längden på panelen med status
+        label panelen för att få fram den area som status label inte täcker. Exempelvis, om
+        label är 40 pixlar, och vår panel är 400 pixlar, så innebär det att label inte täcker
+        en area på 360 pixlar. Därefter dividerar vi 360 på 2 för att få fram den exakta mitten
+        för att kunna placera label.
+         */
         profileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -202,10 +210,28 @@ public class MainMenu extends JFrame {
                         g.setFont(new Font(Font.SANS_SERIF, Font.ITALIC, 30));
                         g.drawString(username, 260, 250);
                         g.setFont(new Font("Italic", Font.PLAIN, 30)); //45
-                        g.drawString(status, 150, 330);
-                        g.drawString(String.valueOf(totalPoints), 250, 435);
-                        g.drawString(String.valueOf(totalChallenges), 280, 540);
-                        g.drawString(String.valueOf(totalGames), 270, 645);
+
+                        FontMetrics fontMetrics = g.getFontMetrics(); //mäter storleken på en sträng
+                        int statusWidth = fontMetrics.stringWidth(status); //hämtar storleken på status label i pixlar
+                        int statusX = (width - statusWidth) / 2;
+
+                        String totalPointsText = String.valueOf(totalPoints);
+                        int pointsWidth = fontMetrics.stringWidth(totalPointsText);
+
+                        int totalPointsX = (width - pointsWidth) / 2;
+
+                        String totalChallengesText = String.valueOf(totalChallenges);
+                        int challengesWidth = fontMetrics.stringWidth(totalChallengesText);
+                        int challengesX = (width - challengesWidth) / 2;
+
+                        String totalGamesText = String.valueOf(totalGames);
+                        int totalGamesWidth = fontMetrics.stringWidth(totalGamesText);
+                        int totalGamesX = (width - totalGamesWidth) / 2;
+
+                        g.drawString(status, statusX, 330); //150
+                        g.drawString(totalPointsText, totalPointsX, 435); //250
+                        g.drawString(totalChallengesText, challengesX, 540); //280
+                        g.drawString(totalGamesText, totalGamesX, 645); //270
 
                         g.setColor(new Color(0, 21, 133));
                         g.setFont(new Font("Italic", Font.PLAIN, 30));
