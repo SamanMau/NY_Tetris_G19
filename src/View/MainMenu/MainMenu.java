@@ -32,12 +32,14 @@ public class MainMenu extends JFrame {
     private int totalChallenges;
     private int totalGames;
     private int userID;
+    private TopPanel topPanel;
 
     public MainMenu(Controller controller, MainFrame mainFrame){
         super("Main menu");
         this.setSize(width, height);
         this.controller = controller;
         this.mainFrame = mainFrame;
+        this.topPanel = topPanel;
 
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -159,7 +161,7 @@ public class MainMenu extends JFrame {
         highscoreButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                Highscores highscoresFrame = new Highscores();
             }
         });
 
@@ -239,9 +241,6 @@ public class MainMenu extends JFrame {
                         g.drawString("Total points", 222, 475);
                         g.drawString("Total challenges", 190, 580);
                         g.drawString("Total games", 217, 685);
-
-
-
 
                         super.paintComponent(g);
                     }

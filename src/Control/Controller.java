@@ -10,6 +10,7 @@ import View.GameFrame.MainFrame;
 import View.GameFrame.Playfield;
 import View.LoginRegister.LoginRegisterFrame;
 import View.MainMenu.MainMenu;
+import View.GameFrame.TopPanel;
 import Control.DatabaseController;
 
 import javax.sound.sampled.*;
@@ -19,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -36,7 +38,7 @@ public class Controller {
     private Color[][] board = new Color[20][10];
     private Timer speed;
     private boolean collision;
-    private boolean gameState = false;
+    private boolean gameState = true;
     private Playfield playfield;
     private MainFrame mainFrame;
     private Clip clip;
@@ -123,6 +125,23 @@ public class Controller {
         MainMenu mainMenu = new MainMenu(this, mainFrame);
     }
 
+    public void setMultiColors(Color color1, Color color2, Color color3,
+                               Color color4){
+        if(mainFrame != null){
+            mainFrame.setMultiColors(color1, color2, color3, color4);
+        }
+    }
+
+    public void setColor(Color color1, Color color2){
+        if(mainFrame != null){
+            mainFrame.setColor(color1, color2);
+
+        }
+    }
+
+    public MainFrame getMainFrame(){
+        return mainFrame;
+    }
     public void chooseOwnSong() {
         JFileChooser fileChooser = new JFileChooser();
         int openDialog = fileChooser.showSaveDialog(null);
@@ -175,6 +194,13 @@ public class Controller {
         }
     }
 
+    public boolean gameIsOver() {
+        gameState = false;
+        playfield.repaint();
+        return false;
+    }
+
+
     public void checkIfNewStatus(){
         int points = databaseController.getUserPoints(userID);
         String status = databaseController.getStatus(userID);
@@ -200,7 +226,6 @@ public class Controller {
         else if((points > 37000) && (!status.equals("The Head Of The Table"))){ //150000 (original)
             databaseController.updateStatus("The Head Of The Table", userID);
         }
-
     }
 
     private boolean checkBlockOutOfPlayfield() {
@@ -220,11 +245,16 @@ public class Controller {
             databaseController.updateAmountGames(userID);
             databaseController.updatePoints(userID, totalPoints);
             checkIfNewStatus();
+            gameIsOver();
             resetColorBoard();
             return true;
         } else {
             return false;
         }
+    }
+
+    public boolean gameState() {
+        return gameState;
     }
 
     //Den här metoden kontrollerar ifall det aktuella blocket har nått botten av spelplanen
@@ -596,6 +626,23 @@ public class Controller {
             else if(theme == "Party"){
                 mainFrame.changeTheme(theme);
             }
+        }
+    }
+
+    /**
+     * Method called to play a video from the desktop. URI is used to
+     * format the file location to a URI, which then gets sent to
+     * the "browse" method in the Desktop class to play the video.
+     * @author Saman
+     */
+    public void playVideo(){
+        File video = new File("src/Video/trailer.mp4");
+        URI uri = video.toURI();
+
+        try {
+            Desktop.getDesktop().browse(uri);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -11,6 +11,8 @@
 package View.GameFrame;
 
 import Control.Controller;
+import View.GameFrame.*;
+import View.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -144,5 +146,18 @@ public class MainFrame extends JFrame{
 
     public int getTotalPoints(){
         return lPanel.getTotalPoints();
+    }
+
+    public TopPanel getTopPanel() {
+        return topPanel;
+    }
+
+    public void setMultiColors(Color color1, Color color2, Color color3,
+                               Color color4){
+        topPanel.setMultiColors(color1, color2, color3, color4);
+    }
+
+    public void setColor(Color color1, Color color2){
+        topPanel.setColor(color1, color2);
     }
 }
