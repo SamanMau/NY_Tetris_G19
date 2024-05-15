@@ -1,3 +1,10 @@
+/**
+ * A panel created by the informationframe.
+ * It shows different text based on which
+ * information button has been clicked
+ * @author Saman
+ */
+
 package View.Information;
 
 import javax.swing.*;
@@ -20,6 +27,12 @@ public class InformationPanel extends JPanel {
         this.add(textArea);
     }
 
+    /**
+     * Shows different text based on what information button was clicked
+     * The value of the string variable "choice" is sent by informationframe,
+     * which in turn is sent by the themepanel.
+     * @author Saman
+     */
     public void setTextField(){
         createTextArea();
 
