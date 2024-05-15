@@ -37,7 +37,7 @@ public class MainMenu extends JFrame {
     public MainMenu(Controller controller, MainFrame mainFrame){
         super("Main menu");
         this.setSize(width, height);
-        this.controller = controllers;
+        this.controller = controller;
         this.mainFrame = mainFrame;
         this.topPanel = topPanel;
 
