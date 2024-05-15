@@ -83,16 +83,11 @@ public class SettingsFrame extends JFrame {
     }
 
     public void setColors(Color color1, Color color2){
-        View.GameFrame.MainFrame mainFrame = controller.getMainFrame();
         audioPanel.setColor(color1, color2);
         themePanel.setColor(color1, color2);
         keyboardPanel.setColor(color1, color2);
         trailerPanel.setColor(color1, color2);
         customizePanel.setColor(color1, color2);
-
-        if(mainFrame != null){
-            mainFrame.getTopPanel().setColor(color1, color2);
-        }
-
+        controller.getMainFrame().getTopPanel().setColor(color1, color2);
     }
 }

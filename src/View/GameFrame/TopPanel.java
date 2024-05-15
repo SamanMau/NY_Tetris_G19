@@ -28,7 +28,7 @@ public class TopPanel extends JPanel {
     private boolean gameStarted;
     private Clip clip;
     private Controller controller;
- //   private sound se= new sound();
+    private sound se= new sound();
     private String music, musicOff;
     private FloatControl controlVolume;
 
@@ -108,6 +108,18 @@ public class TopPanel extends JPanel {
         lPanel.setColor(color1, color2);
         multiColors = false;
         repaint();
+    }
+
+    public void setNewMusic(String newSong){
+        clip.stop();
+        clip.close();
+        music = newSong;
+        controlVolume.setValue(currentAudioVolume);
+
+        if(musicOff.equals("on")){
+            se.setFile(music);
+            se.playMusic();
+        }
     }
 
     /**
@@ -195,6 +207,8 @@ public class TopPanel extends JPanel {
         playMusic.setActionCommand("gameMusic");
         music = "src/Ljud/audio1.wav";
         musicOff ="on";
+        se.setFile(music);
+        se.playMusic();
 
         settings.setBounds(500, 0, 100, 35);
         settings.setBackground(Color.WHITE);
@@ -231,7 +245,7 @@ public class TopPanel extends JPanel {
         playMusic.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                controller.checkIfPlay(musicOff);
+                checkIfPlay(musicOff);
             }
         });
 
@@ -241,8 +255,6 @@ public class TopPanel extends JPanel {
                 if(gameStarted){
                     controller.stopTimer();
                     gameStarted = false;
-                    controller.disableKeyboard();
-                    setEnabledTrue();
                 } else {
                     return;
                 }
@@ -250,7 +262,94 @@ public class TopPanel extends JPanel {
         });
     }
 
+    /**
+     * Checks if the music is playing or not.
+     * @param musicOff
+     * @author Saman, Melvin
+     */
+    public void checkIfPlay(String musicOff){
+        if (musicOff.equals("off")) {
+            se.setFile(music);
+            se.playMusic();
+            this.musicOff = "on";
+            playMusic.setText("Music on");
+        }
 
+        else if (musicOff.equals("on")) {
+            se.stop();
+            this.musicOff = ("off");
+            playMusic.setText("Music off");
+        }
     }
 
+    /**
+     * Increments the volume of the music currently playing.
+     * "6.0" is the highest decible that a song can handle.
+     * We need to make sure that the audio does not go above
+     * 6.0, as it would cause an error. The higher the number,
+     * the higher the volume. We then set this audio volume
+     * to the float control, which changes the volume.
+     * @author Saman
+     */
+    public void incrementVolume() {
+        if(currentAudioVolume >= 6.0f){
+            currentAudioVolume = 6.0f;
+        }
+        else{
+            currentAudioVolume += 2.0f; //"f" står för float
+        }
 
+        controlVolume.setValue(currentAudioVolume);
+    }
+
+    /**
+     * Decrements the volume of the music currently playing.
+     * "-80.0" is the lowest decible that a song can handle.
+     * We need to make sure that the audio does not go under
+     * -80.0, as it would cause an error. We then set this
+     * audio volume to the float control, which changes the volume.
+     * @author Saman
+     */
+    public void decrementVolume() {
+        currentAudioVolume -= 3.0f; //"f" står för float
+
+        if(currentAudioVolume <= -80.f){
+            currentAudioVolume = -80.f;
+        }
+
+        controlVolume.setValue(currentAudioVolume);
+    }
+
+    public class sound {
+        File file;
+        AudioInputStream audioInputStream;
+        public void setFile(String SoundFileName) {
+            try {
+                file = new File(SoundFileName);
+                audioInputStream = AudioSystem.getAudioInputStream(file);
+                clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                controlVolume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                controlVolume.setValue(currentAudioVolume);
+
+            } catch (UnsupportedAudioFileException e) {
+                throw new RuntimeException(e);
+            } catch (LineUnavailableException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        public void playMusic(){
+            clip.start();
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        }
+
+        public void stop(){
+            clip.stop();
+            clip.close();
+        }
+    }
+
+}
