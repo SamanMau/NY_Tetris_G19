@@ -70,7 +70,7 @@ public class Controller {
         music = "src/Ljud/audio1.wav";
         musicOff ="on";
         setFile(music);
-        //playMusic();
+        playMusic();
     }
 
     public void setUserID(int id){
@@ -154,7 +154,10 @@ public class Controller {
                 if (!(name.endsWith(".wav"))) {
                     throw new IncorrectFormatException("The file type needs to be .wav");
                 } else {
-                    mainFrame.sendFileToTopPanel(name);
+                 //   if(mainFrame != null) {
+                        //mainFrame.sendFileToTopPanel(name);
+                        setNewMusic(name);
+                //    }
                 }
             }
         } catch (IncorrectFormatException e) {
@@ -507,6 +510,7 @@ public class Controller {
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             controlVolume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            controlVolume.setValue(-20.f);
 
         } catch (UnsupportedAudioFileException e) {
             throw new RuntimeException(e);
@@ -539,9 +543,11 @@ public class Controller {
     }
 
     /**
-     * This method is used to lower the volume of music.
-     * The lowest volume that a floatControl can manage is
-     * -80, of type float.
+     * Decrements the volume of the music currently playing.
+     * "-80.0" is the lowest decible that a song can handle.
+     * We need to make sure that the audio does not go under
+     * -80.0, as it would cause an error. We then set this
+     * audio volume to the float control, which changes the volume.
      * @author Saman
      */
     public void decrementVolume() {
@@ -554,8 +560,17 @@ public class Controller {
         controlVolume.setValue(currentAudioVolume);
     }
 
+    /**
+     * Increments the volume of the music currently playing.
+     * "6.0" is the highest decible that a song can handle.
+     * We need to make sure that the audio does not go above
+     * 6.0, as it would cause an error. The higher the number,
+     * the higher the volume. We then set this audio volume
+     * to the float control, which changes the volume.
+     * @author Saman
+     */
     public void incrementVolume() {
-        if(currentAudioVolume > 6.0f){
+        if(currentAudioVolume >= 6.0f){
             currentAudioVolume = 6.0f;
         }
         else{
@@ -590,6 +605,14 @@ public class Controller {
         }
 
         return exists;
+    }
+
+    public void createKeys(String key1, String key2, String key3, String key4,
+                           String key5){
+
+        if(mainFrame != null){
+            mainFrame.createKeys(key1, key2, key3, key4, key5);
+        }
     }
 
     public String validateUserRegisterInfo(String name, String password){

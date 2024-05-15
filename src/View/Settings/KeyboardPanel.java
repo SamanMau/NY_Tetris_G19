@@ -1,7 +1,6 @@
 package Settings;
 
 import Control.Controller;
-import View.GameFrame.MainFrame;
 import View.Settings.SettingsFrame;
 
 import javax.swing.*;
@@ -12,7 +11,6 @@ import java.awt.geom.Point2D;
 
 public class KeyboardPanel extends JPanel {
     private Controller controller;
-    private MainFrame mainFrame;
     private SettingsFrame settingsFrame;
     private JRadioButton arrow;
     private JRadioButton WASD;
@@ -116,14 +114,14 @@ public class KeyboardPanel extends JPanel {
         WASD.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainFrame.createKeys("A","D","W","S","SPACE");
+                controller.createKeys("A","D","W","S","SPACE");
             }
         });
 
         arrow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainFrame.createKeys("LEFT", "RIGHT", "UP", "DOWN", "SPACE");
+                controller.createKeys("LEFT", "RIGHT", "UP", "DOWN", "SPACE");
             }
         });
 
