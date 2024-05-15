@@ -237,6 +237,8 @@ public class TopPanel extends JPanel {
                 if(gameStarted){
                     controller.stopTimer();
                     gameStarted = false;
+                    controller.disableKeyboard();
+                    setEnabledTrue();
                 } else {
                     return;
                 }
