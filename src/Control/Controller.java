@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Queue;
+import java.util.LinkedList;
 
 public class Controller {
     private BlocksManager blocksManager;
@@ -56,6 +58,7 @@ public class Controller {
     private int totalPoints;
     private int totalChallenges;
     private int totalGames;
+    private Queue<TetrisBlock> blockQueue;
 
     public Controller() {
         this.playfield = new Playfield(this);
@@ -63,7 +66,9 @@ public class Controller {
         blocksManager = new BlocksManager();
         this.listOfShape = blocksManager.getListOfShape();
         this.listOfColors = blocksManager.getListOfColors();
-        generateBlock();
+        //generateBlock();
+        blockQueue = new LinkedList<>();
+        addToQueue();
         collision = false;
         databaseController = new DatabaseController();
 
@@ -71,6 +76,25 @@ public class Controller {
         musicOff ="on";
         setFile(music);
         playMusic();
+    }
+
+    public void addToQueue(){
+        while(blockQueue.size() < 2){
+            blockQueue.add(generateBlock());
+        }
+
+        if(mainFrame != null){
+            block = blockQueue.poll();
+
+            TetrisBlock newBlock = blockQueue.peek();
+            if(newBlock != null){
+                int index = newBlock.getIndex();
+
+                mainFrame.sendUpComingBlock(index);
+
+            }
+        }
+
     }
 
     public void setUserID(int id){
@@ -175,7 +199,8 @@ public class Controller {
                 public void actionPerformed(ActionEvent e) {
                     if (collision) {
                         addColorToBoard();
-                        generateBlock();
+                        //generateBlock();
+                        addToQueue();
                         collision = false;
                     } else {
                         boolean checkBlockOutOfPlayfield = checkBlockOutOfPlayfield();
@@ -244,6 +269,7 @@ public class Controller {
         }
             if (blockHeight + rowWithColor > board.length) {
             System.out.println("You lost");
+            mainFrame.getTopPanel().setEnabledTrue();
             int totalPoints = mainFrame.getTotalPoints();
             databaseController.updateAmountGames(userID);
             databaseController.updatePoints(userID, totalPoints);
@@ -304,11 +330,12 @@ public class Controller {
      * is then used to get a tetris block from an index. We retrieve its shape
      * and color, and then we create a new instance of "block".
      */
-    public void generateBlock() {
+    public TetrisBlock generateBlock() {
         randomNum = rd.nextInt(7);
-        int[][] shape = listOfShape.get(4);
-        Color color = listOfColors.get(4);
-        block = new TetrisBlock(shape, color);
+        int[][] shape = listOfShape.get(randomNum);
+        Color color = listOfColors.get(randomNum);
+        block = new TetrisBlock(shape, color, randomNum);
+        return block;
     }
 
     /**
@@ -396,7 +423,8 @@ public class Controller {
                 block.incrementY(-1);
                 addColorToBoard();
                 clearFullRows();
-                generateBlock();
+                //generateBlock();
+                addToQueue();
                 collision = false;
             }
 

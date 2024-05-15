@@ -11,8 +11,6 @@
 package View.GameFrame;
 
 import Control.Controller;
-import View.GameFrame.*;
-import View.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,23 +20,23 @@ public class MainFrame extends JFrame{
     private static int width = 615; //600
     private static int height = 840; // 800
     private InputMap key;
-    private Playfield playfield;
+    private View.GameFrame.Playfield playfield;
     private ActionMap action;
     private Controller controller;
-    private TopPanel topPanel;
-    private LPanel lPanel;
-    private RPanel rPanel;
-    private BottomPanel bottomPanel;
+    private View.GameFrame.TopPanel topPanel;
+    private View.LPanel lPanel;
+    private View.GameFrame.RPanel rPanel;
+    private View.GameFrame.BottomPanel bottomPanel;
 
-    public MainFrame(Controller controller, Playfield playfield){
+    public MainFrame(Controller controller, View.GameFrame.Playfield playfield){
         super("Tetris");
         this.controller = controller;
         this.setSize(width, height);
         this.playfield = playfield;
-        lPanel = new LPanel(controller);
-        rPanel = new RPanel();
-        bottomPanel = new BottomPanel();
-        topPanel = new TopPanel(playfield, lPanel, rPanel, bottomPanel, this, controller);
+        lPanel = new View.LPanel(controller);
+        rPanel = new View.GameFrame.RPanel();
+        bottomPanel = new View.GameFrame.BottomPanel();
+        topPanel = new View.GameFrame.TopPanel(playfield, lPanel, rPanel, bottomPanel, this, controller);
 
         //Add panel
         this.add(lPanel, BorderLayout.WEST);
@@ -118,6 +116,33 @@ public class MainFrame extends JFrame{
         }
     }
 
+    public void sendUpComingBlock(int index){
+        switch (index){
+            case 0: lPanel.showUpComingBlock("src/Bilder/0.png");
+                break;
+
+            case 1: lPanel.showUpComingBlock("src/Bilder/1.png");
+                break;
+
+            case 2: lPanel.showUpComingBlock("src/Bilder/2.png");
+                break;
+
+            case 3: lPanel.showUpComingBlock("src/Bilder/3.png");
+                break;
+
+            case 4: lPanel.showUpComingBlock("src/Bilder/4.png");
+                break;
+
+            case 5: lPanel.showUpComingBlock("src/Bilder/5.png");
+                break;
+
+            case 6: lPanel.showUpComingBlock("src/Bilder/6.png");
+                break;
+
+        }
+
+    }
+
     public void disableKeyboard(String key) {
         action.remove(key);
     }
@@ -148,7 +173,7 @@ public class MainFrame extends JFrame{
         return lPanel.getTotalPoints();
     }
 
-    public TopPanel getTopPanel() {
+    public View.GameFrame.TopPanel getTopPanel() {
         return topPanel;
     }
 

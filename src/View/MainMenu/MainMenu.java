@@ -37,7 +37,7 @@ public class MainMenu extends JFrame {
     public MainMenu(Controller controller, MainFrame mainFrame){
         super("Main menu");
         this.setSize(width, height);
-        this.controller = controller;
+        this.controller = controllers;
         this.mainFrame = mainFrame;
         this.topPanel = topPanel;
 
@@ -155,6 +155,7 @@ public class MainMenu extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 dispose();
                 controller.startMainFrame();
+                controller.addToQueue();
             }
         });
 
