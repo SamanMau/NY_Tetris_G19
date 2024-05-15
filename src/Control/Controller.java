@@ -534,7 +534,7 @@ public class Controller {
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             controlVolume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            controlVolume.setValue(currentAudioVolume);
+            controlVolume.setValue(-20.0f);
 
         } catch (UnsupportedAudioFileException e) {
             throw new RuntimeException(e);
