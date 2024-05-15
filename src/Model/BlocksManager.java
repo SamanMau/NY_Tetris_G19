@@ -21,7 +21,7 @@ public class BlocksManager {
     private int[][] iBlock;
     private int[][] oBlock;
     private int[][] jBlock;
-    private ArrayList<int[][]> listOfBlocks;
+    private ArrayList<int[][]> listOfShape;
     private ArrayList<Color> listOfColors;
 
     /**
@@ -30,7 +30,7 @@ public class BlocksManager {
      */
     public BlocksManager(){
         createBlock();
-        listOfBlocks = new ArrayList<>();
+        listOfShape = new ArrayList<>();
         this.listOfColors = new ArrayList<>();
         addBlockToList();
         addColorsToList();
@@ -50,13 +50,13 @@ public class BlocksManager {
      * Initializes all block.
      */
     public void addBlockToList(){
-        listOfBlocks.add(tBlock);
-        listOfBlocks.add(lBlock);
-        listOfBlocks.add(zBlock);
-        listOfBlocks.add(sBlock);
-        listOfBlocks.add(iBlock);
-        listOfBlocks.add(oBlock);
-        listOfBlocks.add(jBlock);
+        listOfShape.add(tBlock);
+        listOfShape.add(lBlock);
+        listOfShape.add(zBlock);
+        listOfShape.add(sBlock);
+        listOfShape.add(iBlock);
+        listOfShape.add(oBlock);
+        listOfShape.add(jBlock);
     }
     /**
      * Add to the list of colors.
@@ -76,8 +76,8 @@ public class BlocksManager {
      *
      * @return The list of block.
      */
-    public ArrayList<int[][]> getBlockList(){
-        return listOfBlocks;
+    public ArrayList<int[][]> getListOfShape(){
+        return listOfShape;
     }
 
     /**

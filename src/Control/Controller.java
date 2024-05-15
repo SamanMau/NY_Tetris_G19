@@ -6,9 +6,14 @@ package Control;
 import Model.IncorrectFormatException;
 import Model.BlocksManager;
 import Model.TetrisBlock;
-import View.MainFrame;
-import View.Playfield;
+import View.GameFrame.MainFrame;
+import View.GameFrame.Playfield;
+import View.LoginRegister.LoginRegisterFrame;
+import View.MainMenu.MainMenu;
+import View.GameFrame.TopPanel;
+import Control.DatabaseController;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -35,22 +40,41 @@ public class Controller {
     private Color[][] board = new Color[20][10];
     private Timer speed;
     private boolean collision;
-    private boolean gameState = false;
+    private boolean gameState = true;
     private Playfield playfield;
     private MainFrame mainFrame;
+    private Clip clip;
+    private String music, musicOff;
+    private FloatControl controlVolume;
+    private File file;
+    private AudioInputStream audioInputStream;
+    private float previousAudioVolume = 0;
+    private float currentAudioVolume = 0;
+    private LoginRegisterFrame loginRegisterFrame;
+    private DatabaseController databaseController;
+    private String nameUser;
+    private int userID;
+    private String status;
+    private int totalPoints;
+    private int totalChallenges;
+    private int totalGames;
     private Queue<TetrisBlock> blockQueue;
-    private TetrisBlock nextBlock;
 
     public Controller() {
         this.playfield = new Playfield(this);
-        mainFrame = new MainFrame(this, playfield);
+        loginRegisterFrame = new LoginRegisterFrame(this);
         blocksManager = new BlocksManager();
-        this.listOfShape = blocksManager.getBlockList();
+        this.listOfShape = blocksManager.getListOfShape();
         this.listOfColors = blocksManager.getListOfColors();
         //generateBlock();
         blockQueue = new LinkedList<>();
         addToQueue();
         collision = false;
+        databaseController = new DatabaseController();
+        music = "src/Ljud/audio1.wav";
+        musicOff ="on";
+        setFile(music);
+        playMusic();
     }
 
     public void addToQueue(){
@@ -58,26 +82,89 @@ public class Controller {
             blockQueue.add(generateBlock());
         }
 
-        block = blockQueue.poll();
+        if(mainFrame != null){
+            block = blockQueue.poll();
 
-        TetrisBlock newBlock = blockQueue.peek();
-        if(newBlock != null){
-            int index = newBlock.getIndex();
-            mainFrame.sendUpComingBlock(index);
+            TetrisBlock newBlock = blockQueue.peek();
+            if(newBlock != null){
+                int index = newBlock.getIndex();
+
+                mainFrame.sendUpComingBlock(index);
+
+            }
         }
+
     }
 
-    public void setCurrentSpeed(int speed){
+    public void setUserID(int id){
+        this.userID = id;
+    }
+
+    public void setCurrentSpeed(int speed) {
         this.seconds = speed;
     }
 
-    /**
-     * This method is called when the user tries choosing a song.
-     * JFileChooser opens up the file manager in the users computer.
-     * The variable "openDialog" returns "0" if the user selected a file.
-     * The try catch checks if the chosen file is a wav file or not.
-     * @author Saman
-     */
+
+    public int getCurrentSpeed() {
+        return seconds;
+    }
+
+    public int getUserIDNoConn(){
+        return userID;
+    }
+
+    public int getUserID(String nameUser){
+        int id = databaseController.getUserID(nameUser);
+        return id;
+    }
+
+    public String getStatus(int id){
+        String status = databaseController.getStatus(id);
+        return status;
+    }
+
+    public int getTotalGames(int id){
+        int totalGames = databaseController.getTotalGames(id);
+        return totalGames;
+    }
+
+    public int getTotalPoints(String nameUser){
+        int id = databaseController.getUserID(nameUser);
+
+        int points = databaseController.getUserPoints(id);
+        return points;
+    }
+
+    public int getTotalChallenges(int id){
+        int totalChallenges = databaseController.getTotalChallenges(id);
+        return totalChallenges;
+    }
+
+    public void startMainFrame(){
+        mainFrame = new MainFrame(this, playfield);
+    }
+
+    public void startMainMenu(){
+        MainMenu mainMenu = new MainMenu(this, mainFrame);
+    }
+
+    public void setMultiColors(Color color1, Color color2, Color color3,
+                               Color color4){
+        if(mainFrame != null){
+            mainFrame.setMultiColors(color1, color2, color3, color4);
+        }
+    }
+
+    public void setColor(Color color1, Color color2){
+        if(mainFrame != null){
+            mainFrame.setColor(color1, color2);
+
+        }
+    }
+
+    public MainFrame getMainFrame(){
+        return mainFrame;
+    }
     public void chooseOwnSong() {
         JFileChooser fileChooser = new JFileChooser();
         int openDialog = fileChooser.showSaveDialog(null);
@@ -96,10 +183,6 @@ public class Controller {
         } catch (IncorrectFormatException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
-    }
-
-    public int getCurrentSpeed(){
-        return seconds;
     }
 
     public void startTimer(boolean gameState, int time) {
@@ -125,12 +208,47 @@ public class Controller {
                             }
                         } else {
                             stopTimer();
+
                         }
                     }
                     playfield.repaint();
                 }
             });
             this.speed.start();
+        }
+    }
+
+    public boolean gameIsOver() {
+        gameState = false;
+        playfield.repaint();
+        return false;
+    }
+
+
+    public void checkIfNewStatus(){
+        int points = databaseController.getUserPoints(userID);
+        String status = databaseController.getStatus(userID);
+
+        if((points >= 10000) && (points <= 14000) && (!status.equals("Intermediate"))){ // 10000 && 20000 (original)
+            databaseController.updateStatus("Intermediate", userID);
+
+        } else if(points > 14000 && (points <= 20000) && (!status.equals("Advanced"))){ //20000 && 40000 (original)
+            databaseController.updateStatus("Advanced", userID);
+
+        } else if(points > 20000 && (points <= 24000) && (!status.equals("Expert"))){ // 40000 && 60000 (original)
+            databaseController.updateStatus("Expert", userID);
+        }
+        else if(points > 24000 && (points <= 29000) && (!status.equals("Master"))){ //60000 && 80000 (original)
+            databaseController.updateStatus("Master", userID);
+        }
+        else if(points > 29000 && (points <= 33000) && (!status.equals("Grandmaster"))){ //80000 && 100000 (original)
+            databaseController.updateStatus("Grandmaster", userID);
+        }
+        else if(points > 33000 && (points <= 37000) && (!status.equals("Legend"))){ //100000 && 150000 (original)
+            databaseController.updateStatus("Legend", userID);
+        }
+        else if((points > 37000) && (!status.equals("The Head Of The Table"))){ //150000 (original)
+            databaseController.updateStatus("The Head Of The Table", userID);
         }
     }
 
@@ -147,11 +265,21 @@ public class Controller {
         }
             if (blockHeight + rowWithColor > board.length) {
             System.out.println("You lost");
+            mainFrame.getTopPanel().setEnabledTrue();
+            int totalPoints = mainFrame.getTotalPoints();
+            databaseController.updateAmountGames(userID);
+            databaseController.updatePoints(userID, totalPoints);
+            checkIfNewStatus();
+            gameIsOver();
             resetColorBoard();
             return true;
         } else {
             return false;
         }
+    }
+
+    public boolean gameState() {
+        return gameState;
     }
 
     //Den här metoden kontrollerar ifall det aktuella blocket har nått botten av spelplanen
@@ -260,12 +388,13 @@ public class Controller {
     }
 
     /**
-     * This method is called when a button is clicked on the keyboard.
-     * Different approaches are taken based on what key has been pressed.
-     * The nested if statements checks whether the tetris block already
-     * is at the edge or at the bottom of the playfield.
-     * @param action refers to the button clicked
-     * @author Saman, Huy
+     * The if statemnts after "if(action.equals(specific action)" basically checks if the tetris block already
+     * is at the edge of the play field. This is essential so, when the block is at the edge or at the bottom,
+     * the user cannot longer move the block. In informal words, the first if statement can be translated to
+     * "if the block already is at the edge of the game area or if the block has touched the bottom". If this
+     * statement is not correct, then the block is moved to the relevant location.
+     *
+     * @param action represents what key has been pressed.
      */
     public void decideMove(String action) {
         if (action.equals("left")) {
@@ -302,33 +431,6 @@ public class Controller {
         }
         playfield.repaint();
     }
-
-    /**
-     * Method called to play a video from the desktop. URI is used to
-     * format the file location to a URI, which then gets sent to
-     * the "browse" method in the Desktop class to play the video.
-     * @author Saman
-     */
-    public void playVideo(){
-        File video = new File("src/Video/trailer.mp4");
-        URI uri = video.toURI();
-
-        try {
-            Desktop.getDesktop().browse(uri);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /*
-    private void restartGameLogic() {
-        collision = false;
-        if (!gameState) {
-            startTimer(true, 500);
-        }
-    }
-
-     */
 
     public void clearFullRows() {
         int width = board[0].length;
@@ -425,4 +527,164 @@ public class Controller {
         mainFrame.disableKeyboard("spaceKey");
     }
 
+    public void setFile(String SoundFileName) {
+        try {
+            file = new File(SoundFileName);
+            audioInputStream = AudioSystem.getAudioInputStream(file);
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            controlVolume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            controlVolume.setValue(-20.0f);
+
+        } catch (UnsupportedAudioFileException e) {
+            throw new RuntimeException(e);
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void playMusic(){
+        clip.start();
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+    }
+
+    public void stop(){
+        clip.stop();
+        clip.close();
+    }
+
+    public void setNewMusic(String newSong){
+        clip.stop();
+        clip.close();
+        music = newSong;
+
+        if(musicOff.equals("on")){
+            setFile(music);
+            playMusic();
+        }
+    }
+
+    /**
+     * This method is used to lower the volume of music.
+     * The lowest volume that a floatControl can manage is
+     * -80, of type float.
+     * @author Saman
+     */
+    public void decrementVolume() {
+        currentAudioVolume -= 3.0f; //"f" står för float
+
+        if(currentAudioVolume < -80.f){
+            currentAudioVolume = -80.f;
+        }
+
+        controlVolume.setValue(currentAudioVolume);
+    }
+
+    /**
+     * Increments the volume of the music currently playing.
+     * "6.0" is the highest decible that a song can handle.
+     * We need to make sure that the audio does not go above
+     * 6.0, as it would cause an error. The higher the number,
+     * the higher the volume. We then set this audio volume
+     * to the float control, which changes the volume.
+     * @author Saman
+     */
+    public void incrementVolume() {
+        if(currentAudioVolume >= 6.0f){
+            currentAudioVolume = 6.0f;
+        }
+        else{
+            currentAudioVolume += 3.0f; //"f" står för float
+        }
+
+        controlVolume.setValue(currentAudioVolume);
+    }
+
+    /**
+     * Checks if the music is playing or not.
+     * @param musicOff
+     * @author Saman, Melvin
+     */
+    public void checkIfPlay(String musicOff){
+        if (musicOff.equals("off")) {
+            setFile(music);
+            playMusic();
+            this.musicOff = "on";
+           // playMusic.setText("Music on");
+        }
+
+        else if (musicOff.equals("on")) {
+            stop();
+            this.musicOff = ("off");
+            //playMusic.setText("Music off");
+        }
+    }
+
+    public int validateUserLoginInfo(String name, String password){
+        int exists = databaseController.validateUserLoginInfo(name, password);
+
+        if(exists == 1){
+            setUserName(name);
+            int id = getUserID(nameUser);
+            setUserID(id);
+        }
+
+        return exists;
+    }
+
+    public String validateUserRegisterInfo(String name, String password){
+        String userName = databaseController.validateUserRegisterInfo(name, password);
+        setUserName(userName);
+        int id = getUserID(nameUser);
+        setUserID(id);
+
+        return userName;
+    }
+
+    public void setUserName(String name){
+        this.nameUser = name;
+    }
+
+    public String getUserName(){
+        return nameUser;
+    }
+
+    public String getMusicOff() {
+        return musicOff;
+    }
+
+    public void changeKeys(String left, String right, String up, String down, String space){
+        if (mainFrame != null){
+            mainFrame.createKeys(left,right,up,down,space);
+        }
+    }
+    public void changeTheme(String theme){
+        if (mainFrame != null){
+            if(theme == "Wildwest"){
+                mainFrame.changeTheme(theme);
+            }
+            else if(theme == "Party"){
+                mainFrame.changeTheme(theme);
+            }
+        }
+    }
+
+    /**
+     * Method called to play a video from the desktop. URI is used to
+     * format the file location to a URI, which then gets sent to
+     * the "browse" method in the Desktop class to play the video.
+     * @author Saman
+     */
+    public void playVideo(){
+        File video = new File("src/Video/trailer.mp4");
+        URI uri = video.toURI();
+
+        try {
+            Desktop.getDesktop().browse(uri);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

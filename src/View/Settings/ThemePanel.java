@@ -3,44 +3,46 @@
  * @author Saman
  */
 
-package Settings;
+package View.Settings;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
+import View.GameFrame.*;
+import View.Settings.CustomizePanel;
 
 public class ThemePanel extends JPanel {
     private Control.Controller controller;
-    private View.MainFrame mainFrame;
-    private View.BottomPanel bottomPanel;
-    private View.TopPanel topPanel;
+    private BottomPanel bottomPanel;
     private JLabel chooseText;
     private JButton party;
     private JButton partyInfo;
+    private JButton happy;
     private JButton wildWestInfo;
     private JTextArea partyText;
     private JButton wildWest;
     private Color color1;
     private Color color2;
+    private Color color3;
+    private Color color4;
+    private boolean multiColors;
     private View.Settings.AudioPanel audioPanel;
-    private KeyboardPanel keyboardPanel;
+    private Settings.KeyboardPanel keyboardPanel;
     private JButton defaultTheme;
     private Color defaultColor1;
     private Color defaultColor2;
-    private TrailerPanel trailerPanel;
+    private Settings.TrailerPanel trailerPanel;
     private JButton rock;
     private JButton rockInfo;
     private JLabel customize;
     private CustomizePanel customizePanel;
 
-    public ThemePanel(Control.Controller controller, View.MainFrame mainFrame,
-                      View.TopPanel topPanel, View.Settings.AudioPanel audioPanel,
-                      KeyboardPanel keyboardPanel, TrailerPanel trailerPanel,
+    public ThemePanel(Control.Controller controller, View.Settings.AudioPanel audioPanel,
+                      Settings.KeyboardPanel keyboardPanel, Settings.TrailerPanel trailerPanel,
                       CustomizePanel customizePanel){
         this.controller = controller;
-        this.mainFrame = mainFrame;
-        this.topPanel = topPanel;
         this.trailerPanel = trailerPanel;
         this.customizePanel = customizePanel;
 
@@ -63,6 +65,7 @@ public class ThemePanel extends JPanel {
         this.add(rock);
         this.add(rockInfo);
         this.add(customize);
+        this.add(happy);
 
         this.add(defaultTheme);
     }
@@ -113,12 +116,18 @@ public class ThemePanel extends JPanel {
         rockInfo.setBounds(330, 220, 80, 15);
         rockInfo.setBackground(Color.white);
 
+        happy = new JButton("Happy theme");
+        happy.setBounds(180, 250, 150, 35);
+        happy.setBackground(Color.WHITE);
+        happy.setFocusable(false);
+
         Font font = new Font("Times new Roman", Font.BOLD, 16);
         chooseText.setFont(font);
         party.setFont(font);
         wildWest.setFont(font);
         rock.setFont(font);
         customize.setFont(font);
+        happy.setFont(font);
     }
 
     /**
@@ -131,6 +140,17 @@ public class ThemePanel extends JPanel {
     public void setColor(Color color1, Color color2){
         this.color1 = color1;
         this.color2 = color2;
+        multiColors = false;
+        repaint();
+    }
+
+    public void setMultiColors(Color color1, Color color2, Color color3,
+                               Color color4) {
+        this.color1 = color1;
+        this.color2 = color2;
+        this.color3 = color3;
+        this.color4 = color4;
+        multiColors = true;
         repaint();
     }
 
@@ -148,14 +168,32 @@ public class ThemePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
-
         Graphics2D graphics = (Graphics2D) g;
 
-        GradientPaint gradientPaint = new GradientPaint(0, 0,
-                color1, getWidth(), getHeight(), color2);
+        if(multiColors){
+            Point2D startGradient = new Point2D.Float(0, 0); //starting point of the gradient
+            Point2D endGradient = new Point2D.Float(getWidth(), getHeight()); //end point of the gradient
+            float[] colorCoordinates = {0.25f, 0.5f, 0.70f, 1.0f}; //places the colors at different places
+            Color[] colorList = {color1, color2, color3, color4};
 
-        graphics.setPaint(gradientPaint);
-        graphics.fillRect(0, 0, getWidth(), getHeight()); //the colors will cover the whole panel
+            LinearGradientPaint gradientPaint = new LinearGradientPaint(startGradient, endGradient,
+                    colorCoordinates, colorList); //paints colors on a line
+
+            graphics.setPaint(gradientPaint); //sets the paint created by "LinearGradientPaint"
+
+            graphics.fillRect(0, 0, getWidth(), getHeight()); //the colors will cover the whole panel
+
+        } else {
+
+            GradientPaint gradientPaint = new GradientPaint(0, 0,
+                    color1, getWidth(), getHeight(), color2);
+
+            graphics.setPaint(gradientPaint);
+
+            graphics.fillRect(0, 0, getWidth(), getHeight()); //the colors will cover the whole panel
+
+        }
+
     }
 
     /**
@@ -164,30 +202,55 @@ public class ThemePanel extends JPanel {
      */
     public void addListeners(){
 
+        happy.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Color color1 = new Color(255, 255, 0);
+                Color color2 = new Color(255, 165, 0);
+                Color color3 = new Color(255, 0, 255);
+                Color color4 = new Color(0, 191, 255);
+
+
+                setMultiColors(color1, color2, color3, color4);
+
+
+                audioPanel.setMultiColors(color1, color2, color3, color4);
+                customizePanel.setMultiColors(color1, color2, color3, color4);
+                keyboardPanel.setMultiColors(color1, color2, color3, color4);
+                trailerPanel.setMultiColors(color1, color2, color3, color4);
+                controller.setMultiColors(color1, color2, color3, color4);
+
+                controller.setNewMusic("src/Ljud/happy.wav");
+            }
+        });
+
         rock.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Color color1 = new Color(128, 0, 32);  // Burgundy
                 Color color2 = new Color(54, 69, 79);  // Charcoal
-                topPanel.setColor(color1, color2);
+                controller.setColor(color1, color2);
                 setColor(color1, color2);
                 keyboardPanel.setColor(color1, color2);
                 audioPanel.setColor(color1, color2);
                 trailerPanel.setColor(color1, color2);
+                customizePanel.setColor(color1, color2);
 
-                topPanel.setNewMusic("src/Ljud/rock.wav");
+
+                controller.setNewMusic("src/Ljud/rock.wav");
             }
         });
 
         defaultTheme.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                topPanel.setColor(defaultColor1, defaultColor2);
+                controller.setColor(defaultColor1, defaultColor2);
                 setColor(defaultColor1, defaultColor2);
                 keyboardPanel.setColor(defaultColor1, defaultColor2);
                 audioPanel.setColor(defaultColor1, defaultColor2);
                 trailerPanel.setColor(defaultColor1, defaultColor2);
                 customizePanel.setColor(defaultColor1, defaultColor2);
+                controller.setNewMusic("src/Ljud/audio1.wav");
             }
         });
 
@@ -195,6 +258,13 @@ public class ThemePanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 View.Information.InformationFrame informationFrame = new View.Information.InformationFrame("Party info");
+            }
+        });
+
+        rockInfo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                View.Information.InformationFrame informationFrame = new View.Information.InformationFrame("Rock info");
             }
         });
 
@@ -208,12 +278,13 @@ public class ThemePanel extends JPanel {
         party.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                topPanel.setColor(Color.MAGENTA, Color.YELLOW);
+                controller.setColor(Color.MAGENTA, Color.YELLOW);
                 setColor(Color.MAGENTA, Color.YELLOW);
                 keyboardPanel.setColor(Color.MAGENTA, Color.YELLOW);
                 audioPanel.setColor(Color.MAGENTA, Color.YELLOW);
                 trailerPanel.setColor(Color.MAGENTA, Color.YELLOW);
-                topPanel.setNewMusic("src/Ljud/party.wav");
+                customizePanel.setColor(Color.MAGENTA, Color.YELLOW);
+                controller.setNewMusic("src/Ljud/party.wav");
             }
         });
 
@@ -224,11 +295,12 @@ public class ThemePanel extends JPanel {
                 Color color1 = new Color(255, 209, 87);
                 Color color2 = new Color(194, 53, 45);
 
-                topPanel.setColor(color2 ,color1);
+                controller.setColor(color2 ,color1);
                 setColor(color2, color1);
                 keyboardPanel.setColor(color2, color1);
                 audioPanel.setColor(color2, color1);
-                topPanel.setNewMusic("src/Ljud/wildWest.wav");
+                customizePanel.setColor(color2, color1);
+                controller.setNewMusic("src/Ljud/wildWest.wav");
             }
         });
     }

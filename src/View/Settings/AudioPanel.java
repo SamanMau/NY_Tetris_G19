@@ -1,28 +1,21 @@
-/**
- * This panel manages audios. The user can choose pre-defined
- * themes, choose a theme from their filemanager, and change
- * the volume of the audio.
- * @author Saman
- */
-
 package View.Settings;
 
 import Control.Controller;
-import View.MainFrame;
-import View.TopPanel;
-
-import View.Settings.SettingsFrame;
+import View.GameFrame.MainFrame;
+import View.GameFrame.TopPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
 
 public class AudioPanel extends JPanel {
     private Controller controller;
     private MainFrame mainFrame;
     private TopPanel topPanel;
     private ButtonGroup group;
+    private boolean multiColors;
     private JRadioButton theme1;
     private JRadioButton theme2;
     private JRadioButton theme3;
@@ -37,15 +30,16 @@ public class AudioPanel extends JPanel {
     private JButton lower;
     private Color color1;
     private Color color2;
+    private Color color3;
+    private Color color4;
 
-    public AudioPanel(Controller controller, MainFrame mainFrame, SettingsFrame settingsFrame,
-                      TopPanel topPanel){
+
+    public AudioPanel(Controller controller, SettingsFrame settingsFrame){
         this.setBounds(100, 100, 100, 100);
+        this.setBackground(Color.ORANGE);
         this.setLayout(null);
 
         this.controller = controller;
-        this.mainFrame = mainFrame;
-        this.topPanel = topPanel;
 
         setUpButtons();
         setFont();
@@ -71,11 +65,6 @@ public class AudioPanel extends JPanel {
         this.add(lower);
     }
 
-    /**
-     * This method creates buttons, jLabels and sets
-     * different colors.
-     * @author Saman
-     */
     public void setUpButtons(){
         font = new Font("Times new Roman", Font.BOLD, 16);
 
@@ -88,44 +77,39 @@ public class AudioPanel extends JPanel {
         defaultSong = new JRadioButton("Default");
 
         theme1.setBounds(200, 50, 80, 35);
-        theme1.setBackground(Color.WHITE);
+        theme1.setBackground(Color.LIGHT_GRAY);
 
         theme2.setBounds(200, 90, 80, 35);
-        theme2.setBackground(Color.WHITE);
+        theme2.setBackground(Color.LIGHT_GRAY);
 
         theme3.setBounds(200, 130, 80, 35);
-        theme3.setBackground(Color.WHITE);
+        theme3.setBackground(Color.LIGHT_GRAY);
 
         defaultSong.setBounds(200, 170, 80, 35);
-        defaultSong.setBackground(Color.WHITE);
+        defaultSong.setBackground(Color.LIGHT_GRAY);
 
         chooseOwnText = new JLabel("Or choose your own");
         chooseOwnText.setBounds(185, 210, 150, 40);
 
         chooseOwnSongBtn = new JButton("Choose own song");
         chooseOwnSongBtn.setBounds(170, 250, 160, 40);
-        chooseOwnSongBtn.setBackground(Color.WHITE);
+        chooseOwnSongBtn.setBackground(Color.lightGray);
 
         information = new JLabel("The chosen file needs to be a .wav file");
         information.setBounds(120, 290, 300, 40);
 
         higher = new JButton("+");
         higher.setBounds(260, 380, 50, 30);
-        higher.setBackground(Color.WHITE);
+        higher.setBackground(Color.lightGray);
 
         lower = new JButton("-");
         lower.setBounds(160, 380, 50, 30);
-        lower.setBackground(Color.WHITE);
+        lower.setBackground(Color.lightGray);
 
         changeAudioText = new JLabel("Change volume of audio");
         changeAudioText.setBounds(160, 340, 280, 40);
     }
 
-    /**
-     * This method sets fonts to different
-     * jLabels and buttons.
-     * @author Saman
-     */
     public void setFont(){
         chooseSong.setFont(font);
         defaultSong.setFont(font);
@@ -138,12 +122,6 @@ public class AudioPanel extends JPanel {
         changeAudioText.setFont(font);
     }
 
-    /**
-     * This method sets up a picture of a music logo,
-     * it changes the size of the piccture to fit in
-     * the GUI.
-     * @author Saman
-     */
     public void setUpPicture(){
         ImageIcon image = new ImageIcon("src/Bilder/musicVolume.png");
         Image changedSize = image.getImage().getScaledInstance(40, 40, Image.SCALE_AREA_AVERAGING);
@@ -162,12 +140,29 @@ public class AudioPanel extends JPanel {
      * @param color2 second color that will be faded
      * @author Saman
      */
+    /**
+     * Sets the two colors of the GUI. If the colors are different
+     * then the colors will fade together, creating a gradient color.
+     * @param color1 first color that will be faded
+     * @param color2 second color that will be faded
+     * @author Saman
+     */
     public void setColor(Color color1, Color color2){
         this.color1 = color1;
         this.color2 = color2;
+        multiColors = false;
         repaint();
     }
 
+    public void setMultiColors(Color color1, Color color2, Color color3,
+                               Color color4) {
+        this.color1 = color1;
+        this.color2 = color2;
+        this.color3 = color3;
+        this.color4 = color4;
+        multiColors = true;
+        repaint();
+    }
 
     /**
      * This method manages the gradient of colors. "super.paintComponent(g)" is
@@ -183,13 +178,33 @@ public class AudioPanel extends JPanel {
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
 
-        Graphics2D graphics = (Graphics2D) g;
+        if(multiColors){
+            Point2D startGradient = new Point2D.Float(0, 0); //starting point of the gradient
+            Point2D endGradient = new Point2D.Float(getWidth(), getHeight()); //end point of the gradient
+            float[] colorCoordinates = {0.25f, 0.5f, 0.70f, 1.0f}; //places the colors at different places
+            Color[] colorList = {color1, color2, color3, color4};
 
-        GradientPaint gradientPaint = new GradientPaint(0, 0,
-                color1, getWidth(), getHeight(), color2);
+            LinearGradientPaint gradientPaint = new LinearGradientPaint(startGradient, endGradient,
+                    colorCoordinates, colorList); //paints colors on a line
 
-        graphics.setPaint(gradientPaint);
-        graphics.fillRect(0, 0, getWidth(), getHeight()); //the colors will cover the whole panel
+            Graphics2D graphics = (Graphics2D) g;
+            graphics.setPaint(gradientPaint); //sets the paint created by "LinearGradientPaint"
+
+            graphics.fillRect(0, 0, getWidth(), getHeight()); //the colors will cover the whole panel
+
+        } else {
+
+            Graphics2D graphics = (Graphics2D) g;
+
+            GradientPaint gradientPaint = new GradientPaint(0, 0,
+                    color1, getWidth(), getHeight(), color2);
+
+            graphics.setPaint(gradientPaint);
+
+            graphics.fillRect(0, 0, getWidth(), getHeight()); //the colors will cover the whole panel
+
+        }
+
     }
 
     /**
@@ -201,35 +216,35 @@ public class AudioPanel extends JPanel {
         higher.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                topPanel.incrementVolume();
+                controller.incrementVolume();
             }
         });
 
         lower.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                topPanel.decrementVolume();
+                controller.decrementVolume();
             }
         });
 
         theme1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                topPanel.setNewMusic("src/Ljud/dark.wav");
+                controller.setNewMusic("src/Ljud/dark.wav");
             }
         });
 
         theme2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                topPanel.setNewMusic("src/Ljud/audio2.wav");
+                controller.setNewMusic("src/Ljud/audio2.wav");
             }
         });
 
         theme3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                topPanel.setNewMusic("src/Ljud/audio3.wav");
+                controller.setNewMusic("src/Ljud/audio3.wav");
             }
         });
 
@@ -243,7 +258,7 @@ public class AudioPanel extends JPanel {
         defaultSong.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                topPanel.setNewMusic("src/Ljud/audio1.wav");
+                controller.setNewMusic("src/Ljud/audio1.wav");
             }
         });
 

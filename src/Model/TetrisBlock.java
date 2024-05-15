@@ -18,21 +18,21 @@ public class TetrisBlock  {
      * @param shape when creating a block, you enter 1:s and 0:s in a 2d array.
      * @param color and then you give it a color.
      */
-   public TetrisBlock(int[][] shape, Color color, int index){
-       createBlock(shape, color);
-       this.x = 4;
-       this.y = 0;
-       this.index = index;
-   }
-
-    public int getIndex(){
-        return index;
+    public TetrisBlock(int[][] shape, Color color, int index){
+        createBlock(shape, color);
+        this.x = 4;
+        this.y = 0;
+        this.index = index;
     }
 
    public void createBlock(int[][] shape, Color color){
        this.shape = shape;
        this.color = color;
    }
+
+    public int getIndex(){
+        return index;
+    }
 
    public int[][] getShape(){
        return this.shape;
@@ -46,6 +46,7 @@ public class TetrisBlock  {
      * The methods below are used to increment or decrement x and y coordinates so that
      * we are able to move a block in tehe gameArea.
      */
+
     public void incrementY() {
         y++;
     }
@@ -69,26 +70,14 @@ public class TetrisBlock  {
         return y;
     }
 
-    /**
-     * Tetris block moves one step to the right.
-     * @author Saman
-     */
     public void goRight(){
         x++;
     }
 
-    /**
-     * Tetris block moves one step to the left.
-     * @author Saman
-     */
     public void goLeft(){
         x--;
     }
 
-    /**
-     * Tetris block moves one step down.
-     * @author Saman
-     */
     public void goDown(){
         y++;
     }
@@ -144,7 +133,6 @@ public class TetrisBlock  {
             return tempShape;
         }
     }
-
     public boolean xOutOfBounds(){
         if(getX() + getShape().length  <= 10){
             return false;
