@@ -71,11 +71,10 @@ public class Controller {
         addToQueue();
         collision = false;
         databaseController = new DatabaseController();
-
         music = "src/Ljud/audio1.wav";
         musicOff ="on";
         setFile(music);
-        //playMusic();
+        playMusic();
     }
 
     public void addToQueue(){
@@ -535,6 +534,7 @@ public class Controller {
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             controlVolume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            controlVolume.setValue(currentAudioVolume);
 
         } catch (UnsupportedAudioFileException e) {
             throw new RuntimeException(e);
@@ -582,8 +582,17 @@ public class Controller {
         controlVolume.setValue(currentAudioVolume);
     }
 
+    /**
+     * Increments the volume of the music currently playing.
+     * "6.0" is the highest decible that a song can handle.
+     * We need to make sure that the audio does not go above
+     * 6.0, as it would cause an error. The higher the number,
+     * the higher the volume. We then set this audio volume
+     * to the float control, which changes the volume.
+     * @author Saman
+     */
     public void incrementVolume() {
-        if(currentAudioVolume > 6.0f){
+        if(currentAudioVolume >= 6.0f){
             currentAudioVolume = 6.0f;
         }
         else{
@@ -593,6 +602,11 @@ public class Controller {
         controlVolume.setValue(currentAudioVolume);
     }
 
+    /**
+     * Checks if the music is playing or not.
+     * @param musicOff
+     * @author Saman, Melvin
+     */
     public void checkIfPlay(String musicOff){
         if (musicOff.equals("off")) {
             setFile(music);
@@ -673,5 +687,4 @@ public class Controller {
             throw new RuntimeException(e);
         }
     }
-
 }

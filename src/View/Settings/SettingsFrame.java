@@ -6,12 +6,8 @@
 package View.Settings;
 
 import Control.Controller;
-import Settings.CustomizePanel;
 import Settings.KeyboardPanel;
-import Settings.ThemePanel;
 import Settings.TrailerPanel;
-import View.GameFrame.*;
-import Control.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +19,7 @@ public class SettingsFrame extends JFrame {
     private JTabbedPane tab;
     private Color color1;
     private Color color2;
-    private View.Settings.AudioPanel audioPanel;
+    private AudioPanel audioPanel;
     private KeyboardPanel keyboardPanel;
     private ThemePanel themePanel;
     private TrailerPanel trailerPanel;
@@ -88,6 +84,10 @@ public class SettingsFrame extends JFrame {
         keyboardPanel.setColor(color1, color2);
         trailerPanel.setColor(color1, color2);
         customizePanel.setColor(color1, color2);
-        controller.getMainFrame().getTopPanel().setColor(color1, color2);
+
+        if(controller.getMainFrame() != null){
+            controller.getMainFrame().getTopPanel().setColor(color1, color2);
+        }
+
     }
 }

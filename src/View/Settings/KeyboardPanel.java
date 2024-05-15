@@ -116,14 +116,14 @@ public class KeyboardPanel extends JPanel {
         WASD.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainFrame.createKeys("A","D","W","S","SPACE");
+                controller.changeKeys("A","D","W","S","SPACE");
             }
         });
 
         arrow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainFrame.createKeys("LEFT", "RIGHT", "UP", "DOWN", "SPACE");
+                controller.changeKeys("LEFT", "RIGHT", "UP", "DOWN", "SPACE");
             }
         });
 

@@ -1,18 +1,19 @@
-package Settings;
+package View.Settings;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
-import View.GameFrame.*;
+
+
 
 public class CustomizePanel extends JPanel {
     private Control.Controller controller;
     private View.GameFrame.TopPanel topPanel;
     private View.Settings.AudioPanel audioPanel;
-    private KeyboardPanel keyboardPanel;
-    private TrailerPanel trailerPanel;
+    private Settings.KeyboardPanel keyboardPanel;
+    private Settings.TrailerPanel trailerPanel;
     private View.Settings.SettingsFrame settingsFrame;
     private boolean multiColors;
     private Color color1Default;
@@ -50,7 +51,7 @@ public class CustomizePanel extends JPanel {
     private JButton blueAndGreen;
 
     public CustomizePanel(Control.Controller controller, View.Settings.AudioPanel audioPanel,
-                          KeyboardPanel keyboardPanel, TrailerPanel trailerPanel,
+                          Settings.KeyboardPanel keyboardPanel, Settings.TrailerPanel trailerPanel,
                           View.Settings.SettingsFrame settingsFrame){
         this.setLayout(null);
         this.controller = controller;

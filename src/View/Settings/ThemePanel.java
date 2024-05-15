@@ -3,7 +3,7 @@
  * @author Saman
  */
 
-package Settings;
+package View.Settings;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import View.GameFrame.*;
+import View.Settings.CustomizePanel;
 
 public class ThemePanel extends JPanel {
     private Control.Controller controller;
@@ -28,18 +29,18 @@ public class ThemePanel extends JPanel {
     private Color color4;
     private boolean multiColors;
     private View.Settings.AudioPanel audioPanel;
-    private KeyboardPanel keyboardPanel;
+    private Settings.KeyboardPanel keyboardPanel;
     private JButton defaultTheme;
     private Color defaultColor1;
     private Color defaultColor2;
-    private TrailerPanel trailerPanel;
+    private Settings.TrailerPanel trailerPanel;
     private JButton rock;
     private JButton rockInfo;
     private JLabel customize;
     private CustomizePanel customizePanel;
 
     public ThemePanel(Control.Controller controller, View.Settings.AudioPanel audioPanel,
-                      KeyboardPanel keyboardPanel, TrailerPanel trailerPanel,
+                      Settings.KeyboardPanel keyboardPanel, Settings.TrailerPanel trailerPanel,
                       CustomizePanel customizePanel){
         this.controller = controller;
         this.trailerPanel = trailerPanel;
