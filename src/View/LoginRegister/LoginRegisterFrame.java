@@ -22,7 +22,7 @@ public class LoginRegisterFrame extends JFrame {
     private JLabel usernameLabel;
     private JTextField usernameTextField;
     private JLabel passwordLabel;
-    private JPasswordField  passwordTextField;
+    private JTextField passwordTextField;
     private JButton loginButton2 = new JButton();
     private JButton registerButton2 = new JButton();
     private String userName;
@@ -119,13 +119,12 @@ public class LoginRegisterFrame extends JFrame {
         passwordLabel.setFont(new Font("Italic", Font.PLAIN, 20));
         passwordLabel.setForeground(Color.white);
 
-        passwordTextField = new JPasswordField ();
+        passwordTextField = new JTextField();
         passwordTextField.setFont(new Font("Italic", Font.PLAIN, 20));
         passwordTextField.setForeground(Color.BLACK);
         passwordTextField.setBounds(150, 430, 300, 50);
-        passwordTextField.setEchoChar('*');
 
-                loginButton2 = new JButton("Log in");
+        loginButton2 = new JButton("Log in");
         loginButton2.setFont(new Font("Italic", Font.PLAIN, 25));
         loginButton2.setBounds(150, 510, 300, 50);
         loginButton2.setFocusPainted(false);
@@ -168,7 +167,7 @@ public class LoginRegisterFrame extends JFrame {
         passwordLabel.setFont(new Font("Italic", Font.PLAIN, 20));
         passwordLabel.setForeground(Color.white);
 
-        passwordTextField = new JPasswordField();
+        passwordTextField = new JTextField();
         passwordTextField.setFont(new Font("Italic", Font.PLAIN, 20));
         passwordTextField.setForeground(Color.BLACK);
         passwordTextField.setBounds(150, 430, 300, 50);

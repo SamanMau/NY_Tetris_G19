@@ -2,6 +2,7 @@ package View.Settings;
 
 import Control.Controller;
 import View.GameFrame.MainFrame;
+import View.GameFrame.TopPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +13,7 @@ import java.awt.geom.Point2D;
 public class AudioPanel extends JPanel {
     private Controller controller;
     private MainFrame mainFrame;
+    private TopPanel topPanel;
     private ButtonGroup group;
     private boolean multiColors;
     private JRadioButton theme1;
@@ -214,35 +216,35 @@ public class AudioPanel extends JPanel {
         higher.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.incrementVolume();
+                topPanel.incrementVolume();
             }
         });
 
         lower.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.decrementVolume();
+                topPanel.decrementVolume();
             }
         });
 
         theme1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.setNewMusic("src/Ljud/dark.wav");
+                topPanel.setNewMusic("src/Ljud/dark.wav");
             }
         });
 
         theme2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.setNewMusic("src/Ljud/audio2.wav");
+                topPanel.setNewMusic("src/Ljud/audio2.wav");
             }
         });
 
         theme3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.setNewMusic("src/Ljud/audio3.wav");
+                topPanel.setNewMusic("src/Ljud/audio3.wav");
             }
         });
 
@@ -256,7 +258,7 @@ public class AudioPanel extends JPanel {
         defaultSong.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.setNewMusic("src/Ljud/audio1.wav");
+                topPanel.setNewMusic("src/Ljud/audio1.wav");
             }
         });
 
