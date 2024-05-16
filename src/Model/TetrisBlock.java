@@ -173,8 +173,6 @@ public class TetrisBlock  {
         }
         return 0;
     }
-
-
     public void rotateBlock() {
         //TODO rotate here
     }

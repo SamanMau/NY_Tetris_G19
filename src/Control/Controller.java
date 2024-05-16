@@ -139,6 +139,7 @@ public class Controller {
             for (int col = 0; col < shape[0].length; col++) {
                 /*If the cell of the block at row and col contain 1,
                  set the board at Y-coordinate and X-coordinate to the color of the block*/
+
                 if (shape[row][col] == 1) {
                     int boardRow = y + row;
                     int boardCol = x + col;
@@ -164,7 +165,9 @@ public class Controller {
      * and color, and then we create a new instance of "block".
      */
     public void generateBlock() {
+        clearFullRows();
         randomNum = rd.nextInt(7);
+        //randomNum = 4;
         int[][] shape = listOfShape.get(randomNum);
         Color color = listOfColors.get(randomNum);
         block = new TetrisBlock(shape, color);
@@ -203,8 +206,8 @@ public class Controller {
                 }
             }
         }
+        //clearFullRows();
         collision = true;
-        clearFullRows();
     }
 
 
@@ -255,8 +258,8 @@ public class Controller {
 
             if (isAtBottom() || isCollidingWithBlock(0)) {
                 block.incrementY(-1);
-                addColorToBoard();
                 clearFullRows();
+                addColorToBoard();
                 generateBlock();
                 collision = false;
             }
@@ -282,9 +285,8 @@ public class Controller {
         int height = board.length;
 
         //loop som kollar ifall någon rad är fylld.
-        for (int row = height - 1; row >= 0; row--) {
+        for (int row = height-1 ; row > 0; row--) {
             boolean fullRow = true;
-
             //inre loop går igenom varje column i en specefik rad för
             // att se om alla columner är fyllda.
             for (int col = 0; col < width; col++) {
@@ -296,9 +298,11 @@ public class Controller {
             //om true, en loop som raderar raden och flyttar ovanstående ner.
             // "r" = varje kolumn i specefik rad får värdet av kolumnen från raden ovanför.
             if (fullRow) {
+
                 for (int r = row; r > 0; r--) {
                     for (int c = 0; c < width; c++) {
                         board[r][c] = board[r- 1][c];
+                        //board[row][c] = null;
                     }
                 }
 
