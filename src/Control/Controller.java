@@ -229,10 +229,10 @@ public class Controller {
         int points = databaseController.getUserPoints(userID);
         String status = databaseController.getStatus(userID);
 
-        if((points >= 10000) && (points <= 14000) && (!status.equals("Intermediate"))){ // 10000 && 20000 (original)
+        if((points >= 1000) && (points <= 2000) && (!status.equals("Intermediate"))){ // 10000 && 20000 (original)
             databaseController.updateStatus("Intermediate", userID);
 
-        } else if(points > 14000 && (points <= 20000) && (!status.equals("Advanced"))){ //20000 && 40000 (original)
+        } else if(points > 2000 && (points <= 20000) && (!status.equals("Advanced"))){ //20000 && 40000 (original)
             databaseController.updateStatus("Advanced", userID);
 
         } else if(points > 20000 && (points <= 24000) && (!status.equals("Expert"))){ // 40000 && 60000 (original)
