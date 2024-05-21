@@ -98,6 +98,11 @@ public class LPanel extends JPanel {
         changeSpeed();
     }
 
+    public void resetLevel() {
+        newLevel = 0;
+        levelText.setText("Level: " + newLevel);
+    }
+
     /**
      * Updates the user's total score and checks if the user has reached the next level.
      * This method is called whenever the user scores point, and it updates the total score,
@@ -113,6 +118,11 @@ public class LPanel extends JPanel {
             increaseLevel();
             this.nextScore += 3000;
         }
+    }
+
+    public void resetPoints() {
+        totalScore = 0;
+        poangText.setText("Points: " + totalScore);
     }
 
     public void showUpComingBlock(String file){
@@ -164,6 +174,8 @@ public class LPanel extends JPanel {
         this.add(Box.createVerticalStrut(50));
         this.add(nextBlockText);
     }
+
+
 
     /**
      * This method manages the gradient of colors. "super.paintComponent(g)" is

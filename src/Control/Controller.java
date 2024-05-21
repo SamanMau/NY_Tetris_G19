@@ -278,6 +278,11 @@ public class Controller {
         }
     }
 
+    public void resetGame() {
+        mainFrame.resetPoints();
+        mainFrame.resetLevel();
+    }
+
     public boolean gameState() {
         return gameState;
     }
@@ -330,7 +335,7 @@ public class Controller {
         randomNum = rd.nextInt(7);
         int[][] shape = listOfShape.get(randomNum);
         Color color = listOfColors.get(randomNum);
-        block = new TetrisBlock(shape, color, randomNum);
+        block = new TetrisBlock(shape, color,randomNum);
         return block;
     }
 

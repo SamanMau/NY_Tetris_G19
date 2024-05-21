@@ -217,6 +217,7 @@ public class TopPanel extends JPanel {
         startGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                controller.resetGame();
                 mainFrame.linkKeyToEvent(true);
                 controller.startTimer(true, 500); //500
                 gameStarted = true;

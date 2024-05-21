@@ -185,4 +185,12 @@ public class MainFrame extends JFrame{
     public void setColor(Color color1, Color color2){
         topPanel.setColor(color1, color2);
     }
+
+    public void resetPoints() {
+        lPanel.resetPoints();
+    }
+
+    public void resetLevel() {
+        lPanel.resetLevel();
+    }
 }
