@@ -33,6 +33,7 @@ public class MainMenu extends JFrame {
     private int totalGames;
     private int userID;
     private TopPanel topPanel;
+    private JButton returnHighscoresButton;
 
     public MainMenu(Controller controller, MainFrame mainFrame){
         super("Main menu");
@@ -201,53 +202,77 @@ public class MainMenu extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 getRootPane().setGlassPane(new JComponent() {
                     public void paintComponent(Graphics g) {
-                        g.setColor(new Color(0, 0, 0, 150));
-                        g.fillRect(0, 0, getWidth(), getHeight());
+                        if(username != null){
+                            disableButton();
+                            g.setColor(new Color(0, 0, 0, 150));
+                            g.fillRect(0, 0, getWidth(), getHeight());
 
-                        g.setColor(new Color(0, 157, 191));
-                        g.fillRoundRect(125, 200, 350, 500, 50, 50);
+                            g.setColor(new Color(0, 157, 191));
+                            g.fillRoundRect(125, 200, 350, 500, 50, 50);
 
-                        g.setColor(Color.white);
-                        g.setFont(new Font(Font.SANS_SERIF, Font.ITALIC, 30));
-                        g.drawString(username, 260, 250);
-                        g.setFont(new Font("Italic", Font.PLAIN, 30)); //45
+                            g.setColor(Color.white);
+                            g.setFont(new Font(Font.SANS_SERIF, Font.ITALIC, 30));
+                            g.drawString(username, 260, 250);
+                            g.setFont(new Font("Italic", Font.PLAIN, 30)); //45
 
-                        FontMetrics fontMetrics = g.getFontMetrics(); //mäter storleken på en sträng
-                        int statusWidth = fontMetrics.stringWidth(status); //hämtar storleken på status label i pixlar
-                        int statusX = (width - statusWidth) / 2;
+                            FontMetrics fontMetrics = g.getFontMetrics(); //mäter storleken på en sträng
+                            int statusWidth = fontMetrics.stringWidth(status); //hämtar storleken på status label i pixlar
+                            int statusX = (width - statusWidth) / 2;
 
-                        String totalPointsText = String.valueOf(totalPoints);
-                        int pointsWidth = fontMetrics.stringWidth(totalPointsText);
+                            String totalPointsText = String.valueOf(totalPoints);
+                            int pointsWidth = fontMetrics.stringWidth(totalPointsText);
 
-                        int totalPointsX = (width - pointsWidth) / 2;
+                            int totalPointsX = (width - pointsWidth) / 2;
 
-                        String totalChallengesText = String.valueOf(totalChallenges);
-                        int challengesWidth = fontMetrics.stringWidth(totalChallengesText);
-                        int challengesX = (width - challengesWidth) / 2;
+                            String totalChallengesText = String.valueOf(totalChallenges);
+                            int challengesWidth = fontMetrics.stringWidth(totalChallengesText);
+                            int challengesX = (width - challengesWidth) / 2;
 
-                        String totalGamesText = String.valueOf(totalGames);
-                        int totalGamesWidth = fontMetrics.stringWidth(totalGamesText);
-                        int totalGamesX = (width - totalGamesWidth) / 2;
+                            String totalGamesText = String.valueOf(totalGames);
+                            int totalGamesWidth = fontMetrics.stringWidth(totalGamesText);
+                            int totalGamesX = (width - totalGamesWidth) / 2;
 
-                        g.drawString(status, statusX, 330); //150
-                        g.drawString(totalPointsText, totalPointsX, 435); //250
-                        g.drawString(totalChallengesText, challengesX, 540); //280
-                        g.drawString(totalGamesText, totalGamesX, 645); //270
+                            g.drawString(status, statusX, 330); //150
+                            g.drawString(totalPointsText, totalPointsX, 435); //250
+                            g.drawString(totalChallengesText, challengesX, 540); //280
+                            g.drawString(totalGamesText, totalGamesX, 645); //270
 
-                        g.setColor(new Color(0, 21, 133));
-                        g.setFont(new Font("Italic", Font.PLAIN, 30));
-                        g.drawString("Status", 260, 370);
-                        g.drawString("Total points", 222, 475);
-                        g.drawString("Total challenges", 190, 580);
-                        g.drawString("Total games", 217, 685);
+                            g.setColor(new Color(0, 21, 133));
+                            g.setFont(new Font("Italic", Font.PLAIN, 30));
+                            g.drawString("Status", 260, 370);
+                            g.drawString("Total points", 222, 475);
+                            g.drawString("Total challenges", 190, 580);
+                            g.drawString("Total games", 217, 685);
 
-                        super.paintComponent(g);
+                            g.setColor(Color.red);
+                            g.fillRoundRect(420, 170, 80, 80, 80, 80);
+                            g.setColor(Color.white);
+                            g.setFont(new Font("Italic", Font.PLAIN, 20));
+                            g.drawString("Return", 430, 218);
+
+
+
+                            super.paintComponent(g);
+                        }
                     }
                 });
 
                 getRootPane().getGlassPane().setVisible(true);
 
-
+                returnHighscoresButton = new JButton();
+                returnHighscoresButton.setBounds(420, 160, 80, 90);
+                returnHighscoresButton.setOpaque(false);
+                returnHighscoresButton.setContentAreaFilled(false);
+                returnHighscoresButton.setBorderPainted(false);
+                returnHighscoresButton.setEnabled(true);
+                backgroundLabel.add(returnHighscoresButton);
+                returnHighscoresButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        enableButton();
+                        getRootPane().getGlassPane().setVisible(false);
+                    }
+                });
             }
         });
 
@@ -258,5 +283,23 @@ public class MainMenu extends JFrame {
                 LoginRegisterFrame loginRegisterFrame = new LoginRegisterFrame(controller);
             }
         });
+    }
+
+    public void disableButton(){
+        startGameButton.setEnabled(false);
+        highscoreButton.setEnabled(false);
+        settingButton.setEnabled(false);
+        logoutButton.setEnabled(false);
+        muteButton.setEnabled(false);
+        profileButton.setEnabled(false);
+    }
+
+    public void enableButton(){
+        startGameButton.setEnabled(true);
+        highscoreButton.setEnabled(true);
+        settingButton.setEnabled(true);
+        logoutButton.setEnabled(true);
+        muteButton.setEnabled(true);
+        profileButton.setEnabled(true);
     }
 }
