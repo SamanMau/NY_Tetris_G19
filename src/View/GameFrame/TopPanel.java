@@ -26,10 +26,8 @@ public class TopPanel extends JPanel {
     private LPanel lPanel;
     private RPanel rPanel;
     private boolean gameStarted;
-    private Clip clip;
     private Controller controller;
-    private String music, musicOff;
-    private FloatControl controlVolume;
+    private String musicOff;
     private Playfield playfield;
     private MainFrame mainFrame;
     private BottomPanel bottomPanel;
@@ -38,9 +36,7 @@ public class TopPanel extends JPanel {
     private Color color3;
     private Color color4;
     private boolean multiColors;
-
-    private float previousAudioVolume = 0;
-    private float currentAudioVolume = 0;
+    private JButton pauseButton;
 
     /**
      * Constructor that sets a dimension for the panel and a color.
@@ -54,7 +50,6 @@ public class TopPanel extends JPanel {
         this.bottomPanel = bottomPanel;
         this.lPanel = lPanel;
         this.rPanel = rPanel;
-        currentAudioVolume = -20;
 
         this.controller = controller;
         this.mainFrame = mainFrame;
@@ -64,16 +59,17 @@ public class TopPanel extends JPanel {
         Color color2 = new Color(218, 119, 242);
 
         setColor(color1, color2);
-        CreateBtn();
+        createButton();
         addActionListeners();
 
         this.setLayout(null);
 
-        this.add(startGame);
+        this.add(pauseButton);
+        this.add(playMusic);
+        /*this.add(startGame);
         this.add(showHighscore);
         this.add(endGame);
-        this.add(playMusic);
-        this.add(settings);
+        this.add(settings);*/
 
         this.setVisible(true);
     }
@@ -155,18 +151,25 @@ public class TopPanel extends JPanel {
      * use the keys after pressing a button.
      * @author Saman
      */
-    private void CreateBtn(){
-        startGame = new JButton("Start game");
+    private void createButton(){
+        //startGame = new JButton("Start game");
 
-        showHighscore = new JButton("Show highscore");
+        //showHighscore = new JButton("Show highscore");
 
+        //endGame = new JButton("End game");
+
+        //settings = new JButton("Settings");
+
+        pauseButton = new JButton("Pause");
         playMusic = new JButton("Music on");
 
-        endGame = new JButton("End game");
+        pauseButton.setFont(new Font("Italic", Font.PLAIN, 23));
+        pauseButton.setBounds(175, 30, 250, 50);
+        pauseButton.setBackground(Color.orange);
+        pauseButton.setFocusPainted(false);
+        pauseButton.setFocusable(false);
 
-        settings = new JButton("Settings");
-
-        startGame.setBounds(247, 28, 100, 35);
+        /*startGame.setBounds(247, 28, 100, 35);
         Color green = new Color(0, 128, 60, 157);
         startGame.setBackground(green);
         startGame.setFocusPainted(false);
@@ -185,6 +188,11 @@ public class TopPanel extends JPanel {
         endGame.setFocusPainted(false);
         endGame.setFocusable(false);
 
+        settings.setBounds(500, 0, 100, 35);
+        settings.setBackground(Color.WHITE);
+        settings.setFocusable(false);*/
+
+
         playMusic.setBounds(0,0,100,35);
         playMusic.setBackground(Color.WHITE);
         playMusic.setFocusPainted(false);
@@ -192,9 +200,6 @@ public class TopPanel extends JPanel {
 
         playMusic.setActionCommand("gameMusic");
 
-        settings.setBounds(500, 0, 100, 35);
-        settings.setBackground(Color.WHITE);
-        settings.setFocusable(false);
 
     }
 
@@ -207,7 +212,7 @@ public class TopPanel extends JPanel {
      * @author Saman
      */
     public void addActionListeners(){
-        settings.addActionListener(new ActionListener() {
+        /*settings.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SettingsFrame settingsFrame = new SettingsFrame(controller);
@@ -224,13 +229,6 @@ public class TopPanel extends JPanel {
             }
         });
 
-        playMusic.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                controller.checkIfPlay(musicOff);
-            }
-        });
-
         endGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -243,6 +241,54 @@ public class TopPanel extends JPanel {
                     return;
                 }
             }
+        });*/
+
+        pauseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getRootPane().setGlassPane(new JComponent() {
+                    public void paintComponent(Graphics g) {
+                        g.setColor(new Color(0, 0, 0, 150));
+                        g.fillRect(0, 0, getWidth(), getHeight());
+
+                        g.setColor(new Color(217, 217, 217));
+                        g.fillRoundRect(137, 250, 325, 300, 50, 50);
+
+                        g.setColor(new Color(0, 209, 255));
+                        g.fillRect(165, 295, 275, 50);
+
+                        g.setColor(new Color(136, 136, 136));
+                        g.fillRect(165, 375, 275, 50);
+
+                        g.setColor(new Color(255, 0, 0));
+                        g.fillRect(165, 455, 275, 50);
+
+                        g.setColor(Color.BLACK);
+                        g.setFont(new Font(Font.SANS_SERIF, Font.ITALIC, 30));
+                        g.drawString("Resume", 245, 330);
+                        g.drawString("Settings", 245, 410);
+                        g.drawString("Exit to main menu", 183, 490);
+
+                        super.paintComponent(g);
+                    }
+                });
+
+                getRootPane().getGlassPane().setVisible(true);
+            }
         });
+
+        playMusic.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                controller.checkIfPlay(getMusicState());
+                playMusic.setText("Music " + getMusicState());
+            }
+        });
+
+    }
+
+    public String getMusicState(){
+        musicOff = controller.getMusicOff();
+        return musicOff;
     }
 }
