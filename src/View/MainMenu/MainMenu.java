@@ -250,8 +250,6 @@ public class MainMenu extends JFrame {
                             g.setFont(new Font("Italic", Font.PLAIN, 20));
                             g.drawString("Return", 430, 218);
 
-
-
                             super.paintComponent(g);
                         }
                     }

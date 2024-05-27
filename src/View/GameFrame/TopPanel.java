@@ -18,11 +18,10 @@ import java.io.File;
 import java.io.IOException;
 
 public class TopPanel extends JPanel {
-    private JButton startGame;
-    private JButton showHighscore;
+
     private JButton playMusic;
-    private JButton endGame;
-    private JButton settings;
+    private JButton settingsButton;
+    private JButton resumeButton;
     private LPanel lPanel;
     private RPanel rPanel;
     private boolean gameStarted;
@@ -46,11 +45,11 @@ public class TopPanel extends JPanel {
     public TopPanel(Playfield playfield, LPanel lPanel, RPanel rPanel, BottomPanel bottomPanel, MainFrame mainFrame, Controller controller){
         this.setPreferredSize(new Dimension(600, 100));
         this.setBackground(Color.gray);
+        gameStarted = true;
 
         this.bottomPanel = bottomPanel;
         this.lPanel = lPanel;
         this.rPanel = rPanel;
-
         this.controller = controller;
         this.mainFrame = mainFrame;
         this.playfield = playfield;
@@ -203,10 +202,6 @@ public class TopPanel extends JPanel {
 
     }
 
-    public void setEnabledTrue(){
-        startGame.setEnabled(true);
-    }
-
     /**
      * Adds actionlisteners to the different keys.
      * @author Saman
@@ -246,8 +241,30 @@ public class TopPanel extends JPanel {
         pauseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(gameStarted){
+                    try {
+                        pauseGame();
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
                 getRootPane().setGlassPane(new JComponent() {
                     public void paintComponent(Graphics g) {
+                        resumeButton = new JButton();
+                        resumeButton.setBounds(165, 295, 275, 50);
+                        resumeButton.setOpaque(false);
+                        resumeButton.setContentAreaFilled(false);
+                        resumeButton.setBorderPainted(false);
+                        resumeButton.setEnabled(true);
+                        add(resumeButton);
+                        resumeButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                resumeGame();
+                                getRootPane().getGlassPane().setVisible(false);
+                            }
+                        });
+
                         g.setColor(new Color(0, 0, 0, 150));
                         g.fillRect(0, 0, getWidth(), getHeight());
 
@@ -272,8 +289,9 @@ public class TopPanel extends JPanel {
                         super.paintComponent(g);
                     }
                 });
-
                 getRootPane().getGlassPane().setVisible(true);
+
+
             }
         });
 
@@ -290,5 +308,29 @@ public class TopPanel extends JPanel {
     public String getMusicState(){
         musicOff = controller.getMusicOff();
         return musicOff;
+    }
+
+    public void pauseGame() throws InterruptedException {
+        controller.stopTimer();
+        pauseButton.setEnabled(false);
+        playMusic.setEnabled(false);
+        gameStarted = false;
+        controller.disableKeyboard();
+    }
+
+    public void resumeGame(){
+        controller.restartTimer();
+        pauseButton.setEnabled(true);
+        playMusic.setEnabled(true);
+        gameStarted = true;
+        mainFrame.linkKeyToEvent(true);
+    }
+
+    public void disablePauseButton(){
+        pauseButton.setEnabled(false);
+    }
+
+    public void enablePauseButton(){
+        pauseButton.setEnabled(true);
     }
 }

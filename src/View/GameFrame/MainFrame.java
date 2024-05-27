@@ -15,6 +15,7 @@ import Control.Controller;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame{
     private static int width = 615; //600
@@ -27,9 +28,14 @@ public class MainFrame extends JFrame{
     private View.LPanel lPanel;
     private View.GameFrame.RPanel rPanel;
     private View.GameFrame.BottomPanel bottomPanel;
+    private JLabel counterLabel;
+    private Timer timer;
+    private int second;
+    private JButton returnPauseButton;
 
     public MainFrame(Controller controller, View.GameFrame.Playfield playfield){
         super("Tetris");
+
         this.controller = controller;
         this.setSize(width, height);
         this.playfield = playfield;
@@ -37,6 +43,8 @@ public class MainFrame extends JFrame{
         rPanel = new View.GameFrame.RPanel();
         bottomPanel = new View.GameFrame.BottomPanel();
         topPanel = new View.GameFrame.TopPanel(playfield, lPanel, rPanel, bottomPanel, this, controller);
+        second = 4;
+        startGame();
 
         //Add panel
         this.add(lPanel, BorderLayout.WEST);
@@ -44,12 +52,14 @@ public class MainFrame extends JFrame{
         this.add(topPanel, BorderLayout.NORTH);
         this.add(bottomPanel, BorderLayout.SOUTH);
         this.add(playfield, BorderLayout.CENTER);
-
+        playfield.setVisible(false);
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
 
+
         createKeys("LEFT", "RIGHT", "UP", "DOWN", "SPACE");
+
     }
 
     /**
@@ -184,5 +194,33 @@ public class MainFrame extends JFrame{
 
     public void setColor(Color color1, Color color2){
         topPanel.setColor(color1, color2);
+    }
+
+    public void startGame(){
+        counterLabel = new JLabel();
+        counterLabel.setBounds(280, 325, 100, 100);
+        counterLabel.setFont(new Font(Font.SANS_SERIF, Font.ITALIC, 70));
+        this.add(counterLabel);
+        topPanel.disablePauseButton();
+        counter();
+        timer.start();
+    }
+
+    public void counter(){
+        timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                second--;
+                counterLabel.setText(String.valueOf(second));
+                if(second == 0){
+                    linkKeyToEvent(true);
+                    playfield.setVisible(true);
+                    controller.startTimer(true, 500); //500
+                    counterLabel.setVisible(false);
+                    topPanel.enablePauseButton();
+                    timer.stop();
+                }
+            }
+        });
     }
 }
