@@ -98,6 +98,17 @@ public class LPanel extends JPanel {
         changeSpeed();
     }
 
+
+    public void resetLevel() {
+        newLevel = 0;
+        levelText.setText("Level: " + newLevel);
+    }
+
+    public void resetPoints() {
+        totalScore = 0;
+        poangText.setText("Points: " + totalScore);
+    }
+
     /**
      * Updates the user's total score and checks if the user has reached the next level.
      * This method is called whenever the user scores point, and it updates the total score,
@@ -207,6 +218,4 @@ public class LPanel extends JPanel {
         }
 
     }
-
-
 }

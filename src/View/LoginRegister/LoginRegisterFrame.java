@@ -285,6 +285,13 @@ public class LoginRegisterFrame extends JFrame {
             });
         }
 
+        playAsGuestButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                controller.startMainMenu();
+            }
+        });
     }
 
     public void setPassword(String password){

@@ -222,5 +222,14 @@ public class MainFrame extends JFrame{
                 }
             }
         });
+
+    }
+
+    public void resetPoints() {
+        lPanel.resetPoints();
+    }
+
+    public void resetLevel() {
+        lPanel.resetLevel();
     }
 }

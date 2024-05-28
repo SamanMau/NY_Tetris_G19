@@ -224,6 +224,11 @@ public class Controller {
         return false;
     }
 
+    public void resetGame() {
+        mainFrame.resetPoints();
+        mainFrame.resetLevel();
+    }
+
 
     public void checkIfNewStatus(){
         int points = databaseController.getUserPoints(userID);
@@ -316,7 +321,12 @@ public class Controller {
                     // board[boardRow + 1][boardCol] != null, kontrollera om det finns block i nästa rad under det aktuella blocket
                     // Om både villkoren uppfylls returnerar true, alltså att det finns collision annars false
                     //if (boardRow + 1 < board.length && board[boardRow + 1][boardCol] != null) {
-                    if (boardCol < board.length && board[boardRow][boardCol] != null) {
+                    if (boardRow >= board.length || boardCol < 0 || boardCol >= board[0].length) {
+                        return true;
+                    }
+
+
+                    if (boardRow < board.length && board[boardRow][boardCol] != null) {
                         return true;
                     }
                 }
