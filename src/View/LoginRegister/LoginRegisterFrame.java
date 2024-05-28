@@ -27,6 +27,7 @@ public class LoginRegisterFrame extends JFrame {
     private JButton registerButton2 = new JButton();
     private String userName;
     private String userPassword;
+    private JButton returnButton;
 
     public LoginRegisterFrame(Controller controller){
         super("Login/Register");
@@ -132,6 +133,15 @@ public class LoginRegisterFrame extends JFrame {
         loginButton2.setBackground(Color.white);
         loginButton2.setForeground(Color.black);
 
+        returnButton = new JButton("Return");
+        returnButton.setFont(new Font("Italic", Font.PLAIN, 15));
+        returnButton.setBounds(500, 0, 100, 50);
+        returnButton.setFocusPainted(false);
+        returnButton.setFocusable(false);
+        returnButton.setBackground(Color.red);
+        returnButton.setForeground(Color.black);
+
+        backgroundLabel.add(returnButton);
         backgroundLabel.add(loginButton2);
         backgroundLabel.add(usernameLabel);
         backgroundLabel.add(usernameTextField);
@@ -180,6 +190,15 @@ public class LoginRegisterFrame extends JFrame {
         registerButton2.setBackground(Color.white);
         registerButton2.setForeground(Color.black);
 
+        returnButton = new JButton("Return");
+        returnButton.setFont(new Font("Italic", Font.PLAIN, 15));
+        returnButton.setBounds(500, 0, 100, 50);
+        returnButton.setFocusPainted(false);
+        returnButton.setFocusable(false);
+        returnButton.setBackground(Color.red);
+        returnButton.setForeground(Color.black);
+
+        backgroundLabel.add(returnButton);
         backgroundLabel.add(registerButton2);
         backgroundLabel.add(usernameLabel);
         backgroundLabel.add(usernameTextField);
@@ -252,6 +271,19 @@ public class LoginRegisterFrame extends JFrame {
                 controller.startMainMenu();
             }
         });
+
+        if(returnButton != null){
+            returnButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    getContentPane().removeAll();
+                    repaint();
+                    createBackgroundLogo();
+                    createButton();
+                    addActionListeners();
+                }
+            });
+        }
 
     }
 
