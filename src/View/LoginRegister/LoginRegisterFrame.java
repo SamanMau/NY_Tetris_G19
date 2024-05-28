@@ -22,7 +22,7 @@ public class LoginRegisterFrame extends JFrame {
     private JLabel usernameLabel;
     private JTextField usernameTextField;
     private JLabel passwordLabel;
-    private JTextField passwordTextField;
+    private JPasswordField passwordTextField;
     private JButton loginButton2 = new JButton();
     private JButton registerButton2 = new JButton();
     private String userName;
@@ -108,7 +108,7 @@ public class LoginRegisterFrame extends JFrame {
         usernameLabel.setFont(new Font("Italic", Font.PLAIN, 20));
         usernameLabel.setForeground(Color.white);
 
-        this.usernameTextField = new JTextField("UwU");
+        this.usernameTextField = new JTextField();
         usernameTextField.setFont(new Font("Italic", Font.PLAIN, 20));
         usernameTextField   .setForeground(Color.BLACK);
         usernameTextField.setBounds(150, 350, 300, 50);
@@ -119,7 +119,7 @@ public class LoginRegisterFrame extends JFrame {
         passwordLabel.setFont(new Font("Italic", Font.PLAIN, 20));
         passwordLabel.setForeground(Color.white);
 
-        passwordTextField = new JTextField("123456");
+        passwordTextField = new JPasswordField();
         passwordTextField.setFont(new Font("Italic", Font.PLAIN, 20));
         passwordTextField.setForeground(Color.BLACK);
         passwordTextField.setBounds(150, 430, 300, 50);
@@ -167,7 +167,7 @@ public class LoginRegisterFrame extends JFrame {
         passwordLabel.setFont(new Font("Italic", Font.PLAIN, 20));
         passwordLabel.setForeground(Color.white);
 
-        passwordTextField = new JTextField();
+        passwordTextField = new JPasswordField();
         passwordTextField.setFont(new Font("Italic", Font.PLAIN, 20));
         passwordTextField.setForeground(Color.BLACK);
         passwordTextField.setBounds(150, 430, 300, 50);

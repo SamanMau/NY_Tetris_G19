@@ -58,6 +58,7 @@ public class Controller {
     private int totalPoints;
     private int totalChallenges;
     private int totalGames;
+    private MainMenu mainMenu;
     private Queue<TetrisBlock> blockQueue;
 
     public Controller() {
@@ -74,7 +75,7 @@ public class Controller {
         music = "src/Ljud/audio1.wav";
         musicOff ="on";
         setFile(music);
-        //playMusic();
+        playMusic();
     }
 
     public void addToQueue(){
@@ -145,7 +146,7 @@ public class Controller {
     }
 
     public void startMainMenu(){
-        MainMenu mainMenu = new MainMenu(this, mainFrame, databaseController);
+        mainMenu = new MainMenu(this, mainFrame, databaseController);
     }
 
     public void setMultiColors(Color color1, Color color2, Color color3,
@@ -195,7 +196,6 @@ public class Controller {
                 public void actionPerformed(ActionEvent e) {
                     if (collision) {
                         addColorToBoard();
-                        //generateBlock();
                         addToQueue();
                         collision = false;
                     } else {
@@ -332,9 +332,9 @@ public class Controller {
      */
     public TetrisBlock generateBlock() {
         randomNum = rd.nextInt(7);
-        int[][] shape = listOfShape.get(4);
-        Color color = listOfColors.get(4);
-        block = new TetrisBlock(shape, color, 4);
+        int[][] shape = listOfShape.get(randomNum);
+        Color color = listOfColors.get(randomNum);
+        block = new TetrisBlock(shape, color, randomNum);
         return block;
     }
 
@@ -693,5 +693,9 @@ public class Controller {
     }
     public void restartTimer(){
         this.speed.restart();
+    }
+
+    public DatabaseController getDatabaseController(){
+        return databaseController;
     }
 }

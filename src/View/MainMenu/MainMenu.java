@@ -322,4 +322,5 @@ public class MainMenu extends JFrame {
         muteButton.setEnabled(true);
         profileButton.setEnabled(true);
     }
+
 }

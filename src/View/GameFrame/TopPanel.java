@@ -294,7 +294,7 @@ public class TopPanel extends JPanel {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 mainFrame.dispose();
-                                MainMenu mainMenu = new MainMenu(controller, mainFrame);
+                                MainMenu mainMenu = new MainMenu(controller, mainFrame, controller.getDatabaseController());
                             }
                         });
 

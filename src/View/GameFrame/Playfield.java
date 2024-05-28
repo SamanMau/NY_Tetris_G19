@@ -53,8 +53,9 @@ public class Playfield extends JPanel{
         int x = (getWidth() - g2.getFontMetrics().stringWidth("Game Over")) / 2;
         int y = getHeight() / 2;
 
-        g2.drawString("Game Over", x, y);
+        //g2.drawString("Game Over", x, y);
     }
+
 
     /**
      * Renders the game board and Tetris block.
