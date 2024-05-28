@@ -317,7 +317,17 @@ public class Controller {
                     // board[boardRow + 1][boardCol] != null, kontrollera om det finns block i nästa rad under det aktuella blocket
                     // Om både villkoren uppfylls returnerar true, alltså att det finns collision annars false
                     //if (boardRow + 1 < board.length && board[boardRow + 1][boardCol] != null) {
-                    if (boardCol < board.length && board[boardRow][boardCol] != null) {
+                 /*   if (boardCol < board.length && board[boardRow][boardCol] != null) {
+                        return true;
+                    } */
+
+
+                    if (boardRow >= board.length || boardCol < 0 || boardCol >= board[0].length) {
+                        return true;
+                    }
+
+
+                    if (boardRow < board.length && board[boardRow][boardCol] != null) {
                         return true;
                     }
                 }
@@ -333,9 +343,9 @@ public class Controller {
      */
     public TetrisBlock generateBlock() {
         randomNum = rd.nextInt(7);
-        int[][] shape = listOfShape.get(randomNum);
-        Color color = listOfColors.get(randomNum);
-        block = new TetrisBlock(shape, color,randomNum);
+        int[][] shape = listOfShape.get(4);
+        Color color = listOfColors.get(4);
+        block = new TetrisBlock(shape, color,4);
         return block;
     }
 
