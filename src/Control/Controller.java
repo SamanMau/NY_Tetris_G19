@@ -145,7 +145,7 @@ public class Controller {
     }
 
     public void startMainMenu(){
-        MainMenu mainMenu = new MainMenu(this, mainFrame);
+        MainMenu mainMenu = new MainMenu(this, mainFrame, databaseController);
     }
 
     public void setMultiColors(Color color1, Color color2, Color color3,
@@ -267,8 +267,13 @@ public class Controller {
             System.out.println("You lost");
             mainFrame.getTopPanel().setEnabledTrue();
             int totalPoints = mainFrame.getTotalPoints();
+
             databaseController.updateAmountGames(userID);
+
             databaseController.updatePoints(userID, totalPoints);
+
+            databaseController.insertIntoHighscore(nameUser, totalPoints, userID);
+
             checkIfNewStatus();
             gameIsOver();
             resetColorBoard();
@@ -328,9 +333,9 @@ public class Controller {
      */
     public TetrisBlock generateBlock() {
         randomNum = rd.nextInt(7);
-        int[][] shape = listOfShape.get(randomNum);
-        Color color = listOfColors.get(randomNum);
-        block = new TetrisBlock(shape, color, randomNum);
+        int[][] shape = listOfShape.get(4);
+        Color color = listOfColors.get(4);
+        block = new TetrisBlock(shape, color, 4);
         return block;
     }
 
@@ -490,16 +495,16 @@ public class Controller {
 
         switch (rowsCleared) {
             case 1:
-                pointsEarned = 100;
+                pointsEarned = 100; //100
                 break;
             case 2:
-                pointsEarned = 300;
+                pointsEarned = 300; // 300
                 break;
             case 3:
-                pointsEarned = 500;
+                pointsEarned = 500; // 500
                 break;
             case 4:
-                pointsEarned = 800;
+                pointsEarned = 800; // 800
                 break;
             default:
                 break;
@@ -534,7 +539,7 @@ public class Controller {
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             controlVolume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            controlVolume.setValue(-20.0f);
+            controlVolume.setValue(-80.0f);
 
         } catch (UnsupportedAudioFileException e) {
             throw new RuntimeException(e);

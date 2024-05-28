@@ -1,6 +1,7 @@
 package Control;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DatabaseController {
     private String userName;
@@ -199,6 +200,99 @@ public class DatabaseController {
         } catch (SQLException e){
             throw new RuntimeException(e);
         }
+    }
+
+    public String[] getTopHighScores(){
+        ArrayList<String> topHighScoreList = new ArrayList<>();
+
+        try (Connection con = DriverManager.getConnection("jdbc:postgresql://pgserver.mau.se:5432/am7210", "am7210", "96xpm6t2");
+             PreparedStatement pstmt = con.prepareStatement("SELECT user_name, amount_points \n" +
+                     "FROM highScore\n" +
+                     "ORDER BY amount_points DESC\n" +
+                     "LIMIT 10;")) {
+
+            ResultSet result = pstmt.executeQuery();
+
+            int number = 1;
+
+            while (result.next()){
+                String name = result.getString(1);
+
+                int points = result.getInt(2);
+
+                topHighScoreList.add(number + ": " + "Name: " + name + " | Points: " + points);
+                number++;
+
+            }
+
+        } catch (SQLException e) {
+        }
+
+        String[] array = new String[topHighScoreList.size()];
+
+        for(int i = 0; i < topHighScoreList.size(); i++){
+            array[i] = topHighScoreList.get(i);
+        }
+
+        return array;
+
+    }
+
+    public void insertIntoHighscore(String name, int points, int userID){
+        try{
+            Connection con = DriverManager.getConnection(
+                    "jdbc:postgresql://pgserver.mau.se:5432/am7210", "am7210", "96xpm6t2");
+
+            CallableStatement callableStatement = con.prepareCall("call insert_into_highScore(?, ?, ?)");
+            callableStatement.setString(1, name);
+            callableStatement.setInt(2, points);
+            callableStatement.setInt(3, userID);
+            callableStatement.executeUpdate();
+
+            callableStatement.close();
+            con.close();
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String[] getPersonalList(String name){
+        ArrayList<String> topHighScoreList = new ArrayList<>();
+
+        try (Connection con = DriverManager.getConnection("jdbc:postgresql://pgserver.mau.se:5432/am7210", "am7210", "96xpm6t2");
+             PreparedStatement pstmt = con.prepareStatement("SELECT user_name, amount_points\n" +
+                     "FROM highScore\n" +
+                     "WHERE user_name = ?\n" +
+                     "ORDER BY amount_points DESC\n" +
+                     "LIMIT 10;\n")) {
+
+            pstmt.setString(1, name);
+
+            ResultSet result = pstmt.executeQuery();
+
+            int number = 1;
+
+            while (result.next()){
+                String namee = result.getString(1);
+
+                int points = result.getInt(2);
+
+                topHighScoreList.add(number + ": " + "Name: " + namee + " | Points: " + points);
+                number++;
+
+            }
+
+        } catch (SQLException e) {
+        }
+
+        String[] array = new String[topHighScoreList.size()];
+
+        for(int i = 0; i < topHighScoreList.size(); i++){
+            array[i] = topHighScoreList.get(i);
+        }
+
+        return array;
     }
 
 

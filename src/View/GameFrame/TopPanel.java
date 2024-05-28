@@ -19,7 +19,6 @@ import java.io.IOException;
 
 public class TopPanel extends JPanel {
     private JButton startGame;
-    private JButton showHighscore;
     private JButton playMusic;
     private JButton endGame;
     private JButton settings;
@@ -70,7 +69,6 @@ public class TopPanel extends JPanel {
         this.setLayout(null);
 
         this.add(startGame);
-        this.add(showHighscore);
         this.add(endGame);
         this.add(playMusic);
         this.add(settings);
@@ -158,26 +156,17 @@ public class TopPanel extends JPanel {
     private void CreateBtn(){
         startGame = new JButton("Start game");
 
-        showHighscore = new JButton("Show highscore");
-
         playMusic = new JButton("Music on");
 
         endGame = new JButton("End game");
 
         settings = new JButton("Settings");
 
-        startGame.setBounds(247, 28, 100, 35);
+        startGame.setBounds(147, 64, 129, 35);
         Color green = new Color(0, 128, 60, 157);
         startGame.setBackground(green);
         startGame.setFocusPainted(false);
         startGame.setFocusable(false);
-
-
-        showHighscore.setBounds(147, 64, 129, 35);
-        Color orange = new Color(167, 112, 50);
-        showHighscore.setBackground(orange);
-        showHighscore.setFocusPainted(false);
-        showHighscore.setFocusable(false);
 
         endGame.setBounds(335, 64, 115, 35);
         Color red = new Color(192, 30, 30);
@@ -227,7 +216,13 @@ public class TopPanel extends JPanel {
         playMusic.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                controller.checkIfPlay(musicOff);
+                controller.checkIfPlay(controller.getMusicOff());
+                if(controller.getMusicOff() == "off"){
+                    playMusic.setText("Music off");
+                }
+                else{
+                    playMusic.setText("Music on");
+                }
             }
         });
 
