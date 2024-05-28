@@ -6,6 +6,7 @@ package View.GameFrame;
 
 import Control.Controller;
 import View.LPanel;
+import View.MainMenu.MainMenu;
 import View.Settings.SettingsFrame;
 
 import javax.sound.sampled.*;
@@ -22,6 +23,7 @@ public class TopPanel extends JPanel {
     private JButton playMusic;
     private JButton settingsButton;
     private JButton resumeButton;
+    private JButton exitToMenuButton;
     private LPanel lPanel;
     private RPanel rPanel;
     private boolean gameStarted;
@@ -257,11 +259,42 @@ public class TopPanel extends JPanel {
                         resumeButton.setBorderPainted(false);
                         resumeButton.setEnabled(true);
                         add(resumeButton);
+
+                        settingsButton = new JButton();
+                        settingsButton.setBounds(165, 375, 275, 50);
+                        settingsButton.setOpaque(false);
+                        settingsButton.setContentAreaFilled(false);
+                        settingsButton.setBorderPainted(false);
+                        settingsButton.setEnabled(true);
+                        add(settingsButton);
+
+                        exitToMenuButton = new JButton();
+                        exitToMenuButton.setBounds(165, 455, 275, 50);
+                        exitToMenuButton.setOpaque(false);
+                        exitToMenuButton.setContentAreaFilled(false);
+                        exitToMenuButton.setBorderPainted(false);
+                        exitToMenuButton.setEnabled(true);
+                        add(exitToMenuButton);
+
                         resumeButton.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 resumeGame();
                                 getRootPane().getGlassPane().setVisible(false);
+                            }
+                        });
+
+                        settingsButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                SettingsFrame settingsFrame = new SettingsFrame(controller);
+                            }
+                        });
+                        exitToMenuButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                mainFrame.dispose();
+                                MainMenu mainMenu = new MainMenu(controller, mainFrame);
                             }
                         });
 
@@ -290,8 +323,6 @@ public class TopPanel extends JPanel {
                     }
                 });
                 getRootPane().getGlassPane().setVisible(true);
-
-
             }
         });
 
