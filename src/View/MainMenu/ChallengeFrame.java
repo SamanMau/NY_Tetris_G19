@@ -9,6 +9,7 @@ import java.awt.*;
 public class ChallengeFrame extends JFrame {
     private DatabaseController dbc;
     private Controller controller;
+    private ChallengePanel challengePanel;
 
     public ChallengeFrame(DatabaseController databaseController, Controller controller){
         setLayout(null);
@@ -19,10 +20,14 @@ public class ChallengeFrame extends JFrame {
         this.setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //stänger bara ett fönster. Påverkar ej resten av programmet.
 
-        ChallengePanel challengePanel = new ChallengePanel(databaseController, controller);
+        challengePanel = new ChallengePanel(databaseController, controller);
         this.add(challengePanel);
 
         this.setVisible(true);
+    }
+
+    public String getChallengeName(){
+        return challengePanel.getChallengeName();
     }
 
 }

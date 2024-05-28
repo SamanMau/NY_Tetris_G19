@@ -26,6 +26,11 @@ public class ChallengePanel extends JPanel {
     private JLabel label2;
     private ImageIcon icon3;
     private JLabel label3;
+    private JLabel challengeDesc;
+
+    private String challengeName;
+
+    private String finalChallenge;
 
     public ChallengePanel(DatabaseController dbc, Controller controller){
         this.setLayout(null);
@@ -60,6 +65,39 @@ public class ChallengePanel extends JPanel {
         this.add(generateChallenge);
     }
 
+    public void easyChallenge(){
+
+        if(challengeDesc != null){
+            this.remove(challengeDesc);
+        }
+
+        challengeName = dbc.getEasyChallenge();
+        challengeDesc = new JLabel(challengeName);
+        challengeDesc.setBounds(100, 200, 350, 30);
+        challengeDesc.setForeground(Color.white);
+        this.add(challengeDesc);
+        repaint();
+    }
+
+    public String getChallengeName(){
+       // return finalChallenge;
+        return "Reach level 5!";
+    }
+
+    public void hardChallenge(){
+
+        if(challengeDesc != null){
+            this.remove(challengeDesc);
+        }
+
+        challengeName = dbc.getHardChallenge();
+        challengeDesc = new JLabel(challengeName);
+        challengeDesc.setBounds(100, 200, 350, 30);
+        challengeDesc.setForeground(Color.white);
+        this.add(challengeDesc);
+        repaint();
+    }
+
     /**
      * This method creates and resizes the tetris logo.
      * @author Saman
@@ -88,7 +126,6 @@ public class ChallengePanel extends JPanel {
     public void setPic1(String name){
         if(pictureGenerate.isRunning()){
             try{
-                System.out.println("Im in here");
                 icon1 = new ImageIcon(name);
                 Image img = icon1.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
                 icon1.setImage(img);
@@ -110,7 +147,6 @@ public class ChallengePanel extends JPanel {
     public void setPic2(String name){
         if(pictureGenerate.isRunning()){
             try{
-                System.out.println("Im in here");
                 icon2 = new ImageIcon(name);
                 Image img = icon2.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
 
@@ -133,7 +169,6 @@ public class ChallengePanel extends JPanel {
     public void setPic3(String name){
         if(pictureGenerate.isRunning()){
             try{
-                System.out.println("Im in here");
                 icon3 = new ImageIcon(name);
                 Image img = icon3.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
                 icon3.setImage(img);
@@ -150,6 +185,10 @@ public class ChallengePanel extends JPanel {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void setButtonEnabled(boolean stmt){
+        accept.setEnabled(stmt);
     }
 
     /**
@@ -237,7 +276,14 @@ public class ChallengePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 pictureGenerate.counter();
                 pictureGenerate.setIsRunning();
-                accept.setEnabled(true);
+                accept.setEnabled(false);
+            }
+        });
+
+        accept.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                finalChallenge = challengeName;
             }
         });
     }

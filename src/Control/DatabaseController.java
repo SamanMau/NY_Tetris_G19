@@ -89,6 +89,23 @@ public class DatabaseController {
         return 0;
     }
 
+    public void updateAmountChallenges(int id){
+        try{
+            Connection con = DriverManager.getConnection(
+                    "jdbc:postgresql://pgserver.mau.se:5432/am7210", "am7210", "96xpm6t2");
+
+            CallableStatement callableStatement = con.prepareCall("call updateAmountChallenges(?)");
+            callableStatement.setInt(1, id);
+            callableStatement.executeUpdate();
+
+            callableStatement.close();
+            con.close();
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
     public String getStatus(int id){
         String status;
         try (Connection con = DriverManager.getConnection(
@@ -295,6 +312,48 @@ public class DatabaseController {
         return array;
     }
 
+    public String getEasyChallenge(){
+        String challenge;
 
+        try (Connection con = DriverManager.getConnection("jdbc:postgresql://pgserver.mau.se:5432/am7210", "am7210", "96xpm6t2");
+             PreparedStatement pstmt = con.prepareStatement("SELECT challenge_description \n" +
+                     "FROM easy_challenges\n" +
+                     "ORDER BY RANDOM() \n" +
+                     "LIMIT 1;\n")) {
+
+            ResultSet result = pstmt.executeQuery();
+
+            while (result.next()){
+                challenge = result.getString(1);
+                return challenge;
+            }
+
+        } catch (SQLException e) {
+        }
+
+        return null;
+    }
+
+    public String getHardChallenge(){
+        String challenge;
+
+        try (Connection con = DriverManager.getConnection("jdbc:postgresql://pgserver.mau.se:5432/am7210", "am7210", "96xpm6t2");
+             PreparedStatement pstmt = con.prepareStatement("SELECT challenge_description \n" +
+                     "FROM hard_challenges\n" +
+                     "ORDER BY RANDOM() \n" +
+                     "LIMIT 1;\n")) {
+
+            ResultSet result = pstmt.executeQuery();
+
+            while (result.next()){
+                challenge = result.getString(1);
+                return challenge;
+            }
+
+        } catch (SQLException e) {
+        }
+
+        return null;
+    }
 
 }

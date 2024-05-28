@@ -18,7 +18,7 @@ public class LPanel extends JPanel {
     private Color color3;
     private Color color4;
     private int totalScore = 0;
-    private int nextScore = 3000;
+    private int nextScore = 800;
     private int level = 1;
     private Control.Controller controller;
     private int newLevel;
@@ -98,6 +98,10 @@ public class LPanel extends JPanel {
         changeSpeed();
     }
 
+    public int getLevel(){
+        return newLevel;
+    }
+
     /**
      * Updates the user's total score and checks if the user has reached the next level.
      * This method is called whenever the user scores point, and it updates the total score,
@@ -111,7 +115,7 @@ public class LPanel extends JPanel {
 
         if(totalScore >= nextScore){
             increaseLevel();
-            this.nextScore += 3000;
+            this.nextScore += 800;
         }
     }
 

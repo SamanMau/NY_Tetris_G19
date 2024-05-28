@@ -35,6 +35,8 @@ public class Controller {
     private final int column = 10;
     private final int row = 20;
     private int seconds;
+
+    private int totalPoints;
     private Random rd = new Random();
     private int randomNum = rd.nextInt(7);
     private Color[][] board = new Color[20][10];
@@ -55,11 +57,15 @@ public class Controller {
     private String nameUser;
     private int userID;
     private String status;
-    private int totalPoints;
+
     private int totalChallenges;
     private int totalGames;
     private MainMenu mainMenu;
     private Queue<TetrisBlock> blockQueue;
+
+    private boolean gotTetris = false;
+
+    private String challenge = "";
 
     public Controller() {
         this.playfield = new Playfield(this);
@@ -191,6 +197,7 @@ public class Controller {
         this.seconds = time;
 
         if (gameState) {
+            gotTetris = false;
             this.speed = new Timer(seconds, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -225,31 +232,45 @@ public class Controller {
     }
 
 
-    public void checkIfNewStatus(){
+
+    public boolean checkIfNewStatus(){
         int points = databaseController.getUserPoints(userID);
         String status = databaseController.getStatus(userID);
+        challenge = mainMenu.getChallengeName();
 
         if((points >= 10000) && (points <= 14000) && (!status.equals("Intermediate"))){ // 10000 && 20000 (original)
             databaseController.updateStatus("Intermediate", userID);
+            return true;
 
         } else if(points > 14000 && (points <= 20000) && (!status.equals("Advanced"))){ //20000 && 40000 (original)
             databaseController.updateStatus("Advanced", userID);
+            return true;
 
         } else if(points > 20000 && (points <= 24000) && (!status.equals("Expert"))){ // 40000 && 60000 (original)
             databaseController.updateStatus("Expert", userID);
+            return true;
+
         }
         else if(points > 24000 && (points <= 29000) && (!status.equals("Master"))){ //60000 && 80000 (original)
             databaseController.updateStatus("Master", userID);
+            return true;
+
         }
         else if(points > 29000 && (points <= 33000) && (!status.equals("Grandmaster"))){ //80000 && 100000 (original)
             databaseController.updateStatus("Grandmaster", userID);
+            return true;
         }
         else if(points > 33000 && (points <= 37000) && (!status.equals("Legend"))){ //100000 && 150000 (original)
             databaseController.updateStatus("Legend", userID);
+            return true;
+
         }
         else if((points > 37000) && (!status.equals("The Head Of The Table"))){ //150000 (original)
             databaseController.updateStatus("The Head Of The Table", userID);
+            return true;
         }
+
+        return false;
     }
 
     private boolean checkBlockOutOfPlayfield() {
@@ -265,11 +286,47 @@ public class Controller {
         }
             if (blockHeight + rowWithColor > board.length) {
             System.out.println("You lost");
-            int totalPoints = mainFrame.getTotalPoints();
+            totalPoints = mainFrame.getTotalPoints();
 
-            databaseController.updateAmountGames(userID);
+            int level = mainFrame.getLevel();
 
-            databaseController.updatePoints(userID, totalPoints);
+            challenge = mainMenu.getChallengeName();
+
+            if(challenge != null){
+                boolean newStatus = checkIfNewStatus();
+
+                if((challenge.equals("Play Tetris with double points"))){
+                    databaseController.updateAmountChallenges(userID);
+                    databaseController.updateAmountGames(userID);
+                    databaseController.updatePoints(userID, totalPoints * 2);
+                }
+
+                if(challenge.equals("Clear a Tetris") && gotTetris){
+                    databaseController.updateAmountChallenges(userID);
+                    databaseController.updateAmountGames(userID);
+                    databaseController.updatePoints(userID, totalPoints);
+                }
+
+                if(challenge.equals("Achieve a new status") && newStatus){
+                    databaseController.updateAmountChallenges(userID);
+                    databaseController.updateAmountGames(userID);
+                    databaseController.updatePoints(userID, totalPoints * 2);
+                }
+
+                if(challenge.equals("Reach level 5!") && level >= 5){
+                    System.out.println("not null");
+                    databaseController.updateAmountChallenges(userID);
+                    databaseController.updateAmountGames(userID);
+
+                    int newPoints = totalPoints * 4;
+
+                    databaseController.updatePoints(userID, newPoints);
+                }
+            } else {
+                databaseController.updateAmountGames(userID);
+
+                databaseController.updatePoints(userID, totalPoints);
+            }
 
             databaseController.insertIntoHighscore(nameUser, totalPoints, userID);
 
@@ -332,9 +389,9 @@ public class Controller {
      */
     public TetrisBlock generateBlock() {
         randomNum = rd.nextInt(7);
-        int[][] shape = listOfShape.get(randomNum);
-        Color color = listOfColors.get(randomNum);
-        block = new TetrisBlock(shape, color, randomNum);
+        int[][] shape = listOfShape.get(4);
+        Color color = listOfColors.get(4);
+        block = new TetrisBlock(shape, color, 4);
         return block;
     }
 
@@ -472,9 +529,19 @@ public class Controller {
 
         }
 
-        pointsEarned = calculatePointsForRowClear(rowsCleared);
-        mainFrame.incrementPoints(pointsEarned);
-        playfield.repaint();
+        challenge = mainMenu.getChallengeName();
+
+        if(challenge != null){
+            pointsEarned = calculatePointsForRowClear(rowsCleared, true);
+            mainFrame.incrementPoints(pointsEarned);
+            playfield.repaint();
+        } else {
+            pointsEarned = calculatePointsForRowClear(rowsCleared, false);
+            mainFrame.incrementPoints(pointsEarned);
+            playfield.repaint();
+        }
+
+
     }
 
     /**
@@ -485,25 +552,32 @@ public class Controller {
      * @author Abdulkadir
      */
 
-    private int calculatePointsForRowClear(int rowsCleared) {
+    private int calculatePointsForRowClear(int rowsCleared, boolean notNull) {
         int pointsEarned = 0;
 
-        switch (rowsCleared) {
-            case 1:
-                pointsEarned = 100; //100
-                break;
-            case 2:
-                pointsEarned = 300; // 300
-                break;
-            case 3:
-                pointsEarned = 500; // 500
-                break;
-            case 4:
-                pointsEarned = 800; // 800
-                break;
-            default:
-                break;
-        }
+            switch (rowsCleared) {
+                case 1:
+                    pointsEarned = 100; //100
+                    break;
+                case 2:
+                    pointsEarned = 300; // 300
+                    break;
+                case 3:
+                    pointsEarned = 500; // 500
+                    break;
+                case 4:
+                    pointsEarned = 800; // 800
+                    if(notNull){
+                        if(challenge.equals("Clear a Tetris")){
+                            gotTetris = true;
+                            return pointsEarned * 2;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+
         return pointsEarned;
     }
 

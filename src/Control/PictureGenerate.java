@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public class PictureGenerate {
     private boolean isRunning;
-    private int runFor3Sec = 3;
+    private int runFor3Sec;
     private ChallengePanel challengePanel;
     private javax.swing.Timer timer;
     private int picNum = 1;
@@ -18,7 +18,7 @@ public class PictureGenerate {
 
     public PictureGenerate(ChallengePanel challengePanel){
         this.isRunning = false;
-        this.runFor3Sec = 3000;
+        this.runFor3Sec = 4000;
         this.challengePanel = challengePanel;
         rd = new Random();
     }
@@ -41,7 +41,6 @@ public class PictureGenerate {
                 String fileName = "src/Bilder/image" + rd.nextInt(1,4) + ".png";
                 String fileName2 = "src/Bilder/image" + rd.nextInt(1,4) + ".png";
                 String fileName3 = "src/Bilder/image" + rd.nextInt(1,4) + ".png";
-                System.out.println(fileName);
                 challengePanel.setPic1(fileName);
                 challengePanel.setPic2(fileName2);
                 challengePanel.setPic3(fileName3);
@@ -50,6 +49,14 @@ public class PictureGenerate {
                 if(runFor3Sec == 0){
                     runFor3Sec = 3000;
                     timer.stop();
+
+                    if(fileName.equals(fileName2) && fileName3.equals(fileName2)){
+                        challengePanel.easyChallenge();
+                    } else {
+                        challengePanel.hardChallenge();
+                    }
+
+                    challengePanel.setButtonEnabled(true);
                 }
             }
         });

@@ -175,6 +175,10 @@ public class MainFrame extends JFrame{
         }
     }
 
+    public int getLevel(){
+        return lPanel.getLevel();
+    }
+
     public void incrementPoints(int points){
         lPanel.updateScore(points);
     }

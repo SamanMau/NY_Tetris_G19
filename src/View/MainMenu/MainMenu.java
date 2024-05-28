@@ -39,6 +39,8 @@ public class MainMenu extends JFrame {
 
     private DatabaseController dbc;
 
+    private ChallengeFrame challengeFrame;
+
     public MainMenu(Controller controller, MainFrame mainFrame, DatabaseController dbc){
         super("Main menu");
         this.setSize(width, height);
@@ -146,6 +148,16 @@ public class MainMenu extends JFrame {
         backgroundLabel.add(challengeButton);
     }
 
+    public String getChallengeName(){
+
+        if(challengeFrame != null){
+            return challengeFrame.getChallengeName();
+        }
+
+        return null;
+
+    }
+
     private void createBackgroundLogo(){
         //Tetris background
         ImageIcon tetrisBackground = new ImageIcon("src/Bilder/MainMenuBackground.png");
@@ -176,7 +188,7 @@ public class MainMenu extends JFrame {
         challengeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ChallengeFrame challengeFrame = new ChallengeFrame(dbc, controller);
+                challengeFrame = new ChallengeFrame(dbc, controller);
             }
         });
 
