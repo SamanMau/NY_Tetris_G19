@@ -22,12 +22,11 @@ public class LoginRegisterFrame extends JFrame {
     private JLabel usernameLabel;
     private JTextField usernameTextField;
     private JLabel passwordLabel;
-    private JPasswordField passwordTextField;
+    private JTextField passwordTextField;
     private JButton loginButton2 = new JButton();
     private JButton registerButton2 = new JButton();
     private String userName;
     private String userPassword;
-    private JButton returnButton;
 
     public LoginRegisterFrame(Controller controller){
         super("Login/Register");
@@ -85,6 +84,7 @@ public class LoginRegisterFrame extends JFrame {
         backgroundLabel = new JLabel(tetrisBackground);
         backgroundLabel.setBounds(0, 1, width-15, height-40);
 
+
         //Tetris logo
         ImageIcon tetrisLogo = new ImageIcon("src/Bilder/Tetris_logo.png");
         tetrisLogo.setImage(tetrisLogo.getImage().getScaledInstance(280, 200, Image.SCALE_SMOOTH));
@@ -108,7 +108,7 @@ public class LoginRegisterFrame extends JFrame {
         usernameLabel.setFont(new Font("Italic", Font.PLAIN, 20));
         usernameLabel.setForeground(Color.white);
 
-        this.usernameTextField = new JTextField();
+        this.usernameTextField = new JTextField("UwU");
         usernameTextField.setFont(new Font("Italic", Font.PLAIN, 20));
         usernameTextField   .setForeground(Color.BLACK);
         usernameTextField.setBounds(150, 350, 300, 50);
@@ -119,7 +119,7 @@ public class LoginRegisterFrame extends JFrame {
         passwordLabel.setFont(new Font("Italic", Font.PLAIN, 20));
         passwordLabel.setForeground(Color.white);
 
-        passwordTextField = new JPasswordField();
+        passwordTextField = new JTextField("123456");
         passwordTextField.setFont(new Font("Italic", Font.PLAIN, 20));
         passwordTextField.setForeground(Color.BLACK);
         passwordTextField.setBounds(150, 430, 300, 50);
@@ -132,15 +132,6 @@ public class LoginRegisterFrame extends JFrame {
         loginButton2.setBackground(Color.white);
         loginButton2.setForeground(Color.black);
 
-        returnButton = new JButton("Return");
-        returnButton.setFont(new Font("Italic", Font.PLAIN, 15));
-        returnButton.setBounds(500, 0, 100, 50);
-        returnButton.setFocusPainted(false);
-        returnButton.setFocusable(false);
-        returnButton.setBackground(Color.red);
-        returnButton.setForeground(Color.black);
-
-        backgroundLabel.add(returnButton);
         backgroundLabel.add(loginButton2);
         backgroundLabel.add(usernameLabel);
         backgroundLabel.add(usernameTextField);
@@ -148,6 +139,7 @@ public class LoginRegisterFrame extends JFrame {
         backgroundLabel.add(passwordTextField);
 
         // Update frame
+
         addActionListeners();
         revalidate();
         repaint();
@@ -166,7 +158,7 @@ public class LoginRegisterFrame extends JFrame {
 
         usernameTextField = new JTextField();
         usernameTextField.setFont(new Font("Italic", Font.PLAIN, 20));
-        usernameTextField.setForeground(Color.BLACK);
+        usernameTextField   .setForeground(Color.BLACK);
         usernameTextField.setBounds(150, 350, 300, 50);
 
         passwordLabel = new JLabel();
@@ -175,7 +167,7 @@ public class LoginRegisterFrame extends JFrame {
         passwordLabel.setFont(new Font("Italic", Font.PLAIN, 20));
         passwordLabel.setForeground(Color.white);
 
-        passwordTextField = new JPasswordField();
+        passwordTextField = new JTextField();
         passwordTextField.setFont(new Font("Italic", Font.PLAIN, 20));
         passwordTextField.setForeground(Color.BLACK);
         passwordTextField.setBounds(150, 430, 300, 50);
@@ -188,15 +180,6 @@ public class LoginRegisterFrame extends JFrame {
         registerButton2.setBackground(Color.white);
         registerButton2.setForeground(Color.black);
 
-        returnButton = new JButton("Return");
-        returnButton.setFont(new Font("Italic", Font.PLAIN, 15));
-        returnButton.setBounds(500, 0, 100, 50);
-        returnButton.setFocusPainted(false);
-        returnButton.setFocusable(false);
-        returnButton.setBackground(Color.red);
-        returnButton.setForeground(Color.black);
-
-        backgroundLabel.add(returnButton);
         backgroundLabel.add(registerButton2);
         backgroundLabel.add(usernameLabel);
         backgroundLabel.add(usernameTextField);
@@ -269,26 +252,7 @@ public class LoginRegisterFrame extends JFrame {
                 controller.startMainMenu();
             }
         });
-        if(returnButton != null){
-            returnButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    getContentPane().removeAll();
-                    repaint();
-                    createBackgroundLogo();
-                    createButton();
-                    addActionListeners();
-                }
-            });
-        }
 
-        playAsGuestButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                controller.startMainMenu();
-            }
-        });
     }
 
     public void setPassword(String password){

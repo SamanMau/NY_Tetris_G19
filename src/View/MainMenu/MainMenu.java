@@ -1,6 +1,7 @@
 package View.MainMenu;
 
 import Control.Controller;
+import Control.DatabaseController;
 import View.GameFrame.MainFrame;
 import View.GameFrame.TopPanel;
 import View.LoginRegister.LoginRegisterFrame;
@@ -10,7 +11,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.RoundRectangle2D;
 
 public class MainMenu extends JFrame {
     Controller controller;
@@ -35,12 +35,17 @@ public class MainMenu extends JFrame {
     private TopPanel topPanel;
     private JButton returnHighscoresButton;
 
-    public MainMenu(Controller controller, MainFrame mainFrame){
+    private JButton challengeButton;
+
+    private DatabaseController dbc;
+
+    public MainMenu(Controller controller, MainFrame mainFrame, DatabaseController dbc){
         super("Main menu");
         this.setSize(width, height);
         this.controller = controller;
         this.mainFrame = mainFrame;
         this.topPanel = topPanel;
+        this.dbc = dbc;
 
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -98,7 +103,7 @@ public class MainMenu extends JFrame {
         //Mute button
         muteButton = new JButton("Music on");
         muteButton.setFont(new Font("Italic", Font.PLAIN, 15));
-        muteButton.setBounds(5, 5, 100, 50);
+        muteButton.setBounds(5, 60, 120, 50); //5, 60, 100, 50
         muteButton.setFocusPainted(false);
         muteButton.setFocusable(false);
         muteButton.setBackground(Color.white);
@@ -107,7 +112,7 @@ public class MainMenu extends JFrame {
         //Mute button
         profileButton = new JButton("Profile");
         profileButton.setFont(new Font("Italic", Font.PLAIN, 15));
-        profileButton.setBounds(5, 60, 100, 50);
+        profileButton.setBounds(5, 5, 120, 50); //5, 5, 100, 50
         profileButton.setFocusPainted(false);
         profileButton.setFocusable(false);
         profileButton.setBackground(Color.white);
@@ -116,11 +121,20 @@ public class MainMenu extends JFrame {
         //Log out button
         logoutButton = new JButton("Log out");
         logoutButton.setFont(new Font("Italic", Font.PLAIN, 15));
-        logoutButton.setBounds(500, 0, 100, 50);
+        logoutButton.setBounds(480, 0, 120, 50);
         logoutButton.setFocusPainted(false);
         logoutButton.setFocusable(false);
         logoutButton.setBackground(Color.red);
         logoutButton.setForeground(Color.black);
+
+        challengeButton = new JButton("Challenges");
+        challengeButton.setFont(new Font("Italic", Font.PLAIN, 15));
+        challengeButton.setBounds(5, 115, 120, 50);
+        challengeButton.setFocusPainted(false);
+        challengeButton.setFocusable(false);
+        challengeButton.setBackground(Color.white);
+        challengeButton.setForeground(Color.black);
+
 
         backgroundLabel.add(logoutButton);
         backgroundLabel.add(profileButton);
@@ -129,6 +143,7 @@ public class MainMenu extends JFrame {
         backgroundLabel.add(startGameButton);
         backgroundLabel.add(highscoreButton);
         backgroundLabel.add(settingButton);
+        backgroundLabel.add(challengeButton);
     }
 
     private void createBackgroundLogo(){
@@ -158,10 +173,17 @@ public class MainMenu extends JFrame {
             }
         });
 
+        challengeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ChallengeFrame challengeFrame = new ChallengeFrame(dbc, controller);
+            }
+        });
+
         highscoreButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Highscores highscoresFrame = new Highscores();
+                Highscores highscoresFrame = new Highscores(dbc, controller);
             }
         });
 
