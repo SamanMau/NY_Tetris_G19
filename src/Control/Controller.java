@@ -74,7 +74,7 @@ public class Controller {
         music = "src/Ljud/audio1.wav";
         musicOff ="on";
         setFile(music);
-        playMusic();
+        //playMusic();
     }
 
     public void addToQueue(){
@@ -265,7 +265,6 @@ public class Controller {
         }
             if (blockHeight + rowWithColor > board.length) {
             System.out.println("You lost");
-            mainFrame.getTopPanel().setEnabledTrue();
             int totalPoints = mainFrame.getTotalPoints();
             databaseController.updateAmountGames(userID);
             databaseController.updatePoints(userID, totalPoints);
@@ -381,10 +380,6 @@ public class Controller {
      */
     public Color[][] getBoard() {
         return board;
-    }
-
-    public void stopTimer() {
-        this.speed.stop();
     }
 
     /**
@@ -686,5 +681,12 @@ public class Controller {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void stopTimer() {
+        this.speed.stop();
+    }
+    public void restartTimer(){
+        this.speed.restart();
     }
 }
