@@ -2,51 +2,56 @@ package Control;
 
 import View.MainMenu.ChallengePanel;
 
-public class PictureGenerate extends Thread {
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
+import javax.swing.*;
+
+public class PictureGenerate {
     private boolean isRunning;
-    private long runFor3Sec;
+    private int runFor3Sec = 3;
     private ChallengePanel challengePanel;
+    private javax.swing.Timer timer;
+    private int picNum = 1;
+    private Random rd;
 
 
     public PictureGenerate(ChallengePanel challengePanel){
         this.isRunning = false;
         this.runFor3Sec = 3000;
         this.challengePanel = challengePanel;
+        rd = new Random();
     }
 
     public void setIsRunning(){
         this.isRunning = true;
-        run();
+        timer.start();
     }
 
-    public void generatePictures(){
-
+    public boolean isRunning() {
+        return isRunning;
     }
 
+    public void counter(){
+        timer = new Timer(100, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                runFor3Sec-=100;
+                //counterLabel.setText(String.valueOf(second));
+                String fileName = "src/Bilder/image" + rd.nextInt(1,4) + ".png";
+                String fileName2 = "src/Bilder/image" + rd.nextInt(1,4) + ".png";
+                String fileName3 = "src/Bilder/image" + rd.nextInt(1,4) + ".png";
+                System.out.println(fileName);
+                challengePanel.setPic1(fileName);
+                challengePanel.setPic2(fileName2);
+                challengePanel.setPic3(fileName3);
+                picNum++;
 
-    @Override
-    public void run(){
-        int picNum = 1;
-
-        long startTime = System.currentTimeMillis();
-
-        while (isRunning && (System.currentTimeMillis() - startTime < runFor3Sec)){
-                String name = "src/Bilder/image" + picNum + ".png";
-            System.out.println(name);
-            challengePanel.setPic1(name);
-
-            if(picNum == 3){
-                picNum = 1;
+                if(runFor3Sec == 0){
+                    runFor3Sec = 3000;
+                    timer.stop();
+                }
             }
-
-            picNum++;
-
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        });
     }
-
 }

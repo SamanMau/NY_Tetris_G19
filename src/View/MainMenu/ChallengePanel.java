@@ -18,21 +18,27 @@ public class ChallengePanel extends JPanel {
     private JButton spin;
     private JButton accept;
 
-    private PictureGenerate thread;
-
-
+    private PictureGenerate pictureGenerate;
     private JLabel generateChallenge;
+    private ImageIcon icon1;
+    private JLabel label1;
+    private ImageIcon icon2;
+    private JLabel label2;
+    private ImageIcon icon3;
+    private JLabel label3;
 
     public ChallengePanel(DatabaseController dbc, Controller controller){
         this.setLayout(null);
         this.dbc = dbc;
         this.controller = controller;
+        label1 = new JLabel();
+        label2 = new JLabel();
+        label3 = new JLabel();
 
         this.setBounds(0, 0, 500, 500);
         this.setBackground(Color.GREEN);
 
-        thread = new PictureGenerate(this);
-        thread.start();
+        pictureGenerate = new PictureGenerate(this);
 
         color1 = new Color(155, 48, 255);
         color2 = new Color(0, 0, 139);
@@ -80,22 +86,69 @@ public class ChallengePanel extends JPanel {
     }
 
     public void setPic1(String name){
-        try{
-            ImageIcon icon = new ImageIcon(name);
-            Image img = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
-            icon = new ImageIcon(img);
-            JLabel label = new JLabel(icon);
+        if(pictureGenerate.isRunning()){
+            try{
+                System.out.println("Im in here");
+                icon1 = new ImageIcon(name);
+                Image img = icon1.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+                icon1.setImage(img);
+                label1.setIcon(icon1);
 
-            label.setBounds(100, 250, 80, 80);
+                label1.setBounds(100, 250, 80, 80);
 
-            SwingUtilities.invokeLater(() -> {
-                this.add(label);
-                this.repaint();
-            });
+                SwingUtilities.invokeLater(() -> {
+                    this.add(label1);
+                    this.repaint();
+                });
 
 
-        } catch (NullPointerException e){
-            e.printStackTrace();
+            } catch (NullPointerException e){
+                e.printStackTrace();
+            }
+        }
+    }
+    public void setPic2(String name){
+        if(pictureGenerate.isRunning()){
+            try{
+                System.out.println("Im in here");
+                icon2 = new ImageIcon(name);
+                Image img = icon2.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+
+                icon2.setImage(img);
+                label2.setIcon(icon2);
+
+                label2.setBounds(210, 250, 80, 80);
+
+                SwingUtilities.invokeLater(() -> {
+                    this.add(label2);
+                    this.repaint();
+                });
+
+
+            } catch (NullPointerException e){
+                e.printStackTrace();
+            }
+        }
+    }
+    public void setPic3(String name){
+        if(pictureGenerate.isRunning()){
+            try{
+                System.out.println("Im in here");
+                icon3 = new ImageIcon(name);
+                Image img = icon3.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+                icon3.setImage(img);
+                label3.setIcon(icon3);
+
+                label3.setBounds(320, 250, 80, 80);
+
+                SwingUtilities.invokeLater(() -> {
+                    this.add(label3);
+                    this.repaint();
+                });
+
+            } catch (NullPointerException e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -182,9 +235,8 @@ public class ChallengePanel extends JPanel {
         spin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                thread.setIsRunning();
-
+                pictureGenerate.counter();
+                pictureGenerate.setIsRunning();
                 accept.setEnabled(true);
             }
         });
