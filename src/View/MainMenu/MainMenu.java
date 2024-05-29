@@ -1,4 +1,4 @@
-package View.MainMenu;
+package MainMenu;
 
 import Control.Controller;
 import Control.DatabaseController;
@@ -39,7 +39,7 @@ public class MainMenu extends JFrame {
 
     private DatabaseController dbc;
 
-    private ChallengeFrame challengeFrame;
+    private View.MainMenu.ChallengeFrame challengeFrame;
 
     public MainMenu(Controller controller, MainFrame mainFrame, DatabaseController dbc){
         super("Main menu");
@@ -59,18 +59,26 @@ public class MainMenu extends JFrame {
     }
 
     public void userInfo(){
-        username = controller.getUserName();
-        totalPoints = controller.getTotalPoints(username);
-        userID = controller.getUserIDNoConn();
-        status = controller.getStatus(userID);
-        totalChallenges = controller.getTotalChallenges(userID);
-        totalGames = controller.getTotalGames(userID);
+        if(dbc != null){
+            username = controller.getUserName();
+            totalPoints = controller.getTotalPoints(username);
+            userID = controller.getUserIDNoConn();
+            status = controller.getStatus(userID);
+            totalChallenges = controller.getTotalChallenges(userID);
+            totalGames = controller.getTotalGames(userID);
+        }
+
     }
 
     private void createButton(){
         userInfo();
+        if(username != null){
+            welcomeText = new JLabel("Welcome " + username);
+        }
+        else{
+            welcomeText = new JLabel("Welcome ");
+        }
 
-        welcomeText = new JLabel("Welcome " + username);
         welcomeText.setBounds(220, 310, 300, 50);
         welcomeText.setFont(new Font("Italic", Font.PLAIN, 20));
         welcomeText.setForeground(Color.white);
@@ -188,14 +196,14 @@ public class MainMenu extends JFrame {
         challengeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                challengeFrame = new ChallengeFrame(dbc, controller);
+                challengeFrame = new View.MainMenu.ChallengeFrame(dbc, controller);
             }
         });
 
         highscoreButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Highscores highscoresFrame = new Highscores(dbc, controller);
+                View.MainMenu.Highscores highscoresFrame = new View.MainMenu.Highscores(dbc, controller);
             }
         });
 

@@ -6,7 +6,7 @@ package View.GameFrame;
 
 import Control.Controller;
 import View.LPanel;
-import View.MainMenu.MainMenu;
+import MainMenu.MainMenu;
 import View.Settings.SettingsFrame;
 
 import javax.sound.sampled.*;

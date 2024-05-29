@@ -2,7 +2,7 @@ package View.LoginRegister;
 
 import Control.Controller;
 import View.GameFrame.TopPanel;
-import View.MainMenu.MainMenu;
+import MainMenu.MainMenu;
 import View.Settings.SettingsFrame;
 
 import javax.swing.*;
@@ -285,6 +285,13 @@ public class LoginRegisterFrame extends JFrame {
             });
         }
 
+        playAsGuestButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                controller.startMainMenu();
+            }
+        });
     }
 
     public void setPassword(String password){

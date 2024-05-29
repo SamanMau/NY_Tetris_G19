@@ -9,7 +9,7 @@ import Model.TetrisBlock;
 import View.GameFrame.MainFrame;
 import View.GameFrame.Playfield;
 import View.LoginRegister.LoginRegisterFrame;
-import View.MainMenu.MainMenu;
+import MainMenu.MainMenu;
 import View.GameFrame.TopPanel;
 import Control.DatabaseController;
 
@@ -77,7 +77,10 @@ public class Controller {
         blockQueue = new LinkedList<>();
         addToQueue();
         collision = false;
-        databaseController = new DatabaseController();
+        if(nameUser != null){
+            databaseController = new DatabaseController();
+        }
+
         music = "src/Ljud/audio1.wav";
         musicOff ="on";
         setFile(music);
@@ -136,10 +139,13 @@ public class Controller {
     }
 
     public int getTotalPoints(String nameUser){
-        int id = databaseController.getUserID(nameUser);
+        if(databaseController != null){
+            int id = databaseController.getUserID(nameUser);
 
-        int points = databaseController.getUserPoints(id);
-        return points;
+            int points = databaseController.getUserPoints(id);
+            return points;
+        }
+        return -1;
     }
 
     public int getTotalChallenges(int id){
@@ -389,9 +395,9 @@ public class Controller {
      */
     public TetrisBlock generateBlock() {
         randomNum = rd.nextInt(7);
-        int[][] shape = listOfShape.get(4);
-        Color color = listOfColors.get(4);
-        block = new TetrisBlock(shape, color, 4);
+        int[][] shape = listOfShape.get(randomNum);
+        Color color = listOfColors.get(randomNum);
+        block = new TetrisBlock(shape, color, randomNum);
         return block;
     }
 
