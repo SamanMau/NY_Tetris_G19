@@ -295,6 +295,7 @@ public class TopPanel extends JPanel {
                             public void actionPerformed(ActionEvent e) {
                                 mainFrame.dispose();
                                 MainMenu mainMenu = new MainMenu(controller, mainFrame, controller.getDatabaseController());
+                                controller.resetColorBoard();
                             }
                         });
 

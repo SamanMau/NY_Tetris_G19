@@ -18,7 +18,7 @@ public class LPanel extends JPanel {
     private Color color3;
     private Color color4;
     private int totalScore = 0;
-    private int nextScore = 800;
+    private int nextScore = 3000;
     private int level = 1;
     private Control.Controller controller;
     private int newLevel;
@@ -115,7 +115,7 @@ public class LPanel extends JPanel {
 
         if(totalScore >= nextScore){
             increaseLevel();
-            this.nextScore += 800;
+            this.nextScore += 3000;
         }
     }
 
