@@ -37,7 +37,10 @@ public class Highscores extends JFrame {
     }
 
     public void createTopHighScores(){
-        topHighScoreList = dbc.getTopHighScores();
+        if(dbc!= null){
+            topHighScoreList = dbc.getTopHighScores();
+        }
+
     }
 
     public void createPersonalHighscore(){
