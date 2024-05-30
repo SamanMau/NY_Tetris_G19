@@ -257,6 +257,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Check if the block has reach out of the top of playfield
+     */
     private boolean checkBlockOutOfPlayfield() {
         int blockHeight = block.getHeight();
         int rowWithColor = 0;

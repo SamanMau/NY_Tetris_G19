@@ -65,6 +65,10 @@ public class MainMenu extends JFrame {
         totalGames = controller.getTotalGames(userID);
     }
 
+    /**
+     * Initiate Buttons and Text and add them to the background.
+     * @author Huy
+     */
     private void createButton(){
         userInfo();
 
@@ -145,7 +149,10 @@ public class MainMenu extends JFrame {
         backgroundLabel.add(settingButton);
         backgroundLabel.add(challengeButton);
     }
-
+    /**
+     * Adds the backgrounds picture and logo to the frame.
+     * @author Huy
+     */
     private void createBackgroundLogo(){
         //Tetris background
         ImageIcon tetrisBackground = new ImageIcon("src/Bilder/MainMenuBackground.png");
@@ -163,7 +170,15 @@ public class MainMenu extends JFrame {
         backgroundLabel.add(logoLabel);
     }
 
+    /**
+     * Add function to button
+     * @author Huy
+     */
     public void addActionListeners(){
+        /**
+         * Turn off this frame and open MainFrame, which is the frame to play the game.
+         * @author Huy
+         */
         startGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -173,6 +188,10 @@ public class MainMenu extends JFrame {
             }
         });
 
+        /**
+         * Open challenge frame to spin and accept challenge.
+         * @author Saman
+         */
         challengeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -180,6 +199,10 @@ public class MainMenu extends JFrame {
             }
         });
 
+        /**
+         * Open a highscores frame to see your and everyone else highscores.
+         * @author Huy
+         */
         highscoreButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -187,6 +210,10 @@ public class MainMenu extends JFrame {
             }
         });
 
+        /**
+         * Open settings frame to access game settings.
+         * @author Huy
+         */
         settingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -194,6 +221,10 @@ public class MainMenu extends JFrame {
             }
         });
 
+        /**
+         * Mute button to turn the music on or off.
+         * @author Huy
+         */
         muteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -305,6 +336,10 @@ public class MainMenu extends JFrame {
         });
     }
 
+    /**
+     * Disable all buttons so the user can't click it.
+     * @author Huy
+     */
     public void disableButton(){
         startGameButton.setEnabled(false);
         highscoreButton.setEnabled(false);
@@ -313,7 +348,10 @@ public class MainMenu extends JFrame {
         muteButton.setEnabled(false);
         profileButton.setEnabled(false);
     }
-
+    /**
+     * Enable all button.
+     * @author Huy
+     */
     public void enableButton(){
         startGameButton.setEnabled(true);
         highscoreButton.setEnabled(true);

@@ -45,6 +45,10 @@ public class LoginRegisterFrame extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * Create buttons at start.
+     * @author Huy
+     */
     private void createButton(){
         //Login button
         loginButton = new JButton("Login");
@@ -78,6 +82,10 @@ public class LoginRegisterFrame extends JFrame {
         backgroundLabel.add(loginButton);
     }
 
+    /**
+     * Create backgrounds and logo to the frame
+     * @author Huy
+     */
     private void createBackgroundLogo(){
         //Tetris background
         ImageIcon tetrisBackground = new ImageIcon("src/Bilder/StartUpFrame.png");
@@ -97,6 +105,10 @@ public class LoginRegisterFrame extends JFrame {
         backgroundLabel.add(logoLabel);
     }
 
+    /**
+     * Initiate the login page for user to login
+     * @author Huy
+     */
     public void startLoginPage(){
         backgroundLabel.remove(playAsGuestButton);
         backgroundLabel.remove(registerButton);
@@ -149,12 +161,15 @@ public class LoginRegisterFrame extends JFrame {
         backgroundLabel.add(passwordTextField);
 
         // Update frame
-
         addActionListeners();
         revalidate();
         repaint();
     }
 
+    /**
+     * Initiate the register page for user to register
+     * @author Huy
+     */
     public void startRegisterPage(){
         backgroundLabel.remove(playAsGuestButton);
         backgroundLabel.remove(registerButton);
@@ -210,7 +225,10 @@ public class LoginRegisterFrame extends JFrame {
         revalidate();
         repaint();
     }
-
+    /**
+     * Add function to buttons
+     * @author Huy
+     */
     public void addActionListeners(){
         loginButton.addActionListener(new ActionListener() {
             @Override

@@ -67,11 +67,6 @@ public class TopPanel extends JPanel {
 
         this.add(pauseButton);
         this.add(playMusic);
-        /*this.add(startGame);
-        this.add(showHighscore);
-        this.add(endGame);
-        this.add(settings);*/
-
         this.setVisible(true);
     }
 
@@ -153,14 +148,6 @@ public class TopPanel extends JPanel {
      * @author Saman
      */
     private void createButton(){
-        //startGame = new JButton("Start game");
-
-        //showHighscore = new JButton("Show highscore");
-
-        //endGame = new JButton("End game");
-
-        //settings = new JButton("Settings");
-
         pauseButton = new JButton("Pause");
         playMusic = new JButton("Music on");
 
@@ -169,30 +156,6 @@ public class TopPanel extends JPanel {
         pauseButton.setBackground(Color.orange);
         pauseButton.setFocusPainted(false);
         pauseButton.setFocusable(false);
-
-        /*startGame.setBounds(247, 28, 100, 35);
-        Color green = new Color(0, 128, 60, 157);
-        startGame.setBackground(green);
-        startGame.setFocusPainted(false);
-        startGame.setFocusable(false);
-
-
-        showHighscore.setBounds(147, 64, 129, 35);
-        Color orange = new Color(167, 112, 50);
-        showHighscore.setBackground(orange);
-        showHighscore.setFocusPainted(false);
-        showHighscore.setFocusable(false);
-
-        endGame.setBounds(335, 64, 115, 35);
-        Color red = new Color(192, 30, 30);
-        endGame.setBackground(red);
-        endGame.setFocusPainted(false);
-        endGame.setFocusable(false);
-
-        settings.setBounds(500, 0, 100, 35);
-        settings.setBackground(Color.WHITE);
-        settings.setFocusable(false);*/
-
 
         playMusic.setBounds(0,0,100,35);
         playMusic.setBackground(Color.WHITE);
@@ -209,37 +172,6 @@ public class TopPanel extends JPanel {
      * @author Saman
      */
     public void addActionListeners(){
-        /*settings.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SettingsFrame settingsFrame = new SettingsFrame(controller);
-            }
-        });
-
-        startGame.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mainFrame.linkKeyToEvent(true);
-                controller.startTimer(true, 500); //500
-                gameStarted = true;
-                startGame.setEnabled(false);
-            }
-        });
-
-        endGame.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(gameStarted){
-                    controller.stopTimer();
-                    gameStarted = false;
-                    controller.disableKeyboard();
-                    setEnabledTrue();
-                } else {
-                    return;
-                }
-            }
-        });*/
-
         pauseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -343,6 +275,7 @@ public class TopPanel extends JPanel {
         musicOff = controller.getMusicOff();
         return musicOff;
     }
+
 
     public void pauseGame() throws InterruptedException {
         controller.stopTimer();
