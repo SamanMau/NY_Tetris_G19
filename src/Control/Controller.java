@@ -240,8 +240,13 @@ public class Controller {
 
 
     public boolean checkIfNewStatus(){
-        int points = databaseController.getUserPoints(userID);
-        String status = databaseController.getStatus(userID);
+        int points = 0;
+        String status = null;
+        if(databaseController != null){
+            points = databaseController.getUserPoints(userID);
+            status = databaseController.getStatus(userID);
+        }
+
         challenge = mainMenu.getChallengeName();
 
         if((points >= 10000) && (points <= 14000) && (!status.equals("Intermediate"))){ // 10000 && 20000 (original)
@@ -298,7 +303,7 @@ public class Controller {
 
             challenge = mainMenu.getChallengeName();
 
-            if(challenge != null){
+            if(challenge != null && databaseController != null){
                 boolean newStatus = checkIfNewStatus();
 
                 if((challenge.equals("Play Tetris with double points"))){
@@ -329,12 +334,15 @@ public class Controller {
                     databaseController.updatePoints(userID, newPoints);
                 }
             } else {
-                databaseController.updateAmountGames(userID);
+                if(databaseController != null){
+                    databaseController.updateAmountGames(userID);
 
-                databaseController.updatePoints(userID, totalPoints);
+                    databaseController.updatePoints(userID, totalPoints);
+                }
             }
-
-            databaseController.insertIntoHighscore(nameUser, totalPoints, userID);
+            if(databaseController != null){
+                databaseController.insertIntoHighscore(nameUser, totalPoints, userID);
+            }
 
             checkIfNewStatus();
             gameIsOver();
