@@ -77,9 +77,9 @@ public class Controller {
         blockQueue = new LinkedList<>();
         addToQueue();
         collision = false;
-        if(nameUser != null){
+      //  if(nameUser != null){
             databaseController = new DatabaseController();
-        }
+      //  }
 
         music = "src/Ljud/audio1.wav";
         musicOff ="on";
