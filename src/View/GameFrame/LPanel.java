@@ -105,6 +105,7 @@ public class LPanel extends JPanel {
 
     public void resetPoints() {
         totalScore = 0;
+        nextScore = 3000;
         poangText.setText("Points: " + totalScore);
     }
 
