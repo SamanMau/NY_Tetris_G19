@@ -287,8 +287,7 @@ public class Controller {
             checkIfNewStatus();
             gameIsOver();
             resetColorBoard();
-            mainFrame.resetLevel();
-            mainFrame.resetPoints();
+            resetGame();
             return true;
         } else {
             return false;
