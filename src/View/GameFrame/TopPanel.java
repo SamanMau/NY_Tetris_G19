@@ -24,6 +24,7 @@ public class TopPanel extends JPanel {
     private JButton settingsButton;
     private JButton resumeButton;
     private JButton exitToMenuButton;
+
     private LPanel lPanel;
     private RPanel rPanel;
     private boolean gameStarted;
@@ -291,6 +292,7 @@ public class TopPanel extends JPanel {
         playMusic.setEnabled(true);
         gameStarted = true;
         mainFrame.linkKeyToEvent(true);
+
     }
 
     public void disablePauseButton(){

@@ -98,7 +98,6 @@ public class LPanel extends JPanel {
         changeSpeed();
     }
 
-
     public void resetLevel() {
         newLevel = 0;
         levelText.setText("Level: " + newLevel);
