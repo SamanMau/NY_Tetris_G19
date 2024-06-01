@@ -348,10 +348,11 @@ public class Controller {
      * and color, and then we create a new instance of "block".
      */
     public TetrisBlock generateBlock() {
+        clearFullRows();
         randomNum = rd.nextInt(7);
-        int[][] shape = listOfShape.get(4);
-        Color color = listOfColors.get(4);
-        block = new TetrisBlock(shape, color, 4);
+        int[][] shape = listOfShape.get(randomNum);
+        Color color = listOfColors.get(randomNum);
+        block = new TetrisBlock(shape, color, randomNum);
         return block;
     }
 
@@ -391,7 +392,7 @@ public class Controller {
             }
         }
         collision = true;
-        clearFullRows();
+       // clearFullRows();
     }
 
 
@@ -434,8 +435,8 @@ public class Controller {
 
             if (isAtBottom() || isCollidingWithBlock(0)) {
                 block.incrementY(-1);
-                addColorToBoard();
                 clearFullRows();
+                addColorToBoard();
                 //generateBlock();
                 addToQueue();
                 collision = false;
@@ -456,7 +457,7 @@ public class Controller {
         int rowsCleared = 0;
 
         //loop som kollar ifall någon rad är fylld.
-        for (int row = height - 1; row >= 0; row--) {
+        for (int row = height - 1; row > 0; row--) {
             boolean fullRow = true;
 
             //inre loop går igenom varje column i en specefik rad för
@@ -490,7 +491,11 @@ public class Controller {
         }
 
         pointsEarned = calculatePointsForRowClear(rowsCleared);
-        mainFrame.incrementPoints(pointsEarned);
+
+        if(mainFrame != null){
+            mainFrame.incrementPoints(pointsEarned);
+        }
+
         playfield.repaint();
     }
 
