@@ -275,15 +275,20 @@ public class Controller {
             System.out.println("You lost");
             int totalPoints = mainFrame.getTotalPoints();
 
-            databaseController.updateAmountGames(userID);
 
-            databaseController.updatePoints(userID, totalPoints);
 
-            databaseController.insertIntoHighscore(nameUser, totalPoints, userID);
+            if(getUserName() != null){
+                databaseController.updateAmountGames(userID);
+                databaseController.updatePoints(userID, totalPoints);
+                databaseController.insertIntoHighscore(nameUser, totalPoints, userID);
+            }
+
 
             checkIfNewStatus();
             gameIsOver();
             resetColorBoard();
+            mainFrame.resetLevel();
+            mainFrame.resetPoints();
             return true;
         } else {
             return false;
